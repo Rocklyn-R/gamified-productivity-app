@@ -1,0 +1,39 @@
+
+
+.rewards-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    height: fit-content;
+    margin-top: 2rem;
+    background-color: #135382;
+    margin-bottom: 4rem;
+}
+
+.rewards-header {
+    padding: 0;
+    margin: 0;
+    color: aliceblue;
+    font-size: 2rem;
+}
+
+@media (max-width: 350px) {
+    .rewards-box h1 {
+        font-size: 1.4rem
+    }
+}
+
+
+@media (min-width: 351px) and (max-width: 450px) {
+  
+    .rewards-box h1 {
+        font-size: 1.6rem;
+    }
+}
+
+@media (min-width: 451px) and (max-width: 650px) {
+    .rewards-box h1 {
+        font-size: 1.8rem;
+    }
+}

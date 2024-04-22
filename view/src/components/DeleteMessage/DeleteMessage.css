@@ -1,0 +1,13 @@
+.cancel, .delete {
+    border: none;
+    background-color: lightblue;
+    border-radius: 2rem;
+    padding: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.delete-message-container {
+    padding: 20px;
+}

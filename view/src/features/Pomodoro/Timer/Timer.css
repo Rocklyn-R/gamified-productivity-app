@@ -1,0 +1,162 @@
+.circular-progressbar-wrapper {
+    margin-top: .5rem;
+}
+
+
+.control-timer-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+}
+
+.play-button {
+    background-color: aliceblue;
+    color: #135382;
+    border: none;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.control-icon {
+    font-size: 2rem;
+}
+
+.coin-pomodoro-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+#pomodoro-coin-p {
+    display: none;
+}
+
+
+.coin-pomodoro-box p {
+    margin: 0;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.pomodoro-coin-icon {
+    margin-right: .5rem;
+    color: #d4af37;
+    font-size: 1.4rem;
+}
+
+.pomodoro-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: aliceblue;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    font-size: 1rem;
+    display: inline-flex;
+    padding: .5rem 1rem;
+}
+
+.pomodoro-button:hover,
+.pomodoro-button {
+    font-size: 1.2rem;
+}
+
+.pomodoro-icon {
+    margin-bottom: .3rem;
+    margin-right: .3rem;
+}
+
+#mode-string {
+    color: aliceblue;
+}
+
+/* Screens that have hover and are not Samsung (laptops etc) */
+@media (hover:hover) and (min-width: 501px) {
+    .play-button:active {
+        background-color: #91cbf2;
+    }
+
+
+    .pomodoro-button:active {
+        background-color: #91cbf2;
+        color: #0c3d63;
+    }
+}
+
+/* Screens that don't have hover (most mobile devices except Samsung) */
+/* :hover behaves as active */
+@media (hover: none) {
+    .play-button:active {
+        background-color: #91cbf2;
+    }
+
+    .pomodoro-button:active {
+        background-color: #91cbf2;
+        color: #0c3d63;
+    }
+
+}
+
+
+/*Samsung screens that have hover but don't behave like they do */
+@media (hover:hover) and (max-width: 500px) {
+    .play-button:active {
+        background-color: #91cbf2;
+    }
+
+    .pomodoro-button:active {
+        background-color: #91cbf2;
+        color: #0c3d63;
+    }
+}
+
+
+@media (max-width: 650px) {
+    #pomodoro-coin-p {
+        display: flex;
+    }
+}
+
+
+@media (max-height: 750px) {
+    #pomodoro-coin-p {
+        display: flex;
+    }
+}
+
+/*
+@media (min-width: 260px) and (max-width: 450px) {
+
+    #pomodoro-coin-p {
+        display: flex;
+    }
+    
+}
+
+ 
+
+ @media (max-width: 1100px) and (min-height: 550px) and (max-height: 800px) {
+    .control-timer-buttons {
+        margin-top: 0;
+    }
+    
+    #mode-string {
+        margin-bottom: 0;
+    }
+ } 
+ 
+ @media (max-height: 800px) {
+    #pomodoro-coin-p {
+        display: flex;
+    }
+ }*/

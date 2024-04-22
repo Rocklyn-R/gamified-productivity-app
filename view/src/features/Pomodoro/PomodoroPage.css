@@ -1,0 +1,181 @@
+.pomodoro-container {
+    background-color: #135382;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: aliceblue;
+    width: 100%;
+}
+
+.pomodoro-container h1 {
+    color: aliceblue;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.settings-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 4.5rem;
+    right: 0;
+    border-radius: 50%;
+    margin-right: .5rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.settings-icon {
+    font-size: 4rem;
+    color: #acd6fc;
+    border-radius: 50%;
+    padding: 0;
+}
+
+
+#sessions-remaining {
+    margin-top: 2em;
+    margin-bottom: 0;
+}
+
+.settings-div {
+    display: none;
+}
+
+
+
+
+
+/* Default styles: Mobile First Approach */
+.mobile-settings-div {
+    display: block;
+}
+
+.settings-div {
+    display: none;
+}
+
+@media (max-width: 350px) {
+.settings-icon {
+    font-size: 2.5rem;
+}
+}
+
+/* Styles for larger screens based on width and height */
+@media (min-width: 601px) and (min-height: 700px) {
+    .mobile-settings-div {
+        display: none;
+    }
+
+    .settings-div {
+        display: block;
+    }
+}
+
+/* Additional condition for height less than 700px */
+@media (max-height: 699px) {
+    .mobile-settings-div {
+        display: block;
+    }
+
+    .settings-div {
+        display: none;
+    }
+}
+
+
+
+@media (max-width: 650px) {
+    .pomodoro-coin-count {
+        display: none;
+    }
+
+    #pomodoro-header {
+        display: none;
+    }
+
+    .pomodoro-container {
+        margin-top: 5rem;
+    }
+}
+
+@media (max-height: 700px) {
+    .pomodoro-coin-count {
+        display: none;
+    }
+
+    #pomodoro-header {
+        display: none;
+    }
+    .pomodoro-container {
+        margin-top: 3rem;
+    }
+}
+
+@media (min-height: 701px) and (max-height: 750px) {
+    .pomodoro-coin-count {
+        display: none;
+    }
+
+    #pomodoro-header {
+        display: none;
+    }
+
+    .pomodoro-container {
+        margin-top: 5rem;
+    }
+}
+
+@media (max-width: 700px) and (max-height: 700px) {
+    .pomodoro-container {
+        margin-top: 1rem;
+    }
+}
+
+@media (min-width: 651px) and (max-width: 1100px) and (max-height: 650px) {
+    .pomodoro-coin-count {
+        display: none;
+    }
+
+    #pomodoro-header {
+        display: none;
+    }
+
+    .pomodoro-container {
+        margin-top: 0.5rem;
+    }
+
+    #sessions-remaining {
+        margin-top: 1.5rem;
+    }
+}
+
+
+
+
+/* Screens that have hover and are not Samsung (laptops etc) */
+@media (hover:hover) and (min-width: 501px) {
+   .settings-button:active {
+    background-color: #0c3d63;
+   }
+}
+
+/* Screens that don't have hover (most mobile devices except Samsung) */
+/* :hover behaves as active */
+@media (hover: none) {
+    .settings-button:hover {
+        background-color: #0c3d63;
+       }
+   
+}
+
+
+/*Samsung screens that have hover but don't behave like they do */
+@media (hover:hover) and (max-width: 500px) {
+    .settings-button:active {
+        background-color: #0c3d63;
+       }
+}

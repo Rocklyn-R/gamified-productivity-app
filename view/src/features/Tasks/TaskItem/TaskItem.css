@@ -1,0 +1,124 @@
+.to-do-element, .reward-item {
+    display: flex;
+    margin-bottom: 1rem;
+    align-items: center;
+    min-height: 3rem;
+    min-width: 17rem;
+    max-width: 20rem;
+}
+
+.to-do-element {
+    justify-content: center;
+}
+
+.view-task {
+    display: flex;
+    align-items: center;
+    height: fit-content;
+    cursor: pointer;
+    border: none;
+    border-radius: .4rem;
+    color: #135382;
+    font-family: "Nunito", sans-serif;
+    font-size: 1rem;
+    background: linear-gradient(to bottom right, aliceblue, #6fa8dc);
+    padding: .5rem;
+    width: 100%;
+    max-width: 15rem;
+}
+
+
+.overdue-task-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 12rem;
+    max-width: 15rem;
+    background-color: #135382;
+    border: 1px solid #6fa8dc;
+    color: aliceblue;
+    font-family: "Nunito", sans-serif;
+    font-size: 1rem;
+    border-radius: .4rem;
+    padding: 10px;
+}
+
+.view-task, .view-reward {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.view-task:hover, .view-reward:hover {
+    transform: scale(1.05);
+}
+
+.deadline-details {
+    margin: 0;
+    font-size: .8rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.deadline-details p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.status-box {
+width: 100%;
+   display: flex;
+   justify-content: space-between;
+}
+
+.status-box p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    font-weight: bolder;
+}
+
+
+#overdue-text {
+    color: #c11b1d;
+    font-weight: bolder;
+    font-size: 1rem;
+    margin: 0;
+}
+
+#task-name-text {
+    margin: 0;
+    text-align: start;
+}
+
+#completed-text {
+    color: green;
+}
+
+@media (max-width: 315px) {
+    .view-task {
+        min-width: none !important;
+    }
+
+
+}
+
+@media (min-width: 316px) and (max-width: 350px) {
+    .to-do-element {
+        min-width: 16rem;
+    }
+}
+
+@media (min-width: 351px) and (max-width: 400px) {
+    .to-do-element {
+        min-width: 17rem;
+    }
+}
+
+
+@media (min-width: 351) and (max-width: 500px) {
+    .to-do-element {
+        min-width: 18rem;
+    }
+}

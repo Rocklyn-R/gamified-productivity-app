@@ -1,0 +1,8 @@
+.card {
+    background-color: aliceblue;
+    margin: 2rem 1rem;
+    font-family: "Nunito", sans-serif;
+    box-sizing: content-box;
+    border-radius: 1rem;
+}
+

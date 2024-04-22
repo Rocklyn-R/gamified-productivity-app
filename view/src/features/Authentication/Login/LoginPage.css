@@ -1,0 +1,16 @@
+.log-in-container, .sign-in-container {
+   background-color: #135382;
+   margin-top: 2rem;
+   color: aliceblue;
+}
+
+.log-in-form, .sign-in-form {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    background-color: aliceblue;
+}
+
+.sign-up-link-text {
+    color: aliceblue
+}

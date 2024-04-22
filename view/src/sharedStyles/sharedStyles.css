@@ -1,0 +1,257 @@
+.command-button {
+    border: none;
+    background-color: #acd6fc;
+    border-radius: 1rem;
+    padding: .8rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    min-width: 5rem;
+    width: fit-content;
+    align-self: center;
+    color: #0c3d63;
+}
+
+.command-button-container {
+    margin-top: 1rem;
+}
+
+.price-details {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    justify-self: flex-end;
+    margin-right: 0.5rem;
+}
+
+
+.coins-icon {
+    color: darkgoldenrod;
+    margin-right: .5rem;
+    margin-left: .5rem;
+}
+
+.view-item-price-details {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.coin-count-header {
+   margin-bottom: .5rem;
+    text-align: center;
+    border-radius: 2rem;
+}
+
+.coin-count-header h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: aliceblue;
+}
+
+.coin-icon {
+    color: #d4af37;
+    margin-right: .5rem;
+}
+
+.overlay, .overdue-task-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.overlay-card-1 {
+    padding: 1rem 0rem;
+}
+
+.negative-coins {
+    color: #c11b1d;
+}
+
+.task-history-icon, .inventory-link, .inventory-history-icon {
+    position: absolute;
+    top: 4.5rem;
+    right: 0;
+    margin-right: .5rem;
+    border-radius: 50%;
+    padding: .5rem;
+    
+}
+
+
+.history-icon {
+    display: flex;
+    align-items: center;
+    font-size: 3rem;
+    color: #acd6fc;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    
+}
+
+.back-icon {
+    position: fixed;
+    top: 4.5rem;
+    margin-left: 1rem;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-size: 3rem;
+    color: #acd6fc;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 50%;
+    z-index: 500;
+}
+
+.add-task,
+.add-reward {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-bottom: .5rem;
+    margin-right: .6rem;
+    font-size: 4rem;
+    padding: 0;
+    user-select: none;
+}
+
+.add-task button,
+.add-reward button {
+    display: flex;
+    align-items: center;
+    font-size: 4rem;
+    color: #acd6fc;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: .15rem;
+    user-select: none;
+    border-radius: 50%;
+}
+
+
+
+.add-icon {
+    padding: 0;
+}
+.add-button svg {
+    -webkit-tap-higlight-color: transparent;
+    padding: 0;
+}
+
+.no-select {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+@media (max-width: 350px) {
+    .task-history-icon, .inventory-link, .inventory-history-icon {
+        margin-right: .15rem;
+    }
+
+    .history-icon {
+        font-size: 2.5rem;
+    }
+
+    .add-task button, .add-reward button {
+        font-size: 3.5rem;
+        background-color: #135382;
+    }
+
+    .add-task, .add-reward {
+        margin-right: 0;
+    }
+
+    .back-icon {
+        margin-left: .25rem;
+        font-size: 2.5rem;
+    }
+
+    .overlay-card {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 450px) {
+    .add-reward button {
+        background-color: #135382;
+    }
+}
+
+/* Screens that have hover and are not Samsung (laptops etc) */
+@media (hover:hover) and (min-width: 501px) {
+    .add-task button:active, .add-reward button:active {
+        background-color: #0c3d63;
+    }
+
+    .task-history-icon:active, .inventory-history-icon:active {
+        background-color: #0c3d63;
+    }
+
+    .back-icon:active {
+        background-color: #0c3d63;
+    }
+}
+
+/* Screens that don't have hover (most mobile devices except Samsung) */
+/* :hover behaves as active */
+@media (hover: none) {
+    .add-task button:active, .add-reward button:active {
+        background-color: #0c3d63;
+    }
+
+    .task-history-icon:active, .inventory-history-icon:active {
+        background-color: #0c3d63;
+    }
+
+    .back-icon:active {
+        background-color: #0c3d63;
+    }
+}
+
+
+/*Samsung screens that have hover but don't behave like they do */
+@media (hover:hover) and (max-width: 500px) {
+   .add-task button:active, .add-reward button:active {
+    background-color: #0c3d63;
+   }
+
+   .task-history-icon:active, .inventory-history-icon:active {
+    background-color: #0c3d63;
+   }
+
+   .back-icon:active {
+    background-color: #0c3d63;
+   }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    
+}

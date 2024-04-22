@@ -1,0 +1,58 @@
+.pomodoro-mobile-settings {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+.pomodoro-mobile-settings h4 {
+    color: #0c3d63;
+}
+
+.pomodoro-settings-buttons button {
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    cursor: pointer;
+    padding: 1rem 1rem; 
+    border: none;
+    width: 100%;
+    color: #0c3d63;
+
+}
+
+.pomodoro-settings-buttons button:hover {
+    background-color: #a7d5fa;
+}
+
+.pomodoro-mobile-settings button p {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 1.2rem;
+}
+
+
+.pomodoro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.pomodoro-settings-command-buttons {
+    padding-bottom: 1.5rem;
+    margin-top: 1rem;
+}
+
+#selling-price-coins-p {
+    display: flex;
+    align-items: center;
+    
+}
+

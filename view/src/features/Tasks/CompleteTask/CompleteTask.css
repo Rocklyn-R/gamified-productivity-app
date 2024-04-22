@@ -1,0 +1,86 @@
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.check-input {
+  display: none;
+}
+
+.checkbox, .checkbox-overdue {
+  width: 25px;
+  height: 25px;
+  border: 2px solid #135382;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 3px;
+  transition: 0.3s all;
+}
+
+.checkbox-overdue {
+  background-color: #91c5f2;
+  border: 2px solid #135382;
+}
+
+.checkbox {
+  border: 2px solid #91c5f2;
+  background-color: aliceblue;
+}
+
+.checkbox svg, .checkbox-overdue svg {
+  width: 20px;
+  height: 20px;
+}
+
+.check-input:checked + .checkbox, .check-input:checked + .checkbox-overdue {
+  background: #91c5f2;
+  border: 2px solid #91c5f2;
+}
+
+.check-input:checked + .checkbox svg path, .check-input:checked + .checkbox-overdue svg path {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  stroke: #0c3d63;
+  stroke-width: 3;
+  animation: check 4s forwards;
+}
+
+.checkbox:before, .checkbox-overdue:before {
+  content: "";
+  background: #26bfbf66;
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  display: block;
+  width: 60px;
+  height: 60px;
+  z-index: -1;
+}
+
+.check-input:checked + .checkbox::before, .check-input:checked + .checkbox-overdue::before {
+  animation: ripple 0.3s;
+}
+
+@keyframes check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (max-width: 300px) {
+  .checkbox {
+    margin-left: 1rem;
+  }
+}
+
+
+/* Screens that have hover and are not Samsung (laptops etc) */
+@media (hover:hover) and (min-width: 501px) {
+  .checkbox:hover, .checkbox-overdue:hover {
+   background-color: #acd7fa;
+  }
+}

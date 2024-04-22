@@ -1,0 +1,38 @@
+.picker {
+    color: black;
+}
+
+.picker-card {
+    background-color: aliceblue;
+    width: 18rem;
+    height: fit-content;
+    color: black;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.spacer {
+    flex-grow: .4;
+}
+
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    width: 100%; /* Take full width to respect the parent's centering */
+}
+
+.picker {
+    width: 5rem;
+    height: 5rem;
+    justify-self: center;
+}
+
+.pomodoro-settings-picker-buttons {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}

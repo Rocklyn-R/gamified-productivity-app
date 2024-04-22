@@ -1,0 +1,94 @@
+.view-task-container, .view-rewards-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    color: #0c3d63;
+}
+
+.view-task-container p {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.view-task-container button {
+    color: #0c3d63;
+}
+
+.overlayed-container {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.edit-delete-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.edit-task-icon, .edit-reward-icon {
+    font-size: 1.4em;
+}
+
+.delete-task-icon, .delete-reward-icon {
+    font-size: 1.4em;
+}
+
+.edit-task, .delete-task, .edit-reward, .delete-reward {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-delete-buttons button:hover {
+    color: lightblue;
+}
+
+.overlay-two {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Semi-transparent black overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    /* Ensure it appears above other content */
+}
+
+.undo-complete {
+    border: none;
+    background-color: lightblue;
+    border-radius: 2rem;
+    padding: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+#penalty-text {
+    color: red;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+}
+
+.coin-reward-text {
+    color: green;
+}
+
+.hide-coin-reward {
+    display: none;
+}
+
+.hide-penalty-text {
+    display: none;
+}
+
+.view-coin-text, .view-penalty-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

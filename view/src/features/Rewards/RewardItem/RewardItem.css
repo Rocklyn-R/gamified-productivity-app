@@ -1,0 +1,80 @@
+.view-reward {
+    display: flex;
+    height: fit-content;
+    align-items: center;
+    width: 100%;
+    min-height: 5rem;
+    max-width: 18rem;
+    cursor: pointer;
+    border: none;
+    border-radius: .4rem;
+    color: #135382;
+    font-family: "Nunito", sans-serif;
+    font-size: 1rem;
+    background: linear-gradient(to bottom right, aliceblue, #6fa8dc);
+    padding: .5rem;
+}
+
+.view-reward p {
+    margin: 0;
+    padding: 0;
+    text-align: start;
+}
+
+.icon-container {
+    margin-right: 0;
+}
+
+.view-reward img {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+
+.reward-details {
+    margin-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 4rem;
+    max-width: 9rem;
+
+}
+
+.reward-item {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.icon-with-details {
+    display: flex;
+    align-items: center;
+}
+
+.reward-description {
+    font-size: .8rem;
+    text-align: start;
+}
+
+.reward-quantity {
+    margin-left: auto;
+    font-size: .8rem;
+}
+
+#reward-quantity {
+    text-align: end;
+    padding-right: .5rem;
+}
+
+@media (max-width: 350px) {
+    .view-reward {
+        width: 90%;
+    }
+}
+
+
+@media (max-width: 300px) {
+    .view-reward {
+        width: 80%;
+    }
+}

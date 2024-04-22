@@ -1,0 +1,49 @@
+.icon-choices {
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.reward-form-container h4 {
+    margin-bottom: 0;
+    display: flex;
+
+}
+
+.icon-choices button {
+    margin: 1rem .6rem;
+    background-color: transparent;
+    border: 1px solid #acd6fc;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-choices button.selected {
+    background-color: #acd6fc;
+}
+
+.icon-choices {
+    margin-bottom: 1rem;
+}
+
+.reward-form-container {
+    background-color: aliceblue;
+    padding: 2rem;
+    border-radius: .5rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+@media (max-height: 750px) {
+   .reward-form-container {
+    max-height: 500px; 
+    overflow-y: auto; 
+    max-width: 70%;
+   }
+}

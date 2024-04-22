@@ -1,0 +1,25 @@
+.tasks-container h1 {
+    margin: 0;
+}
+
+#task-history-heading {
+    color: aliceblue;
+}
+
+@media (max-width: 300px) {
+    #task-history-heading {
+        font-size: 1.4rem
+    }
+}
+
+@media (min-width: 301px) and (max-width: 400px) {
+    #task-history-heading {
+        font-size: 1.6rem;
+    }
+}
+
+@media (min-width: 401px) and (max-width: 545px) {
+    #task-history-heading {
+        font-size: 1.8rem;
+    }
+}

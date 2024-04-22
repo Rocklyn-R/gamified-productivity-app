@@ -1,0 +1,70 @@
+.quantity-input-container input[type="number"]::-webkit-inner-spin-button,
+.quantity-input-container input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.quantity-input-container input[type="number"] {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: none;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.quantity-input-container input[type="number"]:focus {
+    outline: none; /* Remove the default outline */
+    border: 1px solid #91c5f2; /* Use border instead of outline */
+    border-radius: 4px; /* Adjust the border-radius as needed */
+  }
+
+.quantity-input-container {
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.quantity-input-container input {
+    width: 2rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    height: 1.3rem;
+    text-align: center;
+}
+
+.input-with-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+    align-items: center;
+    height: fit-content;
+}
+
+.input-with-buttons button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: .5px solid #0c3d63;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: #c0dffc;
+    padding: 3px;
+}
+
+
+.max-reached {
+    background-color: #dde5ed !important;
+    cursor: default !important;
+    border: none !important;
+    color: #7b828a !important;
+}
+
+.min-reached {
+    background-color: #dde5ed !important;
+    cursor: default !important;
+    border: none !important;
+    color: #7b828a !important;
+}

@@ -1,0 +1,29 @@
+.pomodoro-form-container {
+    color: #135382;
+    font-size: 1rem;
+}
+
+.pomodoro-form-container form {
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 14rem;
+}
+
+
+.sell-label-input {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pomodoro-form-container input {
+    width: 2.5rem;
+    margin-left: 1em;
+    
+}
+
+.sell-pomodoros-button {
+    margin-bottom: .5rem;
+}

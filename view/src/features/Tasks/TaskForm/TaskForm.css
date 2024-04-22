@@ -1,0 +1,88 @@
+.form-container {
+    background-color: aliceblue;
+    border-radius: .5rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    min-width: 20rem;
+    height: fit-content;
+}
+
+.form-container form, .reward-form-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 25rem;
+}
+
+.form-container form {
+    padding: 1.5rem;
+}
+
+.form-container h4 {
+    margin-bottom: 0;
+}
+
+
+.close {
+    width: fit-content;
+    align-self: flex-end;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.form-container label {
+    text-align: start;
+}
+
+.task-form-label {
+    width: 70%;
+    margin-top: 1.5rem;
+}
+
+#deadline {
+    margin-bottom: 1.5rem;
+}
+
+.deadline-box {
+    width: 100%;
+}
+
+#notes, #task-name, #coin-reward, #item-name, #price, #description, #deadline, #penalty {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+.submit-task-button {
+    width: fit-content;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    align-self: center;
+    background-color: lightblue;
+}
+
+
+.selected-deadline {
+    display: flex;
+    align-items: center;
+    margin-top: -1.5rem;
+}
+
+.selected-deadline button {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+ 
