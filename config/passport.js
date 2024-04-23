@@ -1,7 +1,6 @@
 const passport = require('passport');
-const { serializeUser, deserializeUser, use } = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const { findUserByEmail } = require('../models/user');
+const { findUserByEmail, findUserById } = require('../models/user');
 
 const options = {
     usernameField: 'email', // Assuming email is used as the username
@@ -9,21 +8,8 @@ const options = {
     passReqToCallback: false // Don't pass request object to verify callback
   };
 
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-    try {
-        const user = findUserById(id);
-        done(null, user); // Pass the retrieved user object to the callback
-    } catch (error) {
-        done(error); // Pass any errors to the callback
-    }
-});
-
-passport.use(
-    new LocalStrategy(options, async (username, password, done) => {
+function initialize (passport) {
+    const authenticateUser = async (username, password, done) => {
         try {
             const user = await findUserByEmail(username);
             if (!user || user.password !== password) {
@@ -35,7 +21,23 @@ passport.use(
         catch (error) {
             return done(error);
         }
-    })
-);
+    }
+    passport.serializeUser((user, done) => done(null, user.id));
+    passport.deserializeUser( async (id, done) => {
+        console.log('DESERIALIZE USER called with id:', id);
+        try {
+            const user = await findUserById(id);
+            console.log(user);
+            done(null, user); // Pass the retrieved user object to the callback
+        } catch (error) {
+            done(error); // Pass any errors to the callback
+        }
+    });
+    passport.use(
+        new LocalStrategy(options, authenticateUser)
+    )
+}
 
-module.exports = passport;
+
+
+module.exports = initialize;
