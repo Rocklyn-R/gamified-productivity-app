@@ -35,6 +35,35 @@ const findUserById = async (id) => {
     }
 };
 
+const userUpdateName = async (id, firstName, lastName) => {
+    const query = 'UPDATE app_user SET first_name = $1, last_name = $2 WHERE id = $3';
+    try {
+        const result = await db.query(query, [firstName, lastName, id]);
+        console.log(`User with ID ${id} updated successfully`);
+        return result;
+    } catch (error) {
+        console.log('Error updating user:', error);
+        throw error;
+    }
+}
+
+const userUpdateEmail = async (id, email) => {
+    const query = 'UPDATE app_user SET email = $1 Where id = $2';
+    try {
+        const result = await db.query(query, [email, id]);
+        console.log(`User with ID ${id} updated successfully`);
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
 
 
-module.exports = { createUser, findUserByEmail, findUserById }
+
+module.exports = { 
+    createUser, 
+    findUserByEmail, 
+    findUserById, 
+    userUpdateName, 
+    userUpdateEmail 
+}

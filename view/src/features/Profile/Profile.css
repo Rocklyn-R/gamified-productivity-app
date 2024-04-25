@@ -1,0 +1,69 @@
+.account-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    margin-top: 2rem;
+    background-color: #135382;
+}
+
+.account-details-container h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: aliceblue;
+    margin: 0;
+    width: fit-content;
+    text-transform: uppercase;
+}
+
+.account-details-container p {
+    color: aliceblue;
+    font-size: 1.3rem;
+}
+
+.account-details-form-container {
+    margin-top: 1rem;
+}
+
+.account-details-form-container form {
+    display: flex;
+    align-items: center;
+}
+
+.account-details-form-container button {
+    background-color: transparent;
+    border: none;
+    padding: .2rem .2rem;
+    border-radius: 50%;
+    color: aliceblue;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.account-details-form-container button:hover {
+    color: lightgreen;
+}
+
+.username-container, .user-email-container, .user-password-container {
+    display: flex;
+    align-items: center;
+    width: 25%;
+    justify-content: space-between;
+    border: 1px solid white;
+    padding: 0 1rem;
+    margin-top: 1rem;
+}
+
+.username-container button, .user-email-container button, .user-password-container button {
+    height: 2rem;
+    border: none;
+    background-color: transparent;
+    color: aliceblue;
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+    cursor: pointer;
+}

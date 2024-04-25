@@ -16,7 +16,6 @@ import { selectOverdueTasks } from '../../store/TasksSlice';
 import { selectTotalCoins } from '../../store/RewardsSlice';
 import { FaCoins } from 'react-icons/fa';
 import { day, date } from '../../utilities/utilities';
-import { checkAuthorization } from '../../api/login';
 import { CheckAuthorization } from '../../components/Authorization/CheckAuthorization';
 
 
