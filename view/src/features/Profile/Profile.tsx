@@ -7,12 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectFirstName, selectLastName, selectEmail } from "../../store/UserSlice";
 import { CheckAuthorization } from "../../components/Authorization/CheckAuthorization";
 import { FaRegEdit } from "react-icons/fa";
-import { TextField } from "@mui/material";
+import { TextField, IconButton, InputAdornment } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { FaCheck } from "react-icons/fa6";
 import { updateUserName } from "../../api/profile";
 import { FaXmark } from "react-icons/fa6";
 import { NameForm } from "./ProfileForms/NameForm";
 import { EmailForm } from "./ProfileForms/EmailForm";
+import { PasswordForm } from "./ProfileForms/PasswordForm";
 
 
 
@@ -30,6 +33,8 @@ export const Profile = () => {
     const [firstNameLocal, setFirstNameLocal] = useState('');
     const [lastNameLocal, setLastNameLocal] = useState('');
     const [emailLocal, setEmailLocal] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [oldPassword, setOldPassword] = useState("");
 
     useEffect(() => {
         const getProfileDetails = async () => {
@@ -48,7 +53,6 @@ export const Profile = () => {
     const handleEditName = () => {
         setEditName(true);
     }
-
 
 
     return (
@@ -75,24 +79,32 @@ export const Profile = () => {
             )}
             {editEmail ? (
                 <div className="account-details-form-container">
-                    <EmailForm 
+                    <EmailForm
                         emailLocal={emailLocal}
                         setEmailLocal={setEmailLocal}
                         setEditEmail={setEditEmail}
                     />
                 </div>
             ) : (
-               <div className="user-email-container">
-                <p>Email: {email}</p>
-                <button onClick={() => setEditEmail(true)}><FaRegEdit /></button>
-            </div>  
+                <div className="user-email-container">
+                    <p>Email: {email}</p>
+                    <button onClick={() => setEditEmail(true)}><FaRegEdit /></button>
+                </div>
             )}
 
-           
-            <div className="user-password-container">
-                <p>Password: ******** </p>
-                <button><FaRegEdit /></button>
-            </div>
+            {editPassword ? (
+                <div className="account-details-form-container">
+                    <PasswordForm 
+                        setEditPassword={setEditPassword}
+                    />
+                </div>
+            ) : (
+                <div className="user-password-container">
+                    <p>Password: ******** </p>
+                    <button onClick={() => setEditPassword(true)}><FaRegEdit /></button>
+                </div>
+            )}
+
 
         </Card>
     )
