@@ -15,7 +15,7 @@ export const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('Blank');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
 
@@ -27,7 +27,7 @@ export const SignUp = () => {
         e.preventDefault();
         try {
             const response = await createNewUser(name, lastName, email, password);
-            if (!response.ok) {
+            if (response.status !== 201) {
                 setErrorMessage("User with this email exists. Try logging in or sign up with a different email.")
             } else {
                 setErrorMessage("");

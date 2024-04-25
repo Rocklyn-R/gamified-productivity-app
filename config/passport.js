@@ -15,7 +15,6 @@ function initialize (passport) {
             if (!user || user.password !== password) {
                 return done(null, false, { message: 'Incorrect email or password'});
             }
-            console.log('Success')
             return done(null, user);
         }
         catch (error) {
@@ -24,10 +23,8 @@ function initialize (passport) {
     }
     passport.serializeUser((user, done) => done(null, user.id));
     passport.deserializeUser( async (id, done) => {
-        console.log('DESERIALIZE USER called with id:', id);
         try {
             const user = await findUserById(id);
-            console.log(user);
             done(null, user); // Pass the retrieved user object to the callback
         } catch (error) {
             done(error); // Pass any errors to the callback

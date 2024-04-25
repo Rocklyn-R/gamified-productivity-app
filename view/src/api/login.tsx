@@ -8,11 +8,12 @@ export const logInUser = async (email: string, password: string) => {
             email,
             password,
         }),
+        credentials: 'include'
     });
     return response;
 }
 
-export const checkUserAuthentication = async () => {
+/*export const checkAuthorization = async () => {
     try {
         const response = await fetch('http://localhost:4000/login', {
             method: 'GET',
@@ -21,15 +22,29 @@ export const checkUserAuthentication = async () => {
             },
             credentials: 'include'
         });
-        if (response.status === 302 && response.redirected) {
+        if (response.status === 401) {
             return true;
-        } else if (response.ok) {
-            return false;
-        } else {
-            throw new Error('Failed to check authentication status')
-        }
+        } else return false;
 
     } catch (error: any) {
         console.error('Error checking authentication:', error.message);
+    }
+}*/
+
+export const checkAuthorization = async (routePath: string) => {
+    try {
+        const response = await fetch(`http://localhost:4000/${routePath}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+        if (response.status === 401) {
+            return false;
+        } else return true;
+    } catch (error) {
+        console.error('Error checking Authorization:', error);
+        return false;
     }
 }

@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "./Navigation.css";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import tomato from "../../images/tomato.png"
 import { FaTasks } from "react-icons/fa";
 import gift from "../../images/gift.png";
 import shop from "../../images/shop.png";
+import account from "../../images/account.png";
+import { logoutUser } from '../../api/logout';
 
 
 
 
 export const Navigation = () => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        setIsDropdownOpen(false);
+        await logoutUser();
+        navigate('/');
+    }
+
+    const handleViewAccount = () => {
+        setIsDropdownOpen(false);
+        navigate('/profile');
+    }
+
     return (
         <header className="navbar">
             <ul>
@@ -30,7 +46,28 @@ export const Navigation = () => {
                     <img alt="" src={gift} width='24' height="24" className='gift-icon' />
                     <span className="nav-text">Inventory</span>
                 </Link></li>
-                
+                 <li>
+                    {/* Profile Dropdown */}
+                    <div className="profile-dropdown">
+                        <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                            <img src={account} width="24" height="24" alt="Profile" />
+                        </button>
+                        {isDropdownOpen && (
+                            <ul className="dropdown-menu">
+                                <li>
+                                    <button onClick={handleViewAccount}>
+                                        View Account
+                                    </button>
+                                </li>
+                                <li>
+                                    <button onClick={handleLogout}>
+                                        Logout
+                                    </button>
+                                </li>
+                            </ul>
+                        )}
+                    </div>
+                </li>
             </ul>
         </header>
     )

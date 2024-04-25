@@ -65,3 +65,9 @@ export interface PomodoroState {
     pomodoroPrice: number;
 }
 
+export interface UserState {
+    isAuthenticated: boolean,
+    firstName: string,
+    lastName: string,
+    email: string
+}

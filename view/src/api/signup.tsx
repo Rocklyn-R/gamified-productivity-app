@@ -11,6 +11,7 @@ export const createNewUser = async (name: string, lastName: string, email: strin
                 email: email.toLowerCase(),
                 password,
             }),
+            credentials: 'include'
         });
         return response;
 }

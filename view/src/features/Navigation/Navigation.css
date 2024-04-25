@@ -58,6 +58,37 @@
     opacity: 0; /* Initially hidden */
 }
 
+.profile-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+}
+
+.dropdown-menu li {
+    margin-bottom: 5px;
+}
+
+.profile-dropdown-container {
+    position: relative;
+}
+
+.profile-dropdown-container .profile-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+}
+
 
 /*Screens that don't have hover (most mobile devices except Samsung) */
 @media (hover: none) {

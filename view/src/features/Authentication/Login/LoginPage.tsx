@@ -5,26 +5,22 @@ import { TextField, IconButton, InputAdornment } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { logInUser, checkUserAuthentication } from '../../../api/login';
-
+import { logInUser } from '../../../api/login';
+import { authenticateUser } from '../../../store/UserSlice';
+import { useDispatch } from 'react-redux';
+import { CheckAuthorization } from '../../../components/Authorization/CheckAuthorization';
 
 
 export const LoginPage = () => {
+
+    CheckAuthorization('login'); 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-   useEffect(() => {
-        const checkAuthentication = async () => {
-            const isAuthenticated = await checkUserAuthentication();
-            if (isAuthenticated) {
-                navigate('/tasks');
-            }
-        }
-        checkAuthentication();
-    }, [navigate]);
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -45,10 +41,9 @@ export const LoginPage = () => {
                 return;
             } else {
                 setErrorMessage('');
+                dispatch(authenticateUser());
                 navigate('/tasks');
             }
-
-
 
             // Redirect to '/tasks' route after successful signup
 
@@ -60,6 +55,7 @@ export const LoginPage = () => {
 
     return (
         <Card className="log-in-container">
+            <h1>Welocome to Task Master</h1>
             <h1>Log In</h1>
             <form className='log-in-form' onSubmit={handleSubmitLogin}>
                 <TextField

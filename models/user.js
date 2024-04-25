@@ -33,6 +33,8 @@ const findUserById = async (id) => {
     } catch (error) {
         throw error;
     }
-}
+};
+
+
 
 module.exports = { createUser, findUserByEmail, findUserById }

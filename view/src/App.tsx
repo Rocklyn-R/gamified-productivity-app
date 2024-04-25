@@ -10,33 +10,38 @@ import { RewardHistory } from './features/Inventory/RewardHistory/RewardHistory'
 import { PomodoroPage } from './features/Pomodoro/PomodoroPage';
 import { LoginPage } from './features/Authentication/Login/LoginPage';
 import { SignUp } from './features/Authentication/Signup/SignupPage';
-
-
+import { Profile } from './features/Profile/Profile';
+import { selectIsAuthenticated } from './store/UserSlice';
+import { useSelector } from 'react-redux';
 
 
 function App() {
+
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
   return (
     <BrowserRouter>
-    <div className='App'>
-       <Navigation />
-       <div className="content">
-         <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<LoginPage/>}/>
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/tasks" element={<Tasks/>}/>
-        <Route path="/tasks/history" element={<TaskHistory/>}/>
-        <Route path="/pomodoro" element={<PomodoroPage/>} />
-        <Route path="/rewards-shop" element={<RewardsPage/>}/>
-        <Route path="/inventory" element={<InventoryPage/>} />
-        <Route path="/inventory/history" element={<RewardHistory/>} />
-      </Routes>
-       </div>
-     
-    </div>
-     
+      <div className='App'>
+        {isAuthenticated ? <Navigation /> : ""}
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/tasks/history" element={<TaskHistory />} />
+            <Route path="/pomodoro" element={<PomodoroPage />} />
+            <Route path="/rewards-shop" element={<RewardsPage />} />
+            <Route path="/inventory" element={<InventoryPage />} />
+            <Route path="/inventory/history" element={<RewardHistory />} />
+          </Routes>
+        </div>
+
+      </div>
+
     </BrowserRouter>
-  
+
   );
 }
 

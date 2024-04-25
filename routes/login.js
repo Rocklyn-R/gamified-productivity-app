@@ -11,10 +11,11 @@ loginRouter.get('/', ensureAuthenticatedOnLoginSignup, (req, res) => {
 });
 
 loginRouter.post('/', passport.authenticate('local', {
-  successRedirect: '/tasks',
   failureRedirect: '/login',
 }), (req, res) => {
-  console.log(req.session); // Log the session object
+  res.redirect('/tasks')
 });
+
+
 
 module.exports = loginRouter;

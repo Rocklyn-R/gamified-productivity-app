@@ -9,9 +9,11 @@ import { ItemForm } from './ItemForm/ItemForm';
 import { RewardItem } from './RewardItem/RewardItem';
 import { ViewReward } from './ViewReward/ViewReward';
 import { Reward } from '../../types/types';
+import { CheckAuthorization } from '../../components/Authorization/CheckAuthorization';
 
 
 export const RewardsPage = () => {
+    //CheckAuthorization()
     const totalCoins = useSelector(selectTotalCoins);
     const [showForm, setShowForm] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);

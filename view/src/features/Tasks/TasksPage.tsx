@@ -9,17 +9,20 @@ import { ViewTask } from './ViewTask/ViewTask';
 import { Task } from "../../types/types";
 import { TaskItem } from "./TaskItem/TaskItem";
 import { GrHistory } from "react-icons/gr";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { markAsOverDue } from '../../store/TasksSlice';
 import { OverdueTasks } from './OverdueTasks/OverdueTasks';
 import { selectOverdueTasks } from '../../store/TasksSlice';
 import { selectTotalCoins } from '../../store/RewardsSlice';
 import { FaCoins } from 'react-icons/fa';
 import { day, date } from '../../utilities/utilities';
+import { checkAuthorization } from '../../api/login';
+import { CheckAuthorization } from '../../components/Authorization/CheckAuthorization';
 
 
 
 export const Tasks = () => {
+    CheckAuthorization('tasks');
 
     const tasks = useSelector(selectTasks);
     const [showForm, setShowForm] = useState(false);
@@ -41,8 +44,9 @@ export const Tasks = () => {
     const overdueTasks = useSelector(selectOverdueTasks);
     const totalCoins = useSelector(selectTotalCoins)
     const dispatch = useDispatch();
-    const [ showOverdueTasks, setShowOverdueTasks ] = useState(false);
-    
+    const [showOverdueTasks, setShowOverdueTasks] = useState(false);
+    const navigate = useNavigate();
+
 
     const handleAddTaskClick = () => {
         setShowForm(!showForm);
@@ -52,10 +56,18 @@ export const Tasks = () => {
         if (event.target === overlayRef.current) {
             setShowForm(false);
             setShowTask(false);
-        } 
+        }
     };
 
-
+   /* useEffect(() => {
+        const fetchAuthorizationStatus = async () => {
+            const isAuthorized = await checkAuthorization('tasks');
+            if (!isAuthorized) {
+                navigate('/login')
+            }
+        }
+        fetchAuthorizationStatus();
+    })*/
 
     useEffect(() => {
         document.addEventListener('mousedown', handleOverlayClick);
@@ -109,7 +121,7 @@ export const Tasks = () => {
                 </div>
             }
             <Card className="tasks-container">
-          
+
                 <div className="date-box">
                     <h1>{day},</h1>
                     <h1 id="date">{date}</h1>
@@ -117,14 +129,14 @@ export const Tasks = () => {
                 <div className="coin-count-header">
                     <h1><FaCoins className='coin-icon' /> {totalCoins}</h1>
                 </div>
-                    
-                    {tasks.length === 0 && <p>Add new tasks!</p>}
-                    <div className='todo-list'>
-                        {tasks.map((task, index) => {
+
+                {tasks.length === 0 && <p>Add new tasks!</p>}
+                <div className='todo-list'>
+                    {tasks.map((task, index) => {
                         return <TaskItem task={task} index={index} handleViewTaskClick={handleViewTaskClick} />
                     })}
-                    </div>
-                    
+                </div>
+
 
                 {(overdueTasks.length > 0 && showOverdueTasks) && (
                     <div className='overlay' ref={overdueTasksOverlayRef}>
