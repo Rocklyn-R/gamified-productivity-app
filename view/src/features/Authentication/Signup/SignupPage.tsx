@@ -27,8 +27,8 @@ export const SignUp = () => {
         e.preventDefault();
         try {
             const response = await createNewUser(name, lastName, email, password);
-            if (response.status !== 201) {
-                setErrorMessage("User with this email exists. Try logging in or sign up with a different email.")
+            if (response === 'User with this email already exists') {
+                setErrorMessage("User with this email already exists. Try a different email")
             } else {
                 setErrorMessage("");
                 navigate('/tasks');

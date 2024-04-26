@@ -48,10 +48,21 @@ const userUpdateName = async (id, firstName, lastName) => {
 }
 
 const userUpdateEmail = async (id, email) => {
-    const query = 'UPDATE app_user SET email = $1 Where id = $2';
+    const query = 'UPDATE app_user SET email = $1 where id = $2';
     try {
         const result = await db.query(query, [email, id]);
         console.log(`User with ID ${id} updated successfully`);
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const userUpdatePassword = async (id, newPassword) => {
+    const query = 'UPDATE app_user SET password = $1 where id = $2';
+    try {
+        const result = await db.query(query, [newPassword, id]);
+        console.log(`User with ID ${id} updated password successfully`);
         return result;
     } catch (error) {
         throw error;
@@ -65,5 +76,6 @@ module.exports = {
     findUserByEmail, 
     findUserById, 
     userUpdateName, 
-    userUpdateEmail 
+    userUpdateEmail,
+    userUpdatePassword 
 }

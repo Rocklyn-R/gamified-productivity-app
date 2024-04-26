@@ -35,6 +35,7 @@ export const Profile = () => {
     const [emailLocal, setEmailLocal] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [oldPassword, setOldPassword] = useState("");
+    const [passwordChangeStatusMessage, setPasswordChangeStatusMessage] = useState('');
 
     useEffect(() => {
         const getProfileDetails = async () => {
@@ -53,6 +54,19 @@ export const Profile = () => {
     const handleEditName = () => {
         setEditName(true);
     }
+
+    useEffect(() => {
+        if (passwordChangeStatusMessage === 'Password successfully changed!') {
+             const timer = setTimeout(() => {
+                setPasswordChangeStatusMessage('');
+            }, 2000);
+
+            return () => clearTimeout(timer);
+        }
+        if (!editPassword) {
+            setPasswordChangeStatusMessage('')
+        }
+    }, [passwordChangeStatusMessage, editPassword])
 
 
     return (
@@ -96,6 +110,8 @@ export const Profile = () => {
                 <div className="account-details-form-container">
                     <PasswordForm 
                         setEditPassword={setEditPassword}
+                        statusMessage={passwordChangeStatusMessage}
+                        setStatusMessage={setPasswordChangeStatusMessage}
                     />
                 </div>
             ) : (
@@ -104,7 +120,7 @@ export const Profile = () => {
                     <button onClick={() => setEditPassword(true)}><FaRegEdit /></button>
                 </div>
             )}
-
+            {passwordChangeStatusMessage && <p>{passwordChangeStatusMessage}</p>}
 
         </Card>
     )

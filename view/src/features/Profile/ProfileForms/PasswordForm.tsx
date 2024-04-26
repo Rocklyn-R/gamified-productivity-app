@@ -1,34 +1,52 @@
 import { TextField, IconButton, InputAdornment } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { FaXmark } from "react-icons/fa6";
+import { updateUserPassword } from "../../../api/profile";
 
 interface PasswordFormProps {
     setEditPassword: (arg0: boolean) => void;
+    statusMessage: string;
+    setStatusMessage: (arg0: string) => void;
 }
 
 
-export const PasswordForm: React.FC<PasswordFormProps> = ({setEditPassword}) => {
+export const PasswordForm: React.FC<PasswordFormProps> = ({setEditPassword, statusMessage, setStatusMessage}) => {
 
     const [oldPassword, setOldPassword] = useState("");
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
-    const [newPasword, setNewPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
 
     const handleTogglePasswordVisibility = () => {
         setShowCurrentPassword(!showCurrentPassword);
     }
 
     const handleToggleNewPasswordVisibility = () => {
-        setShowNewPassword(!setShowNewPassword);
+        setShowNewPassword(!showNewPassword);
     }
 
 
+    const handleUpdatePassword = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const passwordUpdated = await updateUserPassword(oldPassword, newPassword);
+        setOldPassword('');
+        setNewPassword('');
+        if (passwordUpdated === 'Success') {
+            setEditPassword(false);
+            setStatusMessage('Password successfully changed!');
+        } else if (passwordUpdated === 'Old password incorrect') {
+            setStatusMessage('Current password incorrect!');
+        } else {
+            setStatusMessage('An error ocurred');
+        }
+    }
+
     return (
         <>
-            <form>
+            <form onSubmit={handleUpdatePassword}>
                 <TextField
                     type={showCurrentPassword ? 'text' : 'password'}
                     label="Current" // MUI TextField uses a label prop instead of placeholder for floating label text
@@ -78,7 +96,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({setEditPassword}) => 
                     type={showNewPassword ? 'text' : 'password'}
                     label="New" // MUI TextField uses a label prop instead of placeholder for floating label text
                     variant="outlined" // You can choose "filled" or "standard" as well, depending on your design preference
-                    value={oldPassword}
+                    value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
                     sx={{

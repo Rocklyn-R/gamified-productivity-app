@@ -55,3 +55,30 @@ export const updateUserEmail = async (email: string) => {
         console.log(error);
     }
 }
+
+export const updateUserPassword = async (oldPassword: string, newPassword: string) => {
+    try {
+        const response = await fetch('http://localhost:4000/profile/changePassword', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ oldPassword, newPassword })
+        })
+
+        const data = await response.json();
+        console.log(data.message);
+
+        if (response.ok) {
+            //console.log('Success');
+            return 'Success';
+        } else if (!response.ok && data.message === 'Old password incorrect') {
+            return 'Old password incorrect';
+        } else {
+            throw new Error('Failed to update user email')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
