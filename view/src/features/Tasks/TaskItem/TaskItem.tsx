@@ -44,9 +44,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, index, handleViewTaskC
                 {(task.deadline && task.overdue && !history) && (
                     <div className='status-box'>
                         <p id="overdue-text">OVERDUE</p>
-                        {task.coinPenalty > 0 && (
+                        {task.coin_penalty > 0 && (
                             <div className='coin-penalty-box'>
-                                <p>-<FaCoins className='coins-icon' />{task.coinPenalty}</p>
+                                <p>-<FaCoins className='coins-icon' />{task.coin_penalty}</p>
                             </div>
 
                         )}
@@ -56,9 +56,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, index, handleViewTaskC
                  {(task.deadline && task.overdue && history) && (
                     <div className='status-box'>
                         <p id="overdue-text">NOT COMPLETED</p>
-                        {task.coinPenalty > 0 && (
+                        {task.coin_penalty > 0 && (
                             <div className='coin-penalty-box'>
-                                <p>-<FaCoins className='coins-icon' />{task.coinPenalty}</p>
+                                <p>-<FaCoins className='coins-icon' />{task.coin_penalty}</p>
                             </div>
 
                         )}
@@ -68,9 +68,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, index, handleViewTaskC
                 {(history && !task.overdue) && (
                     <div className='status-box'>
                         <p id="completed-text">COMPLETED</p>
-                        {task.coinReward > 0 && (
+                        {task.coin_reward > 0 && (
                             <div className='coin-penalty-box'>
-                                <p>+<FaCoins className='coins-icon' />{task.coinReward}</p>
+                                <p>+<FaCoins className='coins-icon' />{task.coin_reward}</p>
                             </div>
 
                         )}

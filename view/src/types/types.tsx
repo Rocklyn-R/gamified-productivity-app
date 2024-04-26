@@ -1,10 +1,21 @@
 export interface Task {
     name: string;
     notes: string;
-    coinReward: number;
+    coin_reward: number;
     id: string;
     deadline: string;
-    coinPenalty: number;
+    coin_penalty: number;
+    overdue: boolean;
+}
+
+export interface DatabaseTask {
+    user_id: string;
+    name: string;
+    notes: string;
+    coin_reward: number;
+    id: string;
+    deadline: string;
+    coin_penalty: number;
     overdue: boolean;
 }
 

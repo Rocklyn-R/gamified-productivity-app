@@ -18,10 +18,10 @@ export const TaskHistory = () => {
     const [ selectedTask, setSelectedTask ] = useState<Task>({
         name: "",
         notes: "",
-        coinReward: 0,
+        coin_reward: 0,
         id: "",
         deadline: "",
-        coinPenalty: 0,
+        coin_penalty: 0,
         overdue: false
     })
     const overlayRef = useRef<HTMLDivElement>(null);

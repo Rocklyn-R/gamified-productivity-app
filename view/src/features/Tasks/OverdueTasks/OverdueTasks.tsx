@@ -14,7 +14,7 @@ export const OverdueTasks = () => {
     
     const handleAcceptPenalty = () => {
         overdueTasks.forEach(task => {
-            dispatch(subtractCoins(task.coinPenalty));
+            dispatch(subtractCoins(task.coin_penalty));
             dispatch(moveOverdueToHistory(task));
         })
     }

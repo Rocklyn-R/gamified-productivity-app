@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import Card from '../../../components/Card/Card';
 import './TaskForm.css';
-import { setTasks, editTask } from '../../../store/TasksSlice';
+import { addTask, editTask } from '../../../store/TasksSlice';
 import { Task } from '../../../types/types';
 import { v4 as uuidv4 } from "uuid";
 import 'react-calendar/dist/Calendar.css';
@@ -13,6 +13,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { SelectChangeEvent, TextField } from '@mui/material';
 import { Select, FormControl, InputLabel, MenuItem } from "@mui/material";
 import dayjs from 'dayjs';
+import { createNewTask } from '../../../api/tasks';
 
 
 
@@ -36,13 +37,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
 
 
     useEffect(() => {
-
-
         if (isEditMode && selectedTask) {
             setTaskName(selectedTask.name);
             setNotes(selectedTask.notes);
-            setCoinReward(selectedTask.coinReward);
-            setPenalty(selectedTask.coinPenalty);
+            setCoinReward(selectedTask.coin_reward);
+            setPenalty(selectedTask.coin_penalty);
             if (selectedTask.deadline === "") {
                 setDeadlineOption("nodeadline");
             } else if (selectedTask.deadline === convertDateToString("tomorrow")) {
@@ -53,7 +52,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                 setDeadlineOption("custom");
                 setDeadline(selectedTask.deadline);
             }
-
         }
     }, [isEditMode, selectedTask]);
 
@@ -82,37 +80,50 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
 
 
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const taskDeadline = deadline ? deadline : ""
         if (!isEditMode) {
-            dispatch(setTasks({
-                name: taskName,
-                notes: notes,
-                coinReward: coinReward,
-                id: uuidv4(),
-                deadline: taskDeadline,
-                coinPenalty: penalty,
-                overdue: false
-            }))
+            const id = uuidv4();
+            const createdTask = await createNewTask(
+                id,
+                taskName,
+                notes,
+                coinReward,
+                taskDeadline,
+                penalty,
+                false
+            );
+            if (createdTask) {
+                dispatch(addTask({
+                    id: id,
+                    name: taskName,
+                    notes: notes,
+                    coin_reward: coinReward,
+                    deadline: taskDeadline,
+                    coin_penalty: penalty,
+                    overdue: false
+                }))
+                setSubmitError(false)
+                handleCloseForm();
+            } else {
+                setSubmitError(true);
+            }
         }
         if (isEditMode && selectedTask && handleHideTask) {
             dispatch(editTask({
                 name: taskName,
                 notes: notes,
-                coinReward: coinReward,
+                coin_reward: coinReward,
                 id: selectedTask.id,
                 deadline: taskDeadline,
-                coinPenalty: penalty,
+                coin_penalty: penalty,
                 overdue: false
             }))
             handleHideTask();
+            handleCloseForm();
         }
 
-        handleCloseForm();
-
-
-        setSubmitError(false);
     }
 
     const handleDateChange = (newValue: dayjs.Dayjs | null) => {
@@ -130,7 +141,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
     return (
         <Card className="form-container overlay-card">
             <form onSubmit={handleSubmit} autoComplete="off">
-                
+
                 <button
                     type="button"
                     className='close'
@@ -140,10 +151,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                 </button>
 
                 <h4>Add task</h4>
-                {submitError &&
-                    <p>Please name your task</p>
-                }
-
+                {submitError && <p>An error occured. Try again</p>}
                 <TextField
                     type="text"
                     label="Task Name" // MUI TextField uses a label prop instead of placeholder for floating label text
@@ -159,7 +167,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                     }}
                     InputProps={{
                         autoComplete: 'off', // More specific to potentially improve browser compliance
-                      }}
+                    }}
                 />
 
 
@@ -174,7 +182,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                     }}
                     InputProps={{
                         autoComplete: 'off', // More specific to potentially improve browser compliance
-                      }}
+                    }}
                 />
 
                 <TextField
@@ -188,7 +196,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                     }}
                     InputProps={{
                         autoComplete: 'off', // More specific to potentially improve browser compliance
-                      }}
+                    }}
                 />
                 <FormControl fullWidth >
                     <InputLabel id="deadline-label">Deadline</InputLabel>
@@ -239,7 +247,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                             }}
                             InputProps={{
                                 autoComplete: 'off', // More specific to potentially improve browser compliance
-                              }}
+                            }}
                         />
                     </>
 

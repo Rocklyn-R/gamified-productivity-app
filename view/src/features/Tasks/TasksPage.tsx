@@ -4,7 +4,7 @@ import './TasksPage.css';
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { TaskForm } from './TaskForm/TaskForm';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectTasks, selectHistoryTasks } from '../../store/TasksSlice';
+import { selectTasks, selectHistoryTasks, setTasks } from '../../store/TasksSlice';
 import { ViewTask } from './ViewTask/ViewTask';
 import { Task } from "../../types/types";
 import { TaskItem } from "./TaskItem/TaskItem";
@@ -17,7 +17,7 @@ import { selectTotalCoins } from '../../store/RewardsSlice';
 import { FaCoins } from 'react-icons/fa';
 import { day, date } from '../../utilities/utilities';
 import { CheckAuthorization } from '../../components/Authorization/CheckAuthorization';
-
+import { getTasks } from '../../api/tasks';
 
 
 export const Tasks = () => {
@@ -29,11 +29,11 @@ export const Tasks = () => {
     const [selectedTask, setSelectedTask] = useState<Task>({
         name: "",
         notes: "",
-        coinReward: 0,
+        coin_reward: 0,
         id: "",
         deadline: "",
-        coinPenalty: 0,
-        overdue: false
+        coin_penalty: 0,
+        overdue: false,
     });
     const [selectedTaskDeleted, setSelectedTaskDeleted] = useState(false);
 
@@ -44,7 +44,18 @@ export const Tasks = () => {
     const totalCoins = useSelector(selectTotalCoins)
     const dispatch = useDispatch();
     const [showOverdueTasks, setShowOverdueTasks] = useState(false);
-    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchTasks = async () => {
+             try {
+                const tasks = await getTasks();
+                dispatch(setTasks(tasks))
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchTasks();
+    }, [])
 
 
     const handleAddTaskClick = () => {
@@ -58,15 +69,6 @@ export const Tasks = () => {
         }
     };
 
-   /* useEffect(() => {
-        const fetchAuthorizationStatus = async () => {
-            const isAuthorized = await checkAuthorization('tasks');
-            if (!isAuthorized) {
-                navigate('/login')
-            }
-        }
-        fetchAuthorizationStatus();
-    })*/
 
     useEffect(() => {
         document.addEventListener('mousedown', handleOverlayClick);

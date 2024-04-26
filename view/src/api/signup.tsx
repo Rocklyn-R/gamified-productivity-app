@@ -28,4 +28,5 @@ export const createNewUser = async (name: string, lastName: string, email: strin
     } catch (error) {
         return 'An error occurred';
     }
-}
+};
+

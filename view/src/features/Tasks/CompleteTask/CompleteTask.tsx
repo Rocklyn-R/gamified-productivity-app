@@ -27,10 +27,10 @@ export const CompleteTask: React.FC<CompleteTaskProps> = ({ task }) => {
         setTimeout(() => {
             if (!task.overdue) {
                 dispatch(completeTask(task));
-                dispatch(addToCoins(task.coinReward));
+                dispatch(addToCoins(task.coin_reward));
             } else {
                 dispatch(completeOverdueTask(task));
-                dispatch(addToCoins(task.coinReward));
+                dispatch(addToCoins(task.coin_reward));
             }
             setIsChecked(false);
         }, 1500)

@@ -51,11 +51,11 @@ export const ViewTask: React.FC<ViewTaskProps> = ({ selectedTask, handleHideTask
 
         if (isAfter(deadline, now)) {
             dispatch(undoCompleteTask(task));
-            dispatch(subtractCoins(task.coinReward));
+            dispatch(subtractCoins(task.coin_reward));
         } else {
             dispatch(markHistoryTaskAsOverdue(task));
-            dispatch(subtractCoins(task.coinReward));
-            dispatch(subtractCoins(task.coinPenalty));
+            dispatch(subtractCoins(task.coin_reward));
+            dispatch(subtractCoins(task.coin_penalty));
         }
 
 
@@ -64,8 +64,8 @@ export const ViewTask: React.FC<ViewTaskProps> = ({ selectedTask, handleHideTask
 
     const handleCompleteOverdueHistoryTask = (task: Task) => {
         dispatch(completeOverdueHistoryTask(task));
-        dispatch(addToCoins(task.coinPenalty));
-        dispatch(addToCoins(task.coinReward));
+        dispatch(addToCoins(task.coin_penalty));
+        dispatch(addToCoins(task.coin_reward));
         handleHideTask();
     }
 
@@ -127,10 +127,10 @@ export const ViewTask: React.FC<ViewTaskProps> = ({ selectedTask, handleHideTask
                         <p>Deadline: {formatDeadline(selectedTask.deadline)}</p>
                     )}
                     <p className={(history && selectedTask.overdue) ? "hide-coin-reward" : (history && !selectedTask.overdue) ? "coin-reward-text" : "view-coin-text"}>
-                        Coin Reward: <FaCoins className="coins-icon" />{selectedTask.coinReward}
+                        Coin Reward: <FaCoins className="coins-icon" />{selectedTask.coin_reward}
                     </p>
 
-                    <p className={(history && selectedTask.overdue) ? "penalty-text" : (history && !selectedTask.overdue) ? "hide-penalty-text" : "view-penalty-text"}>Penalty: <FaCoins className="coins-icon" /> {selectedTask.coinPenalty} </p>
+                    <p className={(history && selectedTask.overdue) ? "penalty-text" : (history && !selectedTask.overdue) ? "hide-penalty-text" : "view-penalty-text"}>Penalty: <FaCoins className="coins-icon" /> {selectedTask.coin_penalty} </p>
 
                     {(history && !selectedTask.overdue) &&
                         <button className="command-button" onClick={() => handleUndoComplete(selectedTask)}>

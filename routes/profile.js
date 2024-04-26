@@ -9,8 +9,8 @@ profileRouter.get('/', checkAuthenticated, getUserData);
 
 profileRouter.put('/updateUsername', checkAuthenticated, editUserName);
 
-profileRouter.put('/updateEmail', editUserEmail);
+profileRouter.put('/updateEmail', checkAuthenticated, editUserEmail);
 
-profileRouter.put('/changePassword', changeUserPassword);
+profileRouter.put('/changePassword', checkAuthenticated, changeUserPassword);
 
 module.exports = profileRouter;

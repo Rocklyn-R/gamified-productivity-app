@@ -1,55 +1,24 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import { Task, TasksState } from "../types/types"
-
-
+import { getTasks } from "../api/tasks";
+import { Dispatch } from "@reduxjs/toolkit";
 
 
 export const TasksSlice = createSlice({
     name: "tasks",
     initialState: {
-        tasks: [
-            {
-                name: "Wash the dishes",
-                notes: "",
-                coinReward: 50,
-                id: '1asfasfdasdf234',
-                deadline: "2024-02-25T22:59:59.999Z",
-                coinPenalty: 20,
-                overdue: false
-            },
-            {
-                name: "Do the Laundry",
-                notes: "",
-                coinReward: 30,
-                id: "1313asfdafs2",
-                deadline: "2024-03-11T22:59:59.999Z",
-                coinPenalty: 10,
-                overdue: false
-            },
-        {
-            name: "Return book to library",
-            notes: "",
-            coinReward: 150,
-            id: "131fs32aagadsfsfa",
-            deadline: "2024-02-28T22:59:59.999Z",
-            coinPenalty: 20,
-            overdue: false
-        }] as Task[],
-        historyTasks: [{
-            name: "Complete work project",
-            notes: "hard task",
-            coinReward: 300,
-            id: "13132afsdfadsfsdfdfn",
-            deadline: "2024-02-23T22:59:59.999Z",
-            coinPenalty: 20,
-            overdue: false
-        }],
+        tasks: [] as Task[],
+        historyTasks: [],
         overdueTasks: []
     } as TasksState,
 
     reducers: {
-        setTasks: (state, action: PayloadAction<Task>) => {
+        setTasks: (state, action: PayloadAction<Task[]>) => {
+            state.tasks = action.payload;
+        },
+
+        addTask: (state, action: PayloadAction<Task>) => {
             state.tasks.unshift(action.payload);
         },
 
@@ -144,6 +113,7 @@ export const TasksSlice = createSlice({
 
 export const {
     setTasks,
+    addTask,
     editTask,
     deleteTask,
     completeTask,
@@ -155,6 +125,8 @@ export const {
     completeOverdueHistoryTask,
     markHistoryTaskAsOverdue
 } = TasksSlice.actions;
+
+
 
 export const selectTasks = (state: RootState) => state.tasks.tasks;
 export const selectHistoryTasks = (state: RootState) => state.tasks.historyTasks;
