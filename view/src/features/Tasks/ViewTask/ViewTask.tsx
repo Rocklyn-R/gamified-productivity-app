@@ -9,11 +9,12 @@ import "./ViewTask.css"
 import { TaskForm } from "../TaskForm/TaskForm";
 import { DeleteMessage } from "../../../components/DeleteMessage/DeleteMessage";
 import { selectTasks } from "../../../store/TasksSlice";
-import { undoCompleteTask, completeOverdueHistoryTask, markHistoryTaskAsOverdue } from "../../../store/TasksSlice";
+import { undoCompleteTask, completeOverdueHistoryTask, uncompleteHistoryTask } from "../../../store/TasksSlice";
 import { subtractCoins } from "../../../store/RewardsSlice";
 import { formatDeadline } from "../../../utilities/utilities";
 import { addToCoins } from "../../../store/RewardsSlice";
 import { parseISO, isAfter } from "date-fns";
+import { changeCompletionStatus } from "../../../api/tasks";
 
 
 interface ViewTaskProps {
@@ -45,27 +46,35 @@ export const ViewTask: React.FC<ViewTaskProps> = ({ selectedTask, handleHideTask
         setEditTask(false);
     }
 
-    const handleUndoComplete = (task: Task) => {
+    const handleUndoComplete = async (task: Task) => {
         const now = new Date();
         const deadline = parseISO(task.deadline);
 
         if (isAfter(deadline, now)) {
-            dispatch(undoCompleteTask(task));
-            dispatch(subtractCoins(task.coin_reward));
+            const incompletedTask = await changeCompletionStatus('pending', task.id, 'update-completion-status');
+            if (incompletedTask) {
+                dispatch(undoCompleteTask(task));
+                dispatch(subtractCoins(task.coin_reward));
+            }
         } else {
-            dispatch(markHistoryTaskAsOverdue(task));
-            dispatch(subtractCoins(task.coin_reward));
-            dispatch(subtractCoins(task.coin_penalty));
+            const incompletedTask = await changeCompletionStatus('incomplete', task.id, 'update-completion-status');
+            if (incompletedTask) {
+                dispatch(uncompleteHistoryTask(task));
+                dispatch(subtractCoins(task.coin_reward));
+                dispatch(subtractCoins(task.coin_penalty));
+            }
         }
-
 
         handleHideTask();
     }
 
-    const handleCompleteOverdueHistoryTask = (task: Task) => {
-        dispatch(completeOverdueHistoryTask(task));
-        dispatch(addToCoins(task.coin_penalty));
-        dispatch(addToCoins(task.coin_reward));
+    const handleCompleteHistoryTask = async (task: Task) => {
+        const completedTask = await changeCompletionStatus('completed', task.id, 'update-completion-status');
+        if (completedTask) {
+            dispatch(completeOverdueHistoryTask(task));
+            dispatch(addToCoins(task.coin_penalty));
+            dispatch(addToCoins(task.coin_reward));
+        }
         handleHideTask();
     }
 
@@ -91,7 +100,7 @@ export const ViewTask: React.FC<ViewTaskProps> = ({ selectedTask, handleHideTask
     return (
         <>
             {!editTask && !selectedTaskDeleted &&
-            
+
                 <Card className="view-task-container overlay-card">
                     <button
                         className="close"
@@ -132,12 +141,12 @@ export const ViewTask: React.FC<ViewTaskProps> = ({ selectedTask, handleHideTask
 
                     <p className={(history && selectedTask.overdue) ? "penalty-text" : (history && !selectedTask.overdue) ? "hide-penalty-text" : "view-penalty-text"}>Penalty: <FaCoins className="coins-icon" /> {selectedTask.coin_penalty} </p>
 
-                    {(history && !selectedTask.overdue) &&
+                    {(history && selectedTask.completion_status === 'completed') &&
                         <button className="command-button" onClick={() => handleUndoComplete(selectedTask)}>
                             Undo completion
                         </button>}
-                    {(history && selectedTask.overdue) &&
-                        <button className="command-button" onClick={() => handleCompleteOverdueHistoryTask(selectedTask)}>
+                    {(history && selectedTask.completion_status === 'incomplete') &&
+                        <button className="command-button" onClick={() => handleCompleteHistoryTask(selectedTask)}>
                             Change to Completed
                         </button>}
                 </Card>

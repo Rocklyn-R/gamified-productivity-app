@@ -70,9 +70,9 @@ export const changeToOverDue = async (id: string) => {
     }
 }
 
-export const changeCompletionStatus = async (completion_status: string, id: string) => {
+export const changeCompletionStatus = async (completion_status: string, id: string, path: string) => {
     try {
-        const response = await fetch('http://localhost:4000/tasks/move-to-history', {
+        const response = await fetch(`http://localhost:4000/tasks/${path}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

@@ -34,12 +34,15 @@ export const DeleteMessage: React.FC<DeleteMessageProps> = ({
             const id = selectedTask.id;
             const taskDeletion = await deleteTask(id);
             if (taskDeletion) {
-               dispatch(removeTask(selectedTask));
-               handleHideTask(); 
+                dispatch(removeTask(selectedTask));
+                handleHideTask();
             }
         } else if (history && selectedTask && handleHideTask) {
-            dispatch(deleteTaskFromHistory(selectedTask));
-            handleHideTask();
+            const taskDeletion = await deleteTask(selectedTask.id);
+            if (taskDeletion) {
+                dispatch(deleteTaskFromHistory(selectedTask));
+                handleHideTask();
+            }
         }
 
         if (selectedReward && handleHideReward) {

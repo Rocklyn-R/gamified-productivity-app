@@ -53,7 +53,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, index, handleViewTaskC
 
                     </div>
                 )}
-                 {(task.deadline && task.overdue && history) && (
+                 {(task.completion_status === 'incomplete' && history) && (
                     <div className='status-box'>
                         <p id="overdue-text">NOT COMPLETED</p>
                         {task.coin_penalty > 0 && (
@@ -65,7 +65,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, index, handleViewTaskC
 
                     </div>
                 )}
-                {(history && !task.overdue) && (
+                {(history && task.completion_status === 'completed') && (
                     <div className='status-box'>
                         <p id="completed-text">COMPLETED</p>
                         {task.coin_reward > 0 && (

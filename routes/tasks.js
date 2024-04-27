@@ -28,4 +28,6 @@ tasksRouter.put('/edit-task', checkAuthenticated, editTask);
 
 tasksRouter.delete('/delete-task', checkAuthenticated, deleteTask);
 
+tasksRouter.put('/update-completion-status', checkAuthenticated, changeTaskCompletionStatus);
+
 module.exports = tasksRouter;

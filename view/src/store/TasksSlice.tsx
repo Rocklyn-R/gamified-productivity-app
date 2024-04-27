@@ -97,7 +97,14 @@ export const TasksSlice = createSlice({
         completeOverdueHistoryTask: (state, action: PayloadAction<Task>) => {
             const taskIndex = state.historyTasks.findIndex(task => task.id === action.payload.id);
             if (taskIndex !== -1) {
-                state.historyTasks[taskIndex].overdue = false;
+                state.historyTasks[taskIndex].completion_status = 'completed';
+            }
+        },
+
+        uncompleteHistoryTask: (state, action: PayloadAction<Task>) => {
+            const taskIndex = state.historyTasks.findIndex(task => task.id === action.payload.id);
+            if (taskIndex !== -1) {
+                state.historyTasks[taskIndex].completion_status = 'incomplete'
             }
         },
 
@@ -123,7 +130,8 @@ export const {
     moveOverdueToHistory,
     completeOverdueHistoryTask,
     markHistoryTaskAsOverdue,
-    setHistoryTasks
+    setHistoryTasks,
+    uncompleteHistoryTask
 } = TasksSlice.actions;
 
 

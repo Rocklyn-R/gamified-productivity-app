@@ -27,13 +27,13 @@ export const CompleteTask: React.FC<CompleteTaskProps> = ({ task }) => {
         console.log(task);
         setTimeout(async () => {
             if (!task.overdue) {
-                const completedTask = await changeCompletionStatus('completed', task.id);
+                const completedTask = await changeCompletionStatus('completed', task.id, 'move-to-history');
                 if (completedTask) {
                     dispatch(completeTask(task));
                     dispatch(addToCoins(task.coin_reward));
                 }
             } else {
-                const completedOverdueTask = await changeCompletionStatus('completed', task.id);
+                const completedOverdueTask = await changeCompletionStatus('completed', task.id, 'move-to-history');
                 if (completedOverdueTask) {
                     dispatch(completeOverdueTask(task));
                     dispatch(addToCoins(task.coin_reward));

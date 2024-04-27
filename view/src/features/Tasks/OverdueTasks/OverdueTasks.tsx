@@ -15,7 +15,7 @@ export const OverdueTasks = () => {
     
     const handleAcceptPenalty = () => {
         overdueTasks.forEach(async task => {
-            const moveToHistory = await changeCompletionStatus('incomplete', task.id);
+            const moveToHistory = await changeCompletionStatus('incomplete', task.id, 'move-to-history');
             if (moveToHistory) {
                 dispatch(moveOverdueToHistory(task));
                 dispatch(subtractCoins(task.coin_penalty));

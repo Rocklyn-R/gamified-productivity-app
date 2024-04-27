@@ -61,7 +61,7 @@ const changeTaskCompletionStatus = async (req, res) => {
     try {
         const result = await taskChangeCompletionStatus(completion_status, id);
         if (result) {
-            res.status(201).json({ message: 'Task marked incomplete successfully'})
+            res.status(201).json({ message: `Task completion status successfully updated to ${completion_status}`})
         }
     } catch (error) {
         console.error('Error changing completion to incomplete');
@@ -104,6 +104,8 @@ const deleteTask = async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error'})
     }
 }
+
+
 
 
 
