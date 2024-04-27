@@ -1,21 +1,25 @@
 import "./OverdueTasks.css";
 import { useSelector, useDispatch } from "react-redux";
 import Card from "../../../components/Card/Card";
-import { selectOverdueTasks } from "../../../store/TasksSlice";
+import { selectTasks } from "../../../store/TasksSlice";
 import { TaskItem } from "../TaskItem/TaskItem";
 import { subtractCoins } from "../../../store/RewardsSlice";
 import { moveOverdueToHistory } from "../../../store/TasksSlice";
+import { changeCompletionStatus } from "../../../api/tasks";
 
 export const OverdueTasks = () => {
 
-    const overdueTasks = useSelector(selectOverdueTasks);
     const dispatch = useDispatch();
-
+    const tasks = useSelector(selectTasks);
+    const overdueTasks = tasks.filter(task => task.overdue);
     
     const handleAcceptPenalty = () => {
-        overdueTasks.forEach(task => {
-            dispatch(subtractCoins(task.coin_penalty));
-            dispatch(moveOverdueToHistory(task));
+        overdueTasks.forEach(async task => {
+            const moveToHistory = await changeCompletionStatus('incomplete', task.id);
+            if (moveToHistory) {
+                dispatch(moveOverdueToHistory(task));
+                dispatch(subtractCoins(task.coin_penalty));
+            } else return;
         })
     }
 

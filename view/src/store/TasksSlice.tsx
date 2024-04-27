@@ -1,21 +1,20 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import { Task, TasksState } from "../types/types"
-import { getTasks } from "../api/tasks";
-import { Dispatch } from "@reduxjs/toolkit";
-
 
 export const TasksSlice = createSlice({
     name: "tasks",
     initialState: {
         tasks: [] as Task[],
-        historyTasks: [],
-        overdueTasks: []
+        historyTasks: [] as Task[],
     } as TasksState,
 
     reducers: {
         setTasks: (state, action: PayloadAction<Task[]>) => {
             state.tasks = action.payload;
+        },
+        setHistoryTasks: (state, action: PayloadAction<Task[]>) => {
+            state.historyTasks = action.payload;
         },
 
         addTask: (state, action: PayloadAction<Task>) => {
@@ -67,19 +66,19 @@ export const TasksSlice = createSlice({
 
                 taskToMarkOverdue.overdue = true;
 
-                state.tasks = state.tasks.filter(task => task.id !== id);
+                /*state.tasks = state.tasks.filter(task => task.id !== id);
 
-                state.overdueTasks.unshift(taskToMarkOverdue);
+                state.overdueTasks.unshift(taskToMarkOverdue);*/
             }
         },
 
         completeOverdueTask: (state, action: PayloadAction<Task>) => {
-            const completedTaskIndex = state.overdueTasks.findIndex(task => task.id === action.payload.id);
+            const completedTaskIndex = state.tasks.findIndex(task => task.id === action.payload.id);
             if (completedTaskIndex !== -1) {
-                state.overdueTasks[completedTaskIndex].overdue = false;
+                state.tasks[completedTaskIndex].overdue = false;
             }
-            const completedTask = state.overdueTasks.find(task => task.id === action.payload.id);
-            state.overdueTasks = state.overdueTasks.filter(task => task.id !== action.payload.id);
+            const completedTask = state.tasks.find(task => task.id === action.payload.id);
+            state.tasks = state.tasks.filter(task => task.id !== action.payload.id);
 
             if (completedTask) {
                 state.historyTasks.unshift(completedTask);
@@ -88,11 +87,11 @@ export const TasksSlice = createSlice({
         },
 
         moveOverdueToHistory: (state, action: PayloadAction<Task>) => {
-            const taskToMove = state.overdueTasks.find(task => task.id === action.payload.id);
+            const taskToMove = state.tasks.find(task => task.id === action.payload.id);
             if (taskToMove) {
                 state.historyTasks.unshift(taskToMove)
             };
-            state.overdueTasks = state.overdueTasks.filter(task => task.id !== action.payload.id);
+            state.tasks = state.tasks.filter(task => task.id !== action.payload.id);
         },
 
         completeOverdueHistoryTask: (state, action: PayloadAction<Task>) => {
@@ -123,12 +122,13 @@ export const {
     completeOverdueTask,
     moveOverdueToHistory,
     completeOverdueHistoryTask,
-    markHistoryTaskAsOverdue
+    markHistoryTaskAsOverdue,
+    setHistoryTasks
 } = TasksSlice.actions;
 
 
 
 export const selectTasks = (state: RootState) => state.tasks.tasks;
 export const selectHistoryTasks = (state: RootState) => state.tasks.historyTasks;
-export const selectOverdueTasks = (state: RootState) => state.tasks.overdueTasks;
+
 export default TasksSlice.reducer;

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { checkAuthorization } from "../../api/login";
 import { authenticateUser, unauthenticateUser } from "../../store/UserSlice";
@@ -24,5 +24,5 @@ export const CheckAuthorization = (routePath: string) => {
             }
         }
         checkAuthentication();
-    }, [navigate, routePath]);
+    }, [navigate, routePath, dispatch]);
 }

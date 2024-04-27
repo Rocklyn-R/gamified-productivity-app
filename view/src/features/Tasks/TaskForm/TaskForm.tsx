@@ -102,7 +102,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                     coin_reward: coinReward,
                     deadline: taskDeadline,
                     coin_penalty: penalty,
-                    overdue: false
+                    overdue: false,
+                    completion_status: 'pending'
                 }))
                 setSubmitError(false)
                 handleCloseForm();
@@ -118,7 +119,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                 id: selectedTask.id,
                 deadline: taskDeadline,
                 coin_penalty: penalty,
-                overdue: false
+                overdue: false,
+                completion_status: 'pending'
             }))
             handleHideTask();
             handleCloseForm();

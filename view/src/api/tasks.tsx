@@ -1,3 +1,5 @@
+
+
 export const getTasks = async () => {
     try {
         const response = await fetch('http://localhost:4000/tasks', {
@@ -44,6 +46,66 @@ export const createNewTask = async (
         } else {
             return false;
         }
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const changeToOverDue = async (id: string) => {
+    try {
+        const response = await fetch('http://localhost:4000/tasks/task-overdue', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ id })
+        })
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const changeCompletionStatus = async (completion_status: string, id: string) => {
+    try {
+        const response = await fetch('http://localhost:4000/tasks/move-to-history', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ completion_status, id })
+        })
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const getHistoryTasks = async () => {
+    try {
+        const response = await fetch('http://localhost:4000/tasks/history', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+        })
+        const data = await response.json();
+        //console.log(data);
+        if (response.ok) {
+            return data.historyTasks;
+        } else return [];
+
     } catch (error) {
         throw error;
     }

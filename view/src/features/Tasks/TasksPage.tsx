@@ -4,20 +4,19 @@ import './TasksPage.css';
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { TaskForm } from './TaskForm/TaskForm';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectTasks, selectHistoryTasks, setTasks } from '../../store/TasksSlice';
+import { selectTasks, selectHistoryTasks, setTasks, setHistoryTasks } from '../../store/TasksSlice';
 import { ViewTask } from './ViewTask/ViewTask';
 import { Task } from "../../types/types";
 import { TaskItem } from "./TaskItem/TaskItem";
 import { GrHistory } from "react-icons/gr";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { markAsOverDue } from '../../store/TasksSlice';
 import { OverdueTasks } from './OverdueTasks/OverdueTasks';
-import { selectOverdueTasks } from '../../store/TasksSlice';
 import { selectTotalCoins } from '../../store/RewardsSlice';
 import { FaCoins } from 'react-icons/fa';
 import { day, date } from '../../utilities/utilities';
 import { CheckAuthorization } from '../../components/Authorization/CheckAuthorization';
-import { getTasks } from '../../api/tasks';
+import { getTasks, changeToOverDue, getHistoryTasks } from '../../api/tasks';
 
 
 export const Tasks = () => {
@@ -34,28 +33,43 @@ export const Tasks = () => {
         deadline: "",
         coin_penalty: 0,
         overdue: false,
+        completion_status: ''
     });
     const [selectedTaskDeleted, setSelectedTaskDeleted] = useState(false);
 
     const overlayRef = useRef<HTMLDivElement>(null);
     const overdueTasksOverlayRef = useRef<HTMLDivElement>(null);
     const historyTasks = useSelector(selectHistoryTasks);
-    const overdueTasks = useSelector(selectOverdueTasks);
+    const overdueTasks = tasks.filter(task => task.overdue);
     const totalCoins = useSelector(selectTotalCoins)
     const dispatch = useDispatch();
     const [showOverdueTasks, setShowOverdueTasks] = useState(false);
 
-    useEffect(() => {
+   useEffect(() => {
         const fetchTasks = async () => {
              try {
-                const tasks = await getTasks();
-                dispatch(setTasks(tasks))
+                const taskData = await getTasks();
+                dispatch(setTasks(taskData))
             } catch (error) {
                 console.log(error);
             }
         }
         fetchTasks();
-    }, [])
+        
+    }, [dispatch]);
+
+    useEffect(() => {
+        const fetchHistoryTasks = async () => {
+            try {
+                const historyTaskData = await getHistoryTasks();
+                console.log(historyTaskData);
+                dispatch(setHistoryTasks(historyTaskData));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchHistoryTasks();
+    }, [dispatch]);
 
 
     const handleAddTaskClick = () => {
@@ -103,15 +117,17 @@ export const Tasks = () => {
 
     useEffect(() => {
         const now = new Date();
-        tasks.forEach(task => {
+        tasks.forEach(async task => {
             const deadline = new Date(task.deadline);
             if (deadline < now && !task.overdue) {
-                dispatch(markAsOverDue(task));
+                const overdueUpdate = await changeToOverDue(task.id);
+                if (overdueUpdate) {
+                    dispatch(markAsOverDue(task));
+                } else return;
             }
             setShowOverdueTasks(true);
         })
     });
-
 
 
     return (
@@ -133,7 +149,7 @@ export const Tasks = () => {
 
                 {tasks.length === 0 && <p>Add new tasks!</p>}
                 <div className='todo-list'>
-                    {tasks.map((task, index) => {
+                    {tasks.filter(task => !task.overdue).map((task, index) => {
                         return <TaskItem task={task} index={index} handleViewTaskClick={handleViewTaskClick} />
                     })}
                 </div>
@@ -144,7 +160,6 @@ export const Tasks = () => {
                         <OverdueTasks />
                     </div>
                 )}
-
 
                 {showTask && !selectedTaskDeleted && (
                     <div className='overlay' ref={overlayRef}>

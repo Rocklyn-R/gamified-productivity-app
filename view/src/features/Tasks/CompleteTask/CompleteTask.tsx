@@ -5,6 +5,7 @@ import { Task } from '../../../types/types';
 import { completeTask } from '../../../store/TasksSlice';
 import { addToCoins } from '../../../store/RewardsSlice';
 import { completeOverdueTask } from '../../../store/TasksSlice';
+import { changeCompletionStatus } from '../../../api/tasks';
 
 interface CompleteTaskProps {
     task: Task,
@@ -21,25 +22,31 @@ export const CompleteTask: React.FC<CompleteTaskProps> = ({ task }) => {
             return;
         }
         setIsChecked(true);
-   
-        
+
+
         console.log(task);
-        setTimeout(() => {
+        setTimeout(async () => {
             if (!task.overdue) {
-                dispatch(completeTask(task));
-                dispatch(addToCoins(task.coin_reward));
+                const completedTask = await changeCompletionStatus('completed', task.id);
+                if (completedTask) {
+                    dispatch(completeTask(task));
+                    dispatch(addToCoins(task.coin_reward));
+                }
             } else {
-                dispatch(completeOverdueTask(task));
-                dispatch(addToCoins(task.coin_reward));
+                const completedOverdueTask = await changeCompletionStatus('completed', task.id);
+                if (completedOverdueTask) {
+                    dispatch(completeOverdueTask(task));
+                    dispatch(addToCoins(task.coin_reward));
+                }
             }
             setIsChecked(false);
         }, 1500)
 
     }
-    
+
 
     return (
-     
+
         <div className='checkbox-container'>
             <input type="checkbox" id={task.id} className='check-input' checked={isChecked} onChange={handleCompleteTask} />
             <label htmlFor={task.id} className={task.overdue ? "checkbox-overdue no-select" : "checkbox no-select"}>

@@ -1,7 +1,13 @@
-const { taskCreateNew, tasksGet } = require('../models/tasks');
+const { 
+    taskCreateNew, 
+    tasksGet, 
+    tasksHistoryGet,
+    taskUpdateOverdue, 
+    taskChangeCompletionStatus 
+} = require('../models/tasks');
 
 const getTasks = async (req, res) => {
-    const user_id = 1;
+    const user_id = req.user.id;
     try {
         const result = await tasksGet(user_id);
         res.status(200).json({ tasks: result });
@@ -35,7 +41,50 @@ const createNewTask = async (req, res) => {
     }
 };
 
+const updateTaskOverdue = async (req, res) => {
+    const { id } = req.body;
+    try {
+        const result = await taskUpdateOverdue(id);
+        if (result) {
+            res.status(201).json({ message: 'Overdue task successfully updated'})
+        }
+    } catch (error) {
+        console.error('Error marking task overdue', error);
+        res.status(500).json({ message: 'Internal Server Error'})
+    }
+}
+
+const changeTaskCompletionStatus = async (req, res) => {
+    const { completion_status, id } = req.body;
+    try {
+        const result = await taskChangeCompletionStatus(completion_status, id);
+        if (result) {
+            res.status(201).json({ message: 'Task marked incomplete successfully'})
+        }
+    } catch (error) {
+        console.error('Error changing completion to incomplete');
+        res.status(500).json({ message: 'Internal Server Error'})
+    }
+};
+
+const getHistoryTasks = async (req, res) => {
+    const { id } = req.user;
+    try {
+        const result = await tasksHistoryGet(id);
+        if (result) {
+            res.status(200).json({ historyTasks: result })
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error'})
+    }
+}
+
+
+
 module.exports = {
     createNewTask,
-    getTasks
+    getTasks,
+    updateTaskOverdue,
+    changeTaskCompletionStatus,
+    getHistoryTasks
 };

@@ -22,7 +22,8 @@ export const TaskHistory = () => {
         id: "",
         deadline: "",
         coin_penalty: 0,
-        overdue: false
+        overdue: false,
+        completion_status: ''
     })
     const overlayRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();

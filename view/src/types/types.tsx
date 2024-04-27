@@ -6,6 +6,7 @@ export interface Task {
     deadline: string;
     coin_penalty: number;
     overdue: boolean;
+    completion_status: string;
 }
 
 export interface DatabaseTask {
@@ -22,7 +23,6 @@ export interface DatabaseTask {
 export interface TasksState {
     tasks: Task[];
     historyTasks: Task[];
-    overdueTasks: Task[];
 }
 
 export interface InventoryItem {
