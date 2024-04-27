@@ -63,6 +63,7 @@ export const renderIcon = (icon: string) => {
 
 
 export const formatDeadline = (deadline: string) => {
+    console.log(deadline);
     const todayString = new Date().toISOString().slice(0, 10);
 
     const tomorrow = new Date();
@@ -102,7 +103,6 @@ export const convertDateToString = (value: string) => {
         return isoString;
     } else if (value === "tomorrow") {
         const isoString = tomorrow.toISOString();
-        console.log(isoString);
         return isoString;
     } else if (value === "nodeadline") {
         return ""

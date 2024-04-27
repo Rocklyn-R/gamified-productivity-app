@@ -13,7 +13,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { SelectChangeEvent, TextField } from '@mui/material';
 import { Select, FormControl, InputLabel, MenuItem } from "@mui/material";
 import dayjs from 'dayjs';
-import { createNewTask } from '../../../api/tasks';
+import { createNewTask, updateTask } from '../../../api/tasks';
 
 
 
@@ -63,17 +63,22 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
         if (event.target.value === "today") {
             const today = new Date();
             today.setHours(23, 59, 59, 999);
-            const todayString = today.toISOString();
+            const todayWithOffset = new Date(today.getTime() - (today.getTimezoneOffset() * 60000));
+            const todayString = todayWithOffset.toISOString();
             setDeadline(todayString);
         } else if (event.target.value === "tomorrow") {
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             tomorrow.setHours(23, 59, 59, 999);
-            const tomorrowString = tomorrow.toISOString();
+            const tomorrowWithOffset = new Date(tomorrow.getTime() - (tomorrow.getTimezoneOffset() * 60000));
+            const tomorrowString = tomorrowWithOffset.toISOString();
             setDeadline(tomorrowString);
 
+        } else if (event.target.value === "custom") {
+            setDeadline(null);
         } else {
             setDeadline(null);
+            setPenalty(0);
         }
     }
 
@@ -112,18 +117,30 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
             }
         }
         if (isEditMode && selectedTask && handleHideTask) {
-            dispatch(editTask({
-                name: taskName,
-                notes: notes,
-                coin_reward: coinReward,
-                id: selectedTask.id,
-                deadline: taskDeadline,
-                coin_penalty: penalty,
-                overdue: false,
-                completion_status: 'pending'
-            }))
-            handleHideTask();
-            handleCloseForm();
+            const id = selectedTask.id
+            const updatedTask = await updateTask(
+                id,
+                taskName,
+                notes,
+                coinReward,
+                taskDeadline,
+                penalty,
+            );
+            if (updatedTask) {
+                dispatch(editTask({
+                    name: taskName,
+                    notes: notes,
+                    coin_reward: coinReward,
+                    id: id,
+                    deadline: taskDeadline,
+                    coin_penalty: penalty,
+                    overdue: false,
+                    completion_status: 'pending'
+                }))
+                handleHideTask();
+                handleCloseForm();
+            }
+
         }
 
     }
@@ -133,7 +150,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
         console.log(newValue); // See the dayjs object in console
 
         if (newValue) {
-            setDeadline(newValue.toISOString()); // Example of using dayjs object to set state
+            const adjustedDate = newValue.endOf('day');
+            const formattedDate = adjustedDate.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+            console.log(formattedDate);
+            setDeadline(formattedDate);
+
         } else {
             setDeadline(null); // Handle case where date is cleared
         }
@@ -152,7 +173,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                     X
                 </button>
 
-                <h4>Add task</h4>
+                <h4>{isEditMode ? "Edit task" : "Add task"}</h4>
                 {submitError && <p>An error occured. Try again</p>}
                 <TextField
                     type="text"

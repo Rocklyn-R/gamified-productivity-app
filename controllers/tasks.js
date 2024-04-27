@@ -3,7 +3,9 @@ const {
     tasksGet, 
     tasksHistoryGet,
     taskUpdateOverdue, 
-    taskChangeCompletionStatus 
+    taskChangeCompletionStatus,
+    taskEdit,
+    taskDelete 
 } = require('../models/tasks');
 
 const getTasks = async (req, res) => {
@@ -77,6 +79,30 @@ const getHistoryTasks = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Internal Server Error'})
     }
+};
+
+const editTask = async (req, res) => {
+    const { id, name, notes, coin_reward, deadline, coin_penalty } = req.body;
+    try {
+        const result = await taskEdit(id, name, notes, coin_reward, deadline, coin_penalty);
+        if (result) {
+            res.status(200).json({ message: 'Task successfully updated' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error' })
+    }
+};
+
+const deleteTask = async (req, res) => {
+    const { id } = req.body;
+    try {
+        const result = await taskDelete(id);
+        if (result) {
+            res.status(200).json({ message: 'Task successfully deleted'})
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error'})
+    }
 }
 
 
@@ -86,5 +112,7 @@ module.exports = {
     getTasks,
     updateTaskOverdue,
     changeTaskCompletionStatus,
-    getHistoryTasks
+    getHistoryTasks,
+    editTask,
+    deleteTask
 };

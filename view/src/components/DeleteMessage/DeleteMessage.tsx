@@ -3,8 +3,9 @@ import Card from "../Card/Card";
 import "./DeleteMessage.css";
 import { Reward, Task } from "../../types/types";
 import { useDispatch } from "react-redux";
-import { deleteTask, deleteTaskFromHistory } from "../../store/TasksSlice";
+import { removeTask, deleteTaskFromHistory } from "../../store/TasksSlice";
 import { deleteItemFromShop } from "../../store/RewardsSlice";
+import { deleteTask } from "../../api/tasks";
 
 
 interface DeleteMessageProps {
@@ -28,9 +29,14 @@ export const DeleteMessage: React.FC<DeleteMessageProps> = ({
     const dispatch = useDispatch();
 
 
-    const handleDelete = () => {
-        if (!history && selectedTask) {
-            dispatch(deleteTask(selectedTask));
+    const handleDelete = async () => {
+        if (!history && selectedTask && handleHideTask) {
+            const id = selectedTask.id;
+            const taskDeletion = await deleteTask(id);
+            if (taskDeletion) {
+               dispatch(removeTask(selectedTask));
+               handleHideTask(); 
+            }
         } else if (history && selectedTask && handleHideTask) {
             dispatch(deleteTaskFromHistory(selectedTask));
             handleHideTask();

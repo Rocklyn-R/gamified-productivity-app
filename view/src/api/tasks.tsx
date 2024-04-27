@@ -12,7 +12,6 @@ export const getTasks = async () => {
         const data = await response.json();
 
         if (response.ok) {
-            console.log(data.tasks);
             const reversedTasks = data.tasks.reverse();
             return reversedTasks;
         } else return [];
@@ -101,10 +100,56 @@ export const getHistoryTasks = async () => {
             credentials: 'include',
         })
         const data = await response.json();
-        //console.log(data);
         if (response.ok) {
             return data.historyTasks;
         } else return [];
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const updateTask = async (
+    id: string,
+    name: string,
+    notes: string,
+    coin_reward: number,
+    deadline: string,
+    coin_penalty: number
+) => {
+    try {
+        const response = await fetch('http://localhost:4000/tasks/edit-task', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({ id, name, notes, coin_reward, deadline, coin_penalty })
+        })
+
+        if (response.ok) {
+            return true;
+        } else return false;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const deleteTask = async (id: string) => {
+    try {
+        const response = await fetch('http://localhost:4000/tasks/delete-task', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({ id })
+        })
+
+        if (response.ok) {
+            return true;
+        } else return false;
 
     } catch (error) {
         throw error;

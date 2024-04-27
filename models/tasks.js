@@ -43,14 +43,35 @@ const taskChangeCompletionStatus = async (completion_status, id) => {
 };
 
 const tasksHistoryGet = async (user_id) => {
-    const query = 'SELECT id, name, notes, coin_reward, deadline, coin_penalty, completion_status, overdue FROM task where user_id = $1 and completion_status IN ($2, $3)';
+    const query = 'SELECT id, name, notes, coin_reward, deadline, coin_penalty, completion_status, overdue FROM task WHERE user_id = $1 and completion_status IN ($2, $3)';
     try {
         const result = await db.query(query, [user_id, 'incomplete', 'completed']);
         return result.rows;
     } catch (error) {
         throw (error);
     }
-}
+};
+
+const taskEdit = async (id, name, notes, coin_reward, deadline, coin_penalty) => {
+    const query = 'UPDATE task SET name = $1, notes = $2, coin_reward = $3, deadline = $4, coin_penalty = $5 WHERE id = $6';
+    try {
+        const result = await db.query(query, [name, notes, coin_reward, deadline, coin_penalty, id]);
+        return result;
+    } catch (error) {
+        throw (error);
+    }
+};
+
+const taskDelete = async (id) => {
+    const query = 'DELETE FROM task WHERE id = $1';
+    try {
+        const result = db.query(query, [id]);
+        return result;
+    } catch (error) {
+        throw (error);
+    }
+};
+
 
 
 
@@ -61,5 +82,7 @@ module.exports = {
     tasksGet,
     tasksHistoryGet,
     taskUpdateOverdue,
-    taskChangeCompletionStatus
+    taskChangeCompletionStatus,
+    taskEdit,
+    taskDelete
 }

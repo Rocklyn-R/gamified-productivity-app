@@ -62,7 +62,6 @@ export const Tasks = () => {
         const fetchHistoryTasks = async () => {
             try {
                 const historyTaskData = await getHistoryTasks();
-                console.log(historyTaskData);
                 dispatch(setHistoryTasks(historyTaskData));
             } catch (error) {
                 console.log(error);
