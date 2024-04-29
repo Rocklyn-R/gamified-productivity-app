@@ -10,11 +10,12 @@ import { TaskForm } from "../TaskForm/TaskForm";
 import { DeleteMessage } from "../../../components/DeleteMessage/DeleteMessage";
 import { selectTasks } from "../../../store/TasksSlice";
 import { undoCompleteTask, completeOverdueHistoryTask, uncompleteHistoryTask } from "../../../store/TasksSlice";
-import { subtractCoins } from "../../../store/RewardsSlice";
+import { subtractFromCoins } from "../../../store/RewardsSlice";
 import { formatDeadline } from "../../../utilities/utilities";
 import { addToCoins } from "../../../store/RewardsSlice";
 import { parseISO, isAfter } from "date-fns";
 import { changeCompletionStatus } from "../../../api/tasks";
+import { addCoins, subtractCoins } from "../../../api/coins";
 
 
 interface ViewTaskProps {
@@ -54,14 +55,16 @@ export const ViewTask: React.FC<ViewTaskProps> = ({ selectedTask, handleHideTask
             const incompletedTask = await changeCompletionStatus('pending', task.id, 'update-completion-status');
             if (incompletedTask) {
                 dispatch(undoCompleteTask(task));
-                dispatch(subtractCoins(task.coin_reward));
+                await subtractCoins(task.coin_reward);
+                dispatch(subtractFromCoins(task.coin_reward));
             }
         } else {
             const incompletedTask = await changeCompletionStatus('incomplete', task.id, 'update-completion-status');
             if (incompletedTask) {
                 dispatch(uncompleteHistoryTask(task));
-                dispatch(subtractCoins(task.coin_reward));
-                dispatch(subtractCoins(task.coin_penalty));
+                const totalToSubtract = task.coin_penalty + task.coin_reward;
+                await subtractCoins(totalToSubtract);
+                dispatch(subtractFromCoins(totalToSubtract));
             }
         }
 
@@ -72,8 +75,9 @@ export const ViewTask: React.FC<ViewTaskProps> = ({ selectedTask, handleHideTask
         const completedTask = await changeCompletionStatus('completed', task.id, 'update-completion-status');
         if (completedTask) {
             dispatch(completeOverdueHistoryTask(task));
-            dispatch(addToCoins(task.coin_penalty));
-            dispatch(addToCoins(task.coin_reward));
+            const totalToAdd = task.coin_penalty + task.coin_reward;
+            await addCoins(totalToAdd);
+            dispatch(addToCoins(totalToAdd));
         }
         handleHideTask();
     }
@@ -135,11 +139,12 @@ export const ViewTask: React.FC<ViewTaskProps> = ({ selectedTask, handleHideTask
                     {selectedTask.deadline && (
                         <p>Deadline: {formatDeadline(selectedTask.deadline)}</p>
                     )}
-                    <p className={(history && selectedTask.overdue) ? "hide-coin-reward" : (history && !selectedTask.overdue) ? "coin-reward-text" : "view-coin-text"}>
+                    <p className={(history && selectedTask.completion_status === 'incomplete') ? "hide-coin-reward" : (history && selectedTask.completion_status === 'completed') ? "coin-reward-text" : "view-coin-text"}>
                         Coin Reward: <FaCoins className="coins-icon" />{selectedTask.coin_reward}
                     </p>
 
-                    <p className={(history && selectedTask.overdue) ? "penalty-text" : (history && !selectedTask.overdue) ? "hide-penalty-text" : "view-penalty-text"}>Penalty: <FaCoins className="coins-icon" /> {selectedTask.coin_penalty} </p>
+                    <p className={(history && selectedTask.completion_status === 'completed') ? "hide-penalty-text" : (history && selectedTask.completion_status === 'incomplete') ? "penalty-text" : "view-penalty-text"}>
+                        Penalty: <FaCoins className="coins-icon" /> {selectedTask.coin_penalty} </p>
 
                     {(history && selectedTask.completion_status === 'completed') &&
                         <button className="command-button" onClick={() => handleUndoComplete(selectedTask)}>

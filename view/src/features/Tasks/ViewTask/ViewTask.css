@@ -66,11 +66,10 @@
     cursor: pointer;
 }
 
-#penalty-text {
+.penalty-text {
     color: red;
     display: flex;
     align-items: center;
-    width: 100%;
     justify-content: center;
 }
 

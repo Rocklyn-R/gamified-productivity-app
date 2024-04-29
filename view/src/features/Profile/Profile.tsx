@@ -5,7 +5,6 @@ import { getUserDetails } from "../../api/profile";
 import { setFirstName, setLastName, setEmail } from "../../store/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFirstName, selectLastName, selectEmail } from "../../store/UserSlice";
-import { CheckAuthorization } from "../../components/Authorization/CheckAuthorization";
 import { FaRegEdit } from "react-icons/fa";
 import { TextField, IconButton, InputAdornment } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -16,13 +15,13 @@ import { FaXmark } from "react-icons/fa6";
 import { NameForm } from "./ProfileForms/NameForm";
 import { EmailForm } from "./ProfileForms/EmailForm";
 import { PasswordForm } from "./ProfileForms/PasswordForm";
+import { useAuthorizationCheck } from "../../components/Authorization/AuthorizationCheck";
 
 
 
 
 export const Profile = () => {
-    CheckAuthorization('profile');
-
+    useAuthorizationCheck();
     const dispatch = useDispatch();
     const firstName = useSelector(selectFirstName);
     const lastName = useSelector(selectLastName);

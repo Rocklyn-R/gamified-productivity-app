@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Card from '../../../components/Card/Card';
 import { selectHistoryTasks } from '../../../store/TasksSlice';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { TaskItem } from '../TaskItem/TaskItem';
 import "./TaskHistory.css";
 import { IoArrowBackOutline } from "react-icons/io5";
@@ -10,12 +10,14 @@ import { Task } from '../../../types/types';
 import { ViewTask } from '../ViewTask/ViewTask';
 import { selectTotalCoins } from '../../../store/RewardsSlice';
 import { FaCoins } from 'react-icons/fa';
+import { setHistoryTasks } from '../../../store/TasksSlice';
+import { getHistoryTasks } from '../../../api/tasks';
 
 export const TaskHistory = () => {
     const historyTasks = useSelector(selectHistoryTasks);
     const totalCoins = useSelector(selectTotalCoins)
-    const [ viewHistoryTask, setViewHistoryTask ] = useState(false);
-    const [ selectedTask, setSelectedTask ] = useState<Task>({
+    const [viewHistoryTask, setViewHistoryTask] = useState(false);
+    const [selectedTask, setSelectedTask] = useState<Task>({
         name: "",
         notes: "",
         coin_reward: 0,
@@ -27,6 +29,19 @@ export const TaskHistory = () => {
     })
     const overlayRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const fetchHistoryTasks = async () => {
+            try {
+                const historyTaskData = await getHistoryTasks();
+                dispatch(setHistoryTasks(historyTaskData));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchHistoryTasks();
+    }, [dispatch]);
 
     const handleViewHistoryTask = (task: Task) => {
         setViewHistoryTask(true);
@@ -59,33 +74,33 @@ export const TaskHistory = () => {
 
     return (
         <>
-        <Link to="../tasks"><IoArrowBackOutline className="back-icon" /></Link>
-         <Card className="tasks-container">
-            <h1 id="task-history-heading"> TASK HISTORY </h1>
-            <div className="coin-count-header">
+            <Link to="../tasks"><IoArrowBackOutline className="back-icon" /></Link>
+            <Card className="tasks-container">
+                <h1 id="task-history-heading"> TASK HISTORY </h1>
+                <div className="coin-count-header">
                     <h1><FaCoins className='coin-icon' /> {totalCoins}</h1>
                 </div>
-            {historyTasks.map((task, index) => (
-                <TaskItem 
-                    key={index}
-                    task={task}
-                    index={index}
-                    history={true}
-                    handleViewTaskClick={handleViewHistoryTask}
-                />
-            ))}
-            {viewHistoryTask && 
-            <div className='overlay' ref={overlayRef}>
+                {historyTasks.map((task, index) => (
+                    <TaskItem
+                        key={index}
+                        task={task}
+                        index={index}
+                        history={true}
+                        handleViewTaskClick={handleViewHistoryTask}
+                    />
+                ))}
+                {viewHistoryTask &&
+                    <div className='overlay' ref={overlayRef}>
 
-                 <ViewTask
-                selectedTask={selectedTask}
-                handleHideTask={handleHideTask}
-                history={true}
-            />
-            </div>
-           }
-        </Card>
+                        <ViewTask
+                            selectedTask={selectedTask}
+                            handleHideTask={handleHideTask}
+                            history={true}
+                        />
+                    </div>
+                }
+            </Card>
         </>
-       
+
     )
 }

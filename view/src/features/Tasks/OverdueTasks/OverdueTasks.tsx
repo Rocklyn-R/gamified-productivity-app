@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Card from "../../../components/Card/Card";
 import { selectTasks } from "../../../store/TasksSlice";
 import { TaskItem } from "../TaskItem/TaskItem";
-import { subtractCoins } from "../../../store/RewardsSlice";
+import { subtractFromCoins } from "../../../store/RewardsSlice";
 import { moveOverdueToHistory } from "../../../store/TasksSlice";
 import { changeCompletionStatus } from "../../../api/tasks";
 
@@ -18,7 +18,7 @@ export const OverdueTasks = () => {
             const moveToHistory = await changeCompletionStatus('incomplete', task.id, 'move-to-history');
             if (moveToHistory) {
                 dispatch(moveOverdueToHistory(task));
-                dispatch(subtractCoins(task.coin_penalty));
+                dispatch(subtractFromCoins(task.coin_penalty));
             } else return;
         })
     }

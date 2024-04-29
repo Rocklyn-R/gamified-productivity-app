@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navigation } from './features/Navigation/Navigation';
@@ -11,30 +11,80 @@ import { PomodoroPage } from './features/Pomodoro/PomodoroPage';
 import { LoginPage } from './features/Authentication/Login/LoginPage';
 import { SignUp } from './features/Authentication/Signup/SignupPage';
 import { Profile } from './features/Profile/Profile';
-import { selectIsAuthenticated } from './store/UserSlice';
+import { selectIsAuthenticated, unauthenticateUser } from './store/UserSlice';
 import { useSelector } from 'react-redux';
-
+import { checkAuthentication } from './api/login';
+import { authenticateUser } from './store/UserSlice';
+import { useDispatch } from 'react-redux';
+import { useAuthorizationCheck } from './components/Authorization/AuthorizationCheck';
 
 function App() {
-
+  useAuthorizationCheck();
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  //const dispatch = useDispatch();
+
+ /* useEffect(() => {
+    const authorizationCheck = async () => {
+      try {
+        const authenticated = await checkAuthentication();
+        if (authenticated) {
+          dispatch(authenticateUser())
+        } else {
+          dispatch(unauthenticateUser());
+        }
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+      }
+    }
+    authorizationCheck();
+  }, [dispatch, isAuthenticated])*/
 
   return (
     <BrowserRouter>
       <div className='App'>
-        {isAuthenticated ? <Navigation /> : ""}
+        {isAuthenticated && <Navigation />}
         <div className="content">
           <Routes>
-            <Route path="/" element={<Navigate to="/login" />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/tasks" element={<Tasks />} />
-            <Route path="/tasks/history" element={<TaskHistory />} />
-            <Route path="/pomodoro" element={<PomodoroPage />} />
-            <Route path="/rewards-shop" element={<RewardsPage />} />
-            <Route path="/inventory" element={<InventoryPage />} />
-            <Route path="/inventory/history" element={<RewardHistory />} />
+            <Route
+              path="/"
+              element={<Navigate to="/login" />}
+            />
+            <Route
+              path="/login"
+              element={isAuthenticated ? <Navigate to="/tasks" /> : <LoginPage />}
+            />
+            <Route
+              path="/signup"
+              element={isAuthenticated ? <Navigate to="/tasks" /> : <SignUp />}
+            />
+            <Route
+              path="/profile"
+              element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/tasks"
+              element={isAuthenticated ? <Tasks /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/tasks/history"
+              element={isAuthenticated ? <TaskHistory /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/pomodoro"
+              element={isAuthenticated ? <PomodoroPage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/rewards-shop"
+              element={isAuthenticated ? <RewardsPage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/inventory"
+              element={isAuthenticated ? <InventoryPage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/inventory/history"
+              element={isAuthenticated ? <RewardHistory /> : <Navigate to="/login" />}
+            />
           </Routes>
         </div>
 

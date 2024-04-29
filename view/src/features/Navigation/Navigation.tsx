@@ -7,17 +7,20 @@ import gift from "../../images/gift.png";
 import shop from "../../images/shop.png";
 import account from "../../images/account.png";
 import { logoutUser } from '../../api/logout';
-
+import { unauthenticateUser } from '../../store/UserSlice';
+import { useDispatch } from 'react-redux';
 
 
 
 export const Navigation = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogout = async () => {
         setIsDropdownOpen(false);
         await logoutUser();
+        dispatch(unauthenticateUser());
         navigate('/');
     }
 

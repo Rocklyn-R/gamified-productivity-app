@@ -13,7 +13,7 @@ export const logInUser = async (email: string, password: string) => {
     return response;
 }
 
-/*export const checkAuthorization = async () => {
+export const checkAuthentication = async () => {
     try {
         const response = await fetch('http://localhost:4000/login', {
             method: 'GET',
@@ -23,15 +23,15 @@ export const logInUser = async (email: string, password: string) => {
             credentials: 'include'
         });
         if (response.status === 401) {
-            return true;
-        } else return false;
+            return false;
+        } else return true;
 
     } catch (error: any) {
         console.error('Error checking authentication:', error.message);
     }
-}*/
+}
 
-export const checkAuthorization = async (routePath: string) => {
+/*export const checkAuthorization = async (routePath: string) => {
     try {
         const response = await fetch(`http://localhost:4000/${routePath}`, {
             method: 'GET',
@@ -47,4 +47,4 @@ export const checkAuthorization = async (routePath: string) => {
         console.error('Error checking Authorization:', error);
         return false;
     }
-}
+}*/

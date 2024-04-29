@@ -12,15 +12,15 @@ import { GrHistory } from "react-icons/gr";
 import { Link } from "react-router-dom";
 import { markAsOverDue } from '../../store/TasksSlice';
 import { OverdueTasks } from './OverdueTasks/OverdueTasks';
-import { selectTotalCoins } from '../../store/RewardsSlice';
+import { selectTotalCoins, setCoins } from '../../store/RewardsSlice';
 import { FaCoins } from 'react-icons/fa';
 import { day, date } from '../../utilities/utilities';
-import { CheckAuthorization } from '../../components/Authorization/CheckAuthorization';
 import { getTasks, changeToOverDue, getHistoryTasks } from '../../api/tasks';
-
+import { getCoins } from '../../api/coins';
+import { useAuthorizationCheck } from '../../components/Authorization/AuthorizationCheck';
 
 export const Tasks = () => {
-    CheckAuthorization('tasks');
+    useAuthorizationCheck();
 
     const tasks = useSelector(selectTasks);
     const [showForm, setShowForm] = useState(false);
@@ -45,9 +45,9 @@ export const Tasks = () => {
     const dispatch = useDispatch();
     const [showOverdueTasks, setShowOverdueTasks] = useState(false);
 
-   useEffect(() => {
+    useEffect(() => {
         const fetchTasks = async () => {
-             try {
+            try {
                 const taskData = await getTasks();
                 dispatch(setTasks(taskData))
             } catch (error) {
@@ -55,7 +55,7 @@ export const Tasks = () => {
             }
         }
         fetchTasks();
-        
+
     }, [dispatch]);
 
     useEffect(() => {
@@ -68,6 +68,18 @@ export const Tasks = () => {
             }
         }
         fetchHistoryTasks();
+    }, [dispatch]);
+
+    useEffect(() => {
+        const fetchCoins = async () => {
+            try {
+                const fetchedCoins = await getCoins();
+                dispatch(setCoins(fetchedCoins));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchCoins();
     }, [dispatch]);
 
 
@@ -127,7 +139,6 @@ export const Tasks = () => {
             setShowOverdueTasks(true);
         })
     });
-
 
     return (
         <>

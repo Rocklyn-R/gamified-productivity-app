@@ -6,6 +6,7 @@ import { completeTask } from '../../../store/TasksSlice';
 import { addToCoins } from '../../../store/RewardsSlice';
 import { completeOverdueTask } from '../../../store/TasksSlice';
 import { changeCompletionStatus } from '../../../api/tasks';
+import { addCoins } from '../../../api/coins';
 
 interface CompleteTaskProps {
     task: Task,
@@ -23,20 +24,21 @@ export const CompleteTask: React.FC<CompleteTaskProps> = ({ task }) => {
         }
         setIsChecked(true);
 
-
-        console.log(task);
         setTimeout(async () => {
             if (!task.overdue) {
                 const completedTask = await changeCompletionStatus('completed', task.id, 'move-to-history');
                 if (completedTask) {
                     dispatch(completeTask(task));
+                    await addCoins(task.coin_reward);
                     dispatch(addToCoins(task.coin_reward));
                 }
             } else {
                 const completedOverdueTask = await changeCompletionStatus('completed', task.id, 'move-to-history');
                 if (completedOverdueTask) {
                     dispatch(completeOverdueTask(task));
+                    await addCoins(task.coin_reward);
                     dispatch(addToCoins(task.coin_reward));
+                    
                 }
             }
             setIsChecked(false);

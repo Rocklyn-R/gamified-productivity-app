@@ -7,7 +7,7 @@ export const logoutUser = async () => {
             },
             credentials: 'include'
         });
-        return response.status
+        return response.status;
     } catch (error) {
         console.error('Error logging out:', error);
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import "./LoginPage.css";
 import Card from '../../../components/Card/Card';
 import { TextField, IconButton, InputAdornment } from '@mui/material';
@@ -8,12 +8,10 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { logInUser } from '../../../api/login';
 import { authenticateUser } from '../../../store/UserSlice';
 import { useDispatch } from 'react-redux';
-import { CheckAuthorization } from '../../../components/Authorization/CheckAuthorization';
+import { useAuthorizationCheck } from '../../../components/Authorization/AuthorizationCheck';
 
 
 export const LoginPage = () => {
-
-    CheckAuthorization('login'); 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -55,7 +53,7 @@ export const LoginPage = () => {
 
     return (
         <Card className="log-in-container">
-            <h1>Welocome to Task Master</h1>
+            <h1>Welcome to Task Master</h1>
             <h1>Log In</h1>
             <form className='log-in-form' onSubmit={handleSubmitLogin}>
                 <TextField
