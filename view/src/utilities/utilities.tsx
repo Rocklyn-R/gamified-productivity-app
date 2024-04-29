@@ -63,7 +63,6 @@ export const renderIcon = (icon: string) => {
 
 
 export const formatDeadline = (deadline: string) => {
-    console.log(deadline);
     const todayString = new Date().toISOString().slice(0, 10);
 
     const tomorrow = new Date();

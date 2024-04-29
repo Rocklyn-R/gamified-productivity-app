@@ -25,6 +25,7 @@ import money from "../../../images/money.png";
 import love from "../../../images/love.png";
 import gift from "../../../images/gift.png";
 import { TextField } from "@mui/material";
+import { createShopItem, updateShopItem } from "../../../api/shop";
 
 
 interface ItemFormProps {
@@ -56,25 +57,33 @@ export const ItemForm: React.FC<ItemFormProps> = ({ handleCloseForm, isEditMode,
     }
 
 
-    const handleSubmitAddItem = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmitAddItem = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         if (!isEditMode) {
-            event.preventDefault();
-            dispatch(addItemToShop({
-                name: name,
-                price: price,
-                description: description,
-                id: uuidv4(),
-                icon: selectedIcon
+            const id = uuidv4();
+            const itemCreation = await createShopItem(id, name, description, price, selectedIcon);
+            if (itemCreation) {
+                dispatch(addItemToShop({
+                    name: name,
+                    price: price,
+                    description: description,
+                    id: id,
+                    icon: selectedIcon
 
-            }))
+                }))
+            }
         } else if (isEditMode && selectedReward && handleHideReward) {
-            dispatch(editItemInShop({
-                name: name,
-                price: price,
-                description: description,
-                id: selectedReward.id,
-                icon: selectedIcon
-            }))
+            const id = selectedReward.id;
+            const itemUpdate = await updateShopItem(id, name, description, price, selectedIcon);
+            if (itemUpdate) {
+                dispatch(editItemInShop({
+                    name: name,
+                    price: price,
+                    description: description,
+                    id: id,
+                    icon: selectedIcon
+                }))
+            }
             handleHideReward();
         }
 
@@ -141,7 +150,7 @@ export const ItemForm: React.FC<ItemFormProps> = ({ handleCloseForm, isEditMode,
                     }}
                     InputProps={{
                         autoComplete: 'off', // More specific to potentially improve browser compliance
-                      }}
+                    }}
                 />
                 <label>Select icon:</label>
                 <div className="icon-choices no-select">

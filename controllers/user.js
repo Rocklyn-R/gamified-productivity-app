@@ -2,7 +2,7 @@ const { createUser, findUserById, userUpdateName, userUpdateEmail, userUpdatePas
 const passport = require('../config/passport');
 const bcrypt = require('bcrypt');
 
-const createUserController = async (req, res) => {
+const createUserController = async (req, res, next) => {
     const { first_name, last_name, email, password } = req.body;
     try {
         const salt = await bcrypt.genSalt(10);
@@ -11,12 +11,12 @@ const createUserController = async (req, res) => {
         req.login(newUser, (err) => {
             if (err) {
                 console.error('Error logging in user:', err);
-                return res.status(500).json({ message: 'Failed to log in user' })
+                res.status(500).json({ message: 'Failed to log in user' });
             } else {
-                res.status(201).send();
+                //res.status(201).send();
+                next();
             }
         })
-        //res.status(201).send();
     } catch (error) {
         res.status(500).json({ message: 'Failed to create user', error: error.message });
     }

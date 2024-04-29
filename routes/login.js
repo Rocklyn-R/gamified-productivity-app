@@ -1,12 +1,13 @@
 const express = require('express');
 const passport = require('passport');
 const { logInUser } = require('../controllers/user');
-const { ensureAuthenticatedOnLoginSignup } = require('../middleware/authentication');
+const { checkAuthenticated } = require('../middleware/authentication');
 
 const loginRouter = express.Router();
 
 
-loginRouter.get('/', ensureAuthenticatedOnLoginSignup, (req, res) => {
+loginRouter.get('/', checkAuthenticated, (req, res) => {
+  console.log("TRUE")
   return res.status(200).send();
 });
 

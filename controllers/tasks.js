@@ -98,7 +98,7 @@ const deleteTask = async (req, res) => {
     try {
         const result = await taskDelete(id);
         if (result) {
-            res.status(200).json({ message: 'Task successfully deleted'})
+            res.status(204).send();
         }
     } catch (error) {
         res.status(500).json({ message: 'Internal Server Error'})

@@ -10,51 +10,9 @@ const formattedDate = currentDate.toLocaleDateString('en-US', options);
 export const RewardsSlice = createSlice({
     name: "rewards",
     initialState: {
-        totalCoins: 200,
-        shop: [{
-            name: "Movie",
-            price: 100,
-            description: "2 hour long",
-            id: "124sdfgd23",
-            icon: "movie"
-        },
-        {
-            name: "TV Episode",
-            price: 50,
-            description: "1 hour long",
-            id: "124sgshsdfhfd23",
-            icon: "movie"
-        },
-        {
-            name: "Have A Cocktail",
-            price: 50,
-            description: "",
-            id: "124sgshsdfasdfsdfhfd23",
-            icon: "cocktail"
-        },
-        {
-            name: "Play Video Games",
-            price: 100,
-            description: "1 hour",
-            id: "124sgsaagahsdfhfd23",
-            icon: "videoGame"
-        },
-        {
-            name: "Scroll Phone",
-            price: 100,
-            description: "1 hour",
-            id: "12424dgashsdfhfd23",
-            icon: "phone"
-        }, 
-    ],
-        inventory: [{
-            name: "Movie",
-            price: 50,
-            description: "2 hour long",
-            id: "124sdfgd23",
-            icon: "movie",
-            quantity: 3
-        }],
+        totalCoins: 0,
+        shop: [],
+        inventory: [],
         usedRewards: [
             {
                 name: "Movie",
@@ -76,14 +34,19 @@ export const RewardsSlice = createSlice({
     } as RewardsState,
 
     reducers: {
+        setCoins: (state, action: PayloadAction<number>) => {
+            state.totalCoins = action.payload;
+        }, 
         addToCoins: (state, action: PayloadAction<number>) => {
             state.totalCoins = state.totalCoins + action.payload;
         },
 
-        subtractCoins: (state, action: PayloadAction<number>) => {
+        subtractFromCoins: (state, action: PayloadAction<number>) => {
             state.totalCoins = state.totalCoins - action.payload;
         },
-
+        setShopItems: (state, action: PayloadAction<Reward[]>) => {
+            state.shop = action.payload;
+        },
         addItemToShop: (state, action: PayloadAction<Reward>) => {
             state.shop.unshift(action.payload);
         },
@@ -125,6 +88,9 @@ export const RewardsSlice = createSlice({
             const totalPrice = reward.price * quantity;
             state.totalCoins = state.totalCoins - totalPrice;
         },
+        setInventory: (state, action: PayloadAction<InventoryItem[]>) => {
+            state.inventory = action.payload
+        },
 
         spendReward: (state, action: PayloadAction<{item: InventoryItem, quantity: number}>) => {
             const { item, quantity } = action.payload;
@@ -154,12 +120,15 @@ export const RewardsSlice = createSlice({
 })
 
 export const {
+    setCoins,
     addToCoins,
-    subtractCoins,
+    subtractFromCoins,
+    setShopItems,
     addItemToShop,
     editItemInShop,
     deleteItemFromShop,
     buyItem,
+    setInventory,
     spendReward
 } = RewardsSlice.actions;
 

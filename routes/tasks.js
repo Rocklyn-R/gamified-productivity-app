@@ -10,6 +10,11 @@ const {
     editTask,
     deleteTask
 } = require('../controllers/tasks');
+const {
+    createCoins,
+    addCoins,
+    subtractCoins,
+} = require('../controllers/coins');
 
 const tasksRouter = express.Router();
 
@@ -26,7 +31,7 @@ tasksRouter.get('/history', checkAuthenticated, getHistoryTasks);
 
 tasksRouter.put('/edit-task', checkAuthenticated, editTask);
 
-tasksRouter.delete('/delete-task', checkAuthenticated, deleteTask);
+tasksRouter.delete('/delete-task', deleteTask);
 
 tasksRouter.put('/update-completion-status', checkAuthenticated, changeTaskCompletionStatus);
 

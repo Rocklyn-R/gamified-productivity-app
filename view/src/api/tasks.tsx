@@ -12,6 +12,7 @@ export const getTasks = async () => {
         const data = await response.json();
 
         if (response.ok) {
+            console.log(data.tasks);
             const reversedTasks = data.tasks.reverse();
             return reversedTasks;
         } else return [];
@@ -101,7 +102,8 @@ export const getHistoryTasks = async () => {
         })
         const data = await response.json();
         if (response.ok) {
-            return data.historyTasks;
+             const reversedTasks = data.historyTasks.reverse();
+            return reversedTasks;
         } else return [];
 
     } catch (error) {
@@ -134,7 +136,7 @@ export const updateTask = async (
     } catch (error) {
         throw error;
     }
-}
+};
 
 export const deleteTask = async (id: string) => {
     try {
@@ -154,4 +156,4 @@ export const deleteTask = async (id: string) => {
     } catch (error) {
         throw error;
     }
-}
+};

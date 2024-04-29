@@ -45,8 +45,6 @@ export const ViewInventoryItem: React.FC<ViewInventoryItemProps> = ({ selectedIn
             <img alt="" src={renderIcon(selectedInventoryItem.icon)} height="40" width="40" />
             <p>Name: {selectedInventoryItem.name}</p>
             {selectedInventoryItem.description && <p>Description: {selectedInventoryItem.description}</p>}
-            <p className='view-item-price-details'>Purchased for <FaCoins className="coins-icon view-coins-icon" />{selectedInventoryItem.price} </p>
-
             {selectedInventoryItem.quantity > 1 && (
                     <QuantityInput 
                         quantity={quantity}

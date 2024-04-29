@@ -6,7 +6,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const initializePassport = require('./config/passport.js');
 const flash = require('express-flash');
-const { findUserByEmail, findUserById } = require('./models/user');
+
 
 
 initializePassport(passport);
@@ -43,12 +43,18 @@ const tasksRouter = require('./routes/tasks');
 const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
 const profileRouter = require('./routes/profile');
+const coinsRouter = require('./routes/coins');
+const shopRouter = require('./routes/shop');
+const inventoryRouter = require('./routes/inventory');
 
 app.use('/signup', signUpRouter);
 app.use('/tasks', tasksRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/profile', profileRouter);
+app.use('/coins', coinsRouter);
+app.use('/shop-rewards', shopRouter);
+app.use('/inventory', inventoryRouter);
 
 
 app.listen(PORT, () => {

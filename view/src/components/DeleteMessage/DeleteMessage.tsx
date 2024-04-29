@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { removeTask, deleteTaskFromHistory } from "../../store/TasksSlice";
 import { deleteItemFromShop } from "../../store/RewardsSlice";
 import { deleteTask } from "../../api/tasks";
+import { deleteShopItem } from "../../api/shop";
 
 
 interface DeleteMessageProps {
@@ -46,8 +47,11 @@ export const DeleteMessage: React.FC<DeleteMessageProps> = ({
         }
 
         if (selectedReward && handleHideReward) {
-            dispatch(deleteItemFromShop(selectedReward));
-            handleHideReward();
+            const shopItemDeletion = await deleteShopItem(selectedReward.id);
+            if (shopItemDeletion) {
+                dispatch(deleteItemFromShop(selectedReward));
+                handleHideReward();
+            }
         }
 
         hideDeleteMessage();

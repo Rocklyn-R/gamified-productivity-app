@@ -10,6 +10,8 @@ import { buyItem, selectTotalCoins } from '../../../store/RewardsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { renderIcon } from '../../../utilities/utilities';
 import { QuantityInput } from '../../../components/QuantityInput/QuantityInput';
+import { purchaseShopItem } from '../../../api/shop';
+import { v4 as uuidv4 } from "uuid";
 
 interface ViewRewardProps {
     selectedReward: Reward;
@@ -44,12 +46,16 @@ export const ViewReward: React.FC<ViewRewardProps> = ({ selectedReward, handleHi
         setEditMode(false);
     }
 
-    const handleBuyItem = () => {
+    const handleBuyItem = async () => {
         if (selectedReward.price > totalCoins || (selectedReward.price * quantity > totalCoins)) {
             setPurchaseFailed(true);
         } else {
-            dispatch(buyItem({ reward: selectedReward, quantity: quantity }));
-            handleHideReward();
+            const id = uuidv4();
+            const itemPurchase = await purchaseShopItem(id, selectedReward.id, quantity);
+            if (itemPurchase) {
+                dispatch(buyItem({ reward: selectedReward, quantity: quantity }));
+                handleHideReward();
+            }
         }
     }
 
