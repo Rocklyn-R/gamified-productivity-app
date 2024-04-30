@@ -15,7 +15,7 @@ import { FaXmark } from "react-icons/fa6";
 import { NameForm } from "./ProfileForms/NameForm";
 import { EmailForm } from "./ProfileForms/EmailForm";
 import { PasswordForm } from "./ProfileForms/PasswordForm";
-import { useAuthorizationCheck } from "../../components/Authorization/AuthorizationCheck";
+import { useAuthorizationCheck } from "../../hooks/AuthorizationCheck";
 
 
 

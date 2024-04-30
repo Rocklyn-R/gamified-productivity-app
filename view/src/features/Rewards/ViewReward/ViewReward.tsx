@@ -12,6 +12,7 @@ import { renderIcon } from '../../../utilities/utilities';
 import { QuantityInput } from '../../../components/QuantityInput/QuantityInput';
 import { purchaseShopItem } from '../../../api/shop';
 import { v4 as uuidv4 } from "uuid";
+import { subtractCoins } from '../../../api/coins';
 
 interface ViewRewardProps {
     selectedReward: Reward;
@@ -53,6 +54,9 @@ export const ViewReward: React.FC<ViewRewardProps> = ({ selectedReward, handleHi
             const id = uuidv4();
             const itemPurchase = await purchaseShopItem(id, selectedReward.id, quantity);
             if (itemPurchase) {
+                console.log(selectedReward.price);
+                const coinsToSubtract = selectedReward.price * quantity;
+                await subtractCoins(coinsToSubtract);
                 dispatch(buyItem({ reward: selectedReward, quantity: quantity }));
                 handleHideReward();
             }

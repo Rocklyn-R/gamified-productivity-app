@@ -10,11 +10,15 @@ import { ViewInventoryItem } from "./ViewInventoryItem/ViewInventoryItem";
 import { InventoryItem } from "../../types/types";
 import { GrHistory } from "react-icons/gr";
 import { getInventoryItems } from "../../api/inventory";
-import { useAuthorizationCheck } from "../../components/Authorization/AuthorizationCheck";
-
+import { useAuthorizationCheck } from "../../hooks/AuthorizationCheck";
+import { useCoinsFetch } from "../../hooks/CoinsFetch";
+import { useRewardHistoryFetch } from "../../hooks/RewardHistoryFetch";
 
 export const InventoryPage = () => {
     useAuthorizationCheck();
+    useCoinsFetch();
+    useRewardHistoryFetch();
+    
     const totalCoins = useSelector(selectTotalCoins);
     const inventory = useSelector(selectInventory);
     const [showItemDetails, setShowItemDetails] = useState(false);

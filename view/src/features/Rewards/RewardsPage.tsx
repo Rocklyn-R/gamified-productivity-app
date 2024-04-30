@@ -10,11 +10,13 @@ import { RewardItem } from './RewardItem/RewardItem';
 import { ViewReward } from './ViewReward/ViewReward';
 import { Reward } from '../../types/types';
 import { getShopItems } from '../../api/shop';
-import { useAuthorizationCheck } from '../../components/Authorization/AuthorizationCheck';
-
+import { useAuthorizationCheck } from '../../hooks/AuthorizationCheck';
+import { useCoinsFetch } from '../../hooks/CoinsFetch';
 
 export const RewardsPage = () => {
     useAuthorizationCheck();
+    useCoinsFetch();
+    
     const totalCoins = useSelector(selectTotalCoins);
     const [showForm, setShowForm] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);

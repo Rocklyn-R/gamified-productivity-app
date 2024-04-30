@@ -7,6 +7,10 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Link } from "react-router-dom";
 import { createNewUser } from "../../../api/signup";
 import { useNavigate } from 'react-router-dom';
+import { authenticateUser } from "../../../store/UserSlice";
+import { useDispatch } from "react-redux";
+import { createPomodoro } from "../../../api/pomodoro";
+import { v4 as uuidv4 } from "uuid";
 
 
 export const SignUp = () => {
@@ -17,6 +21,7 @@ export const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
 
     const handleTogglePasswordVisibility = () => {
@@ -29,9 +34,14 @@ export const SignUp = () => {
             const response = await createNewUser(name, lastName, email, password);
             if (response === 'User with this email already exists') {
                 setErrorMessage("User with this email already exists. Try a different email")
-            } else {
+            } else if (response === 'Success') {
+                dispatch(authenticateUser());
+                const pomodoroId = uuidv4();
+                const pomodoroCreation = await createPomodoro(pomodoroId);
                 setErrorMessage("");
-                navigate('/tasks');
+                navigate('/tasks');  
+            } else {
+                setErrorMessage('Failed to sign up');
             }
         } catch (error: any) {
             setErrorMessage("Failed to sign up")

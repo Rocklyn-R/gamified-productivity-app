@@ -133,3 +133,10 @@ export const formatDate = (dateStr: string) => {
     parts[2] = parts[2].slice(-2);
     return parts.join('/');
 }
+
+export const getFormattedDate = () => {
+    const currentDate = new Date();
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const formattedDate = currentDate.toLocaleDateString('en-US', options);
+    return formattedDate;
+}

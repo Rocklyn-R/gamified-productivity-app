@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { authenticateUser, unauthenticateUser, selectIsAuthenticated } from "../../store/UserSlice";
-import { checkAuthentication } from "../../api/login";
+import { authenticateUser, unauthenticateUser, selectIsAuthenticated } from "../store/UserSlice";
+import { checkAuthentication } from "../api/login";
 
-export const useAuthorizationCheck = () => {
+export const useAuthorizationCheck = (callback?: () => void) => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(selectIsAuthenticated)
 
@@ -20,9 +20,13 @@ export const useAuthorizationCheck = () => {
         }
       } catch (error) {
         console.error('Error checking authentication:', error);
+      } finally {
+        if (callback) {
+          callback();
+        }
       }
     };
-
+    
     // Trigger authentication check when component mounts or when isAuthenticated changes
     authorizationCheck();
   }, [dispatch]);

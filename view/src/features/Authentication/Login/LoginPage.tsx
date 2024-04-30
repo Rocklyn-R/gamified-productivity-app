@@ -8,7 +8,9 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { logInUser } from '../../../api/login';
 import { authenticateUser } from '../../../store/UserSlice';
 import { useDispatch } from 'react-redux';
-import { useAuthorizationCheck } from '../../../components/Authorization/AuthorizationCheck';
+import { useAuthorizationCheck } from '../../../hooks/AuthorizationCheck';
+import { getPomodoro } from '../../../api/pomodoro';
+import { setPomodoro } from '../../../store/PomodoroSlice';
 
 
 export const LoginPage = () => {
@@ -24,6 +26,15 @@ export const LoginPage = () => {
         setShowPassword(!showPassword);
     }
 
+    const pomodoroFetch = async () => {
+        try {
+            const pomodoroData = await getPomodoro();
+            console.log(pomodoroData);
+            dispatch(setPomodoro(pomodoroData));
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const handleSubmitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -32,14 +43,17 @@ export const LoginPage = () => {
             // Make a POST request to your server's signup endpoint using fetch
             const response = await logInUser(email, password);
 
-            if (!response.ok) {
+            if (!response) {
                 setErrorMessage('Incorrect email or password. Try again.');
                 setEmail('');
                 setPassword('');
                 return;
+            } else if (response === 'Internal Server Error'){
+                setErrorMessage('Internal server error')
             } else {
                 setErrorMessage('');
                 dispatch(authenticateUser());
+                pomodoroFetch();
                 navigate('/tasks');
             }
 

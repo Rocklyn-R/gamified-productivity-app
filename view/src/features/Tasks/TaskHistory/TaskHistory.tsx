@@ -10,10 +10,12 @@ import { Task } from '../../../types/types';
 import { ViewTask } from '../ViewTask/ViewTask';
 import { selectTotalCoins } from '../../../store/RewardsSlice';
 import { FaCoins } from 'react-icons/fa';
-import { setHistoryTasks } from '../../../store/TasksSlice';
-import { getHistoryTasks } from '../../../api/tasks';
+import { useTaskHistoryFetch } from '../../../hooks/TaskHistoryFetch';
+import { useAuthorizationCheck } from '../../../hooks/AuthorizationCheck';
 
 export const TaskHistory = () => {
+    useAuthorizationCheck();
+    useTaskHistoryFetch();
     const historyTasks = useSelector(selectHistoryTasks);
     const totalCoins = useSelector(selectTotalCoins)
     const [viewHistoryTask, setViewHistoryTask] = useState(false);
@@ -29,19 +31,6 @@ export const TaskHistory = () => {
     })
     const overlayRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        const fetchHistoryTasks = async () => {
-            try {
-                const historyTaskData = await getHistoryTasks();
-                dispatch(setHistoryTasks(historyTaskData));
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchHistoryTasks();
-    }, [dispatch]);
 
     const handleViewHistoryTask = (task: Task) => {
         setViewHistoryTask(true);

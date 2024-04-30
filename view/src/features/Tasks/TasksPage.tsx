@@ -17,11 +17,13 @@ import { FaCoins } from 'react-icons/fa';
 import { day, date } from '../../utilities/utilities';
 import { getTasks, changeToOverDue, getHistoryTasks } from '../../api/tasks';
 import { getCoins } from '../../api/coins';
-import { useAuthorizationCheck } from '../../components/Authorization/AuthorizationCheck';
+import { useAuthorizationCheck } from '../../hooks/AuthorizationCheck';
+import { useTaskHistoryFetch } from '../../hooks/TaskHistoryFetch';
 
 export const Tasks = () => {
     useAuthorizationCheck();
-
+    useTaskHistoryFetch();
+    
     const tasks = useSelector(selectTasks);
     const [showForm, setShowForm] = useState(false);
     const [showTask, setShowTask] = useState(false);
@@ -56,18 +58,6 @@ export const Tasks = () => {
         }
         fetchTasks();
 
-    }, [dispatch]);
-
-    useEffect(() => {
-        const fetchHistoryTasks = async () => {
-            try {
-                const historyTaskData = await getHistoryTasks();
-                dispatch(setHistoryTasks(historyTaskData));
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchHistoryTasks();
     }, [dispatch]);
 
     useEffect(() => {

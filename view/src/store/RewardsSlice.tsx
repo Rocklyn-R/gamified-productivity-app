@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
-import { InventoryItem, Reward, RewardsState } from "../types/types";
+import { InventoryItem, Reward, RewardsState, UsedRewards } from "../types/types";
 
 const currentDate = new Date();
 const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -13,24 +13,7 @@ export const RewardsSlice = createSlice({
         totalCoins: 0,
         shop: [],
         inventory: [],
-        usedRewards: [
-            {
-                name: "Movie",
-                price: 50,
-                description: "2 hour long",
-                id: "124sdfgd23",
-                icon: "movie",
-                dateUsed: "02/14/2014"
-            },
-            {
-                name: "Movie",
-                price: 50,
-                description: "2 hour long",
-                id: "124sdfgd23",
-                icon: "movie",
-                dateUsed: "02/14/2014"
-            }
-        ]
+        usedRewards: []
     } as RewardsState,
 
     reducers: {
@@ -91,6 +74,9 @@ export const RewardsSlice = createSlice({
         setInventory: (state, action: PayloadAction<InventoryItem[]>) => {
             state.inventory = action.payload
         },
+        setUsedRewards: (state, action: PayloadAction<UsedRewards[]>) => {
+            state.usedRewards = action.payload;
+        },
 
         spendReward: (state, action: PayloadAction<{item: InventoryItem, quantity: number}>) => {
             const { item, quantity } = action.payload;
@@ -110,11 +96,13 @@ export const RewardsSlice = createSlice({
                 description: item.description,
                 id: item.id,
                 icon: item.icon,
-                dateUsed: formattedDate
+                date_used: formattedDate
             });
             }
-           
-
+        },
+        deleteUsedReward: (state, action: PayloadAction<UsedRewards>) => {
+            const { id } = action.payload;
+            state.usedRewards = state.usedRewards.filter(item => item.id !== id);
         }
     }
 })
@@ -129,13 +117,16 @@ export const {
     deleteItemFromShop,
     buyItem,
     setInventory,
-    spendReward
+    setUsedRewards,
+    spendReward,
+    deleteUsedReward
 } = RewardsSlice.actions;
 
 export const selectTotalCoins = (state: RootState) => state.rewards.totalCoins;
 export const selectItemsInShop = (state: RootState) => state.rewards.shop;
 export const selectInventory = (state: RootState) => state.rewards.inventory;
 export const selectUsedRewards = (state: RootState) => state.rewards.usedRewards;
+
 
 
 
