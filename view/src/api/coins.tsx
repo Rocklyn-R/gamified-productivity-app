@@ -34,7 +34,6 @@ export const subtractCoins = async (coins: number) => {
 
 export const addCoins = async (coins: number) => {
     try {
-        console.log(JSON.stringify({ coins: coins }))
         const response = await fetch('http://localhost:4000/coins/add-coins', {
             method: 'PUT',
             headers: {

@@ -20,7 +20,7 @@ const coinsGet = async (id) => {
     }
 };
 
-const coinsAdd = async (coinw, id) => {
+const coinsAdd = async (coins, id) => {
     const query = 'UPDATE coins SET total_coins = total_coins + $1 WHERE user_id = $2';
     try {
         const result = await db.query(query, [coins, id]);

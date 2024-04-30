@@ -15,7 +15,6 @@ export const createNewUser = async (name: string, lastName: string, email: strin
             credentials: 'include'
         });
         if (response.ok) {
-            console.log('Success');
             return 'Success';
         } else {
             const data = await response.json();

@@ -13,7 +13,6 @@ const createUserController = async (req, res, next) => {
                 console.error('Error logging in user:', err);
                 res.status(500).json({ message: 'Failed to log in user' });
             } else {
-                //res.status(201).send();
                 next();
             }
         })

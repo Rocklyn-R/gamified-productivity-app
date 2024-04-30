@@ -1,6 +1,5 @@
 const ensureAuthenticatedOnLoginSignup = (req, res, next) => {
     if (req.isAuthenticated()) {
-        "User is authenticated"
        res.status(401).send();
     }
     next();

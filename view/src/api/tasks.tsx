@@ -12,7 +12,6 @@ export const getTasks = async () => {
         const data = await response.json();
 
         if (response.ok) {
-            console.log(data.tasks);
             const reversedTasks = data.tasks.reverse();
             return reversedTasks;
         } else return [];
@@ -69,7 +68,7 @@ export const changeToOverDue = async (id: string) => {
     } catch (error) {
         throw error;
     }
-}
+};
 
 export const changeCompletionStatus = async (completion_status: string, id: string, path: string) => {
     try {
@@ -89,7 +88,7 @@ export const changeCompletionStatus = async (completion_status: string, id: stri
     } catch (error) {
         throw error;
     }
-}
+};
 
 export const getHistoryTasks = async () => {
     try {
@@ -109,7 +108,7 @@ export const getHistoryTasks = async () => {
     } catch (error) {
         throw error;
     }
-}
+};
 
 export const updateTask = async (
     id: string,

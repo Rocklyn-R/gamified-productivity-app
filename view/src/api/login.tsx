@@ -1,5 +1,6 @@
 export const logInUser = async (email: string, password: string) => {
-    const response = await fetch('http://localhost:4000/login', {
+    try {
+        const response = await fetch('http://localhost:4000/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -10,7 +11,17 @@ export const logInUser = async (email: string, password: string) => {
         }),
         credentials: 'include'
     });
-    return response;
+        if (response.status === 401) {
+            return true;
+        } 
+        if (!response.ok) {
+            throw new Error('Internal server error')
+        }
+        return true;
+    } catch (error) {
+        return "Internal Server Error";
+    }
+    
 }
 
 export const checkAuthentication = async () => {

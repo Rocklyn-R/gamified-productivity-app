@@ -35,10 +35,21 @@ const inventoryItemsGet = async (id) => {
     } catch (error) {
         throw (error);
     }
+};
+
+const inventoryItemUse = async (id, quantity) => {
+    const query = 'UPDATE inventory SET quantity = quantity - $1 WHERE shop_item_id = $2';
+    try {
+        const result = await db.query(query, [quantity, id]);
+        return result;
+    } catch (error) {
+        throw error;
+    }
 }
 
 
 module.exports = {
     itemPurchase,
-    inventoryItemsGet
+    inventoryItemsGet,
+    inventoryItemUse
 }

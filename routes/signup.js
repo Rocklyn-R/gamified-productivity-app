@@ -3,6 +3,7 @@ const router = express.Router();
 const { createUserController } = require('../controllers/user');
 const { createCoins } = require('../controllers/coins');
 
+
 const signUpRouter = express.Router();
 
 signUpRouter.post('/', createUserController, createCoins);

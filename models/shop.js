@@ -32,13 +32,15 @@ const shopItemEdit = async (id, name, description, price, icon) => {
 
 const shopItemDelete = async (id) => {
     const inventoryCheckQuery = 'SELECT 1 FROM inventory WHERE shop_item_id = $1';
+    const rewardHistoryCheckQuery = 'SELECT 1 FROM reward_history WHERE shop_item_id = $1';
     try {
         const inventoryCheckResult = await db.query(inventoryCheckQuery, [id]);
-        if (inventoryCheckResult.rows.length === 0) {
+        const rewardHistoryCheckResult = await db.query(rewardHistoryCheckQuery, [id]);
+        if (inventoryCheckResult.rows.length === 0 && rewardHistoryCheckResult.rows.length === 0) {
             const deleteQuery = 'DELETE FROM shop WHERE id = $1';
             const deleteResult = await db.query(deleteQuery, [id]);
             return deleteResult;
-        } else if (inventoryCheckResult.rows.length > 0) {
+        } else if (inventoryCheckResult.rows.length > 0 || rewardHistoryCheckResult.rows.length > 0) {
             const updateQuery = 'UPDATE shop SET deleted = $1 WHERE id = $2'
             const updateResult = await db.query(updateQuery, [true, id]);
             return updateResult;
