@@ -10,9 +10,6 @@ import { selectWorkMinutes,
     selectNumOfSessionsToLongBreak, 
     setLongBreakMinutes, 
     setNumOfSessionsToLongBreak,
-    selectWorkMinutesQueued,
-    selectBreakMinutesQueued,
-    selectLongBreakMinutesQueued 
 } from "../../../store/PomodoroSlice";
 import { useDispatch } from "react-redux";
 import { setWorkMinutes, setBreakMinutes, setSellingPrice } from "../../../store/PomodoroSlice";
@@ -28,13 +25,10 @@ export const Settings: React.FC<SettingsProps> = ({ handleCloseSettings }) => {
     const breakMinutes = useSelector(selectBreakMinutes);
     const longBreakMinutes = useSelector(selectLongBreakMinutes);
     const numOfSessionsToLongBreak = useSelector(selectNumOfSessionsToLongBreak);
-    const workMinutesQueued = useSelector(selectWorkMinutesQueued);
-    const breakMinutesQueued = useSelector(selectBreakMinutesQueued);
-    const longBreakMinutesQueued = useSelector(selectLongBreakMinutesQueued);
 
-    const [workMinutesLocal, setWorkMinutesLocal] = useState(workMinutesQueued || workMinutes);
-    const [breakMinutesLocal, setBreakMinutesLocal] = useState(breakMinutesQueued || breakMinutes);
-    const [longBreakMinutesLocal, setLongBreakMinutesLocal] = useState(longBreakMinutesQueued || longBreakMinutes);
+    const [workMinutesLocal, setWorkMinutesLocal] = useState(workMinutes);
+    const [breakMinutesLocal, setBreakMinutesLocal] = useState(breakMinutes);
+    const [longBreakMinutesLocal, setLongBreakMinutesLocal] = useState(longBreakMinutes);
     const [numOfSessionsToLongBreakLocal, setNumOfSessionsToLongBreakLocal] = useState(numOfSessionsToLongBreak);
     const pomodoroPrice = useSelector(selectPomodoroPrice);
     const [priceOfTomato, setPriceOfTomato] = useState(pomodoroPrice);

@@ -48,7 +48,7 @@ export interface UsedRewards {
     description: string;
     id: string;
     icon: string;
-    dateUsed: string;
+    date_used: string;
 }
 
 
@@ -61,19 +61,19 @@ export interface RewardsState {
 }
 
 export interface PomodoroState {
-    secondsLeft: number;
-    isPaused: boolean;
-    workMinutes: number;
-    breakMinutes: number;
-    longBreakMinutes: number;
-    workMinutesQueued: null | number;
-    breakMinutesQueued: null | number;
-    longBreakMinutesQueued: null | number;
-    numOfSessionsToLongBreak: number;
-    sessionsRemaining: number;
-    mode: "work" | "break" | "longBreak";
+    seconds_left: number;
+    is_paused: boolean;
+    work_mins: number;
+    break_mins: number;
+    long_break_mins: number;
+    //work_mins_queued: null | number;
+    //break_mins_queued: null | number;
+    //long_break_mins_queued: null | number;
+    num_sessions_to_long_break: number;
+    sessions_remaining: number;
+    timer_mode: "work" | "break" | "longBreak";
     pomodoros: number;
-    pomodoroPrice: number;
+    pomodoro_price: number;
 }
 
 export interface UserState {

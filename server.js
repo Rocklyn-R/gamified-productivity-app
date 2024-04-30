@@ -46,6 +46,8 @@ const profileRouter = require('./routes/profile');
 const coinsRouter = require('./routes/coins');
 const shopRouter = require('./routes/shop');
 const inventoryRouter = require('./routes/inventory');
+const pomodoroRouter = require('./routes/pomodoro');
+
 
 app.use('/signup', signUpRouter);
 app.use('/tasks', tasksRouter);
@@ -55,6 +57,8 @@ app.use('/profile', profileRouter);
 app.use('/coins', coinsRouter);
 app.use('/shop-rewards', shopRouter);
 app.use('/inventory', inventoryRouter);
+app.use('/pomodoro', pomodoroRouter);
+
 
 
 app.listen(PORT, () => {

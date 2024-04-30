@@ -19,8 +19,6 @@ import {
     skip,
     selectLongBreakMinutes,
     selectPomodoros,
-    applyQueuedSettings,
-    applyQueuedSettingsAtReset
 } from "../../../store/PomodoroSlice";
 import { BsFillSkipEndFill } from "react-icons/bs";
 import tomato from "../../../images/tomato.png";
@@ -80,18 +78,15 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
 
 
     const playTimer = () => {
-        dispatch(applyQueuedSettings());
         dispatch(play());
         startTimer();
     }
 
     const resetTimer = () => {
-        dispatch(applyQueuedSettingsAtReset());
         dispatch(reset());
     }
 
     const skipTimer = () => {
-        dispatch(applyQueuedSettings());
         dispatch(skip());
     }
 

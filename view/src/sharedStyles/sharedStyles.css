@@ -63,6 +63,30 @@
     margin-right: .5rem;
 }
 
+.edit-delete-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.edit-task-icon, .edit-reward-icon {
+    font-size: 1.4em;
+}
+
+.delete-task-icon, .delete-reward-icon {
+    font-size: 1.4em;
+}
+
+.edit-task, .delete-task, .edit-reward, .delete-reward {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-delete-buttons button:hover {
+    color: lightblue;
+}
+
+
 .overlay, .overdue-task-overlay {
     position: fixed;
     top: 0;

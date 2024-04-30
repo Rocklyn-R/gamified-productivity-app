@@ -6,9 +6,6 @@ import {
     selectBreakMinutes,
     selectLongBreakMinutes,
     selectNumOfSessionsToLongBreak,
-    selectWorkMinutesQueued,
-    selectBreakMinutesQueued,
-    selectLongBreakMinutesQueued,
     selectPomodoroPrice,
     setWorkMinutes,
     setBreakMinutes,
@@ -32,17 +29,14 @@ interface SettingsMobileProps {
 
 export const SettingsMobile: React.FC<SettingsMobileProps> = ({ handleCloseSettings }) => {
     const workMinutes = useSelector(selectWorkMinutes);
-    const workMinutesQueued = useSelector(selectWorkMinutesQueued);
-    const [workMinutesLocal, setWorkMinutesLocal] = useState(workMinutesQueued || workMinutes)
+    const [workMinutesLocal, setWorkMinutesLocal] = useState(workMinutes)
 
     const breakMinutes = useSelector(selectBreakMinutes);
-    const breakMinutesQueued = useSelector(selectBreakMinutesQueued);
-    const [breakMinutesLocal, setBreakMinutesLocal] = useState(breakMinutesQueued || breakMinutes);
+    const [breakMinutesLocal, setBreakMinutesLocal] = useState(breakMinutes);
 
 
     const longBreakMinutes = useSelector(selectLongBreakMinutes);
-    const longBreakMinutesQueued = useSelector(selectLongBreakMinutesQueued);
-    const [longBreakMinutesLocal, setLongBreakMinutesLocal] = useState(longBreakMinutesQueued || longBreakMinutes);
+    const [longBreakMinutesLocal, setLongBreakMinutesLocal] = useState(longBreakMinutes);
 
 
     const numOfSessionsToLongBreak = useSelector(selectNumOfSessionsToLongBreak);

@@ -5,127 +5,120 @@ import { RootState } from "./store";
 export const PomodoroSlice = createSlice({
     name: "pomodoro",
     initialState: {
-        secondsLeft: 10,
-        isPaused: true,
-        mode: "work",
-        workMinutes: 25,
-        breakMinutes: 5,
-        longBreakMinutes: 15,
-        workMinutesQueued: null,
-        breakMinutesQueued: null,
-        longBreakMinutesQueued: null,
-        numOfSessionsToLongBreak: 4,
-        sessionsRemaining: 4,
-        pomodoros: 10,
-        pomodoroPrice: 10,
+        seconds_left: 1500,
+        is_paused: true,
+        work_mins: 25,
+        break_mins: 5,
+        long_break_mins: 15,
+        num_sessions_to_long_break: 4,
+        sessions_remaining: 4,
+        timer_mode: "work",
+        pomodoros: 0,
+        pomodoro_price: 10
     } as PomodoroState,
     reducers: {
+        setPomodoro: (state, action: PayloadAction<PomodoroState>) => {
+            const {
+                seconds_left,
+                is_paused,
+                work_mins,
+                break_mins,
+                long_break_mins,
+                num_sessions_to_long_break,
+                sessions_remaining,
+                timer_mode,
+                pomodoros,
+                pomodoro_price
+            } = action.payload;
+            return action.payload;
+        },
         setWorkMinutes: (state, action: PayloadAction<number>) => {
-            state.workMinutesQueued = action.payload;
+            state.work_mins = action.payload;
+            if (state.timer_mode === "work") {
+                state.seconds_left = state.work_mins * 60;
+            }
         },
         setBreakMinutes: (state, action: PayloadAction<number>) => {
-            state.breakMinutesQueued = action.payload;
+            state.break_mins = action.payload;
+            if (state.timer_mode === 'break') {
+                state.seconds_left = state.work_mins * 60;
+            }
         },
         setLongBreakMinutes: (state, action: PayloadAction<number>) => {
-            state.longBreakMinutesQueued = action.payload;
+            state.long_break_mins = action.payload;
+            if (state.timer_mode === 'longBreak') {
+                state.seconds_left = state.long_break_mins * 60;
+            }
         },
         setNumOfSessionsToLongBreak: (state, action: PayloadAction<number>) => {
-            const completedSessions = state.numOfSessionsToLongBreak - state.sessionsRemaining;
-            state.numOfSessionsToLongBreak = action.payload;
-            state.sessionsRemaining = action.payload - completedSessions;
+            const completedSessions = state.num_sessions_to_long_break - state.sessions_remaining;
+            state.num_sessions_to_long_break = action.payload;
+            state.sessions_remaining = action.payload - completedSessions;
         },
         play: (state) => {
-            state.isPaused = false;
+            state.is_paused = false;
         },
         pause: (state) => {
-            state.isPaused = true;
-        },
-        applyQueuedSettings: (state) => {
-            if (state.workMinutesQueued && state.mode !== "work") {
-                state.workMinutes = state.workMinutesQueued;
-                state.workMinutesQueued = null;
-            }
-            if (state.breakMinutesQueued && state.mode !== "break") {
-                state.breakMinutes = state.breakMinutesQueued;
-                state.breakMinutesQueued = null;
-            }
-            if (state.longBreakMinutesQueued && state.mode !== "longBreak") {
-                state.longBreakMinutes = state.longBreakMinutesQueued;
-                state.longBreakMinutesQueued = null;
-            }
-        },
-        applyQueuedSettingsAtReset: (state) => {
-            if (state.workMinutesQueued) {
-                state.workMinutes = state.workMinutesQueued;
-                state.workMinutesQueued = null;
-            }
-            if (state.breakMinutesQueued) {
-                state.breakMinutes = state.breakMinutesQueued;
-                state.breakMinutesQueued = null;
-            }
-            if (state.longBreakMinutesQueued) {
-                state.longBreakMinutes = state.longBreakMinutesQueued;
-                state.longBreakMinutesQueued = null;
-            }
+            state.is_paused = true;
         },
         tick: (state) => {
-            if (state.isPaused) {
+            if (state.is_paused) {
                 return;
             }
-            if (state.secondsLeft === 0) {
-                state.isPaused = true;
-                
-                if (state.mode === 'work' && state.sessionsRemaining > 1) {
-                    state.mode = 'break';
-                    state.secondsLeft = state.breakMinutes * 60;
+            if (state.seconds_left === 0) {
+                state.is_paused = true;
+
+                if (state.timer_mode === 'work' && state.sessions_remaining > 1) {
+                    state.timer_mode = 'break';
+                    state.seconds_left = state.break_mins * 60;
                     state.pomodoros = state.pomodoros + 1;
-                    state.sessionsRemaining = state.sessionsRemaining - 1;
-                } else if (state.mode === "work" && state.sessionsRemaining === 1) {
-                    state.mode ="longBreak";
-                    state.secondsLeft = state.longBreakMinutes * 60;
-                    state.sessionsRemaining = 0;
+                    state.sessions_remaining = state.sessions_remaining - 1;
+                } else if (state.timer_mode === "work" && state.sessions_remaining === 1) {
+                    state.timer_mode = "longBreak";
+                    state.seconds_left = state.long_break_mins * 60;
+                    state.sessions_remaining = 0;
                     state.pomodoros = state.pomodoros + 1;
-                } else if (state.mode === "longBreak") {
-                    state.mode = "work";
-                    state.secondsLeft = state.workMinutes * 60;
-                    state.sessionsRemaining = state.numOfSessionsToLongBreak;
+                } else if (state.timer_mode === "longBreak") {
+                    state.timer_mode = "work";
+                    state.seconds_left = state.work_mins * 60;
+                    state.sessions_remaining = state.num_sessions_to_long_break;
                 } else {
-                    state.mode = "work";
-                    state.secondsLeft = state.workMinutes * 60;
+                    state.timer_mode = "work";
+                    state.seconds_left = state.work_mins * 60;
                 }
             } else {
-                state.secondsLeft = state.secondsLeft - 1;
+                state.seconds_left = state.seconds_left - 1;
             }
         },
         reset: (state) => {
-            state.isPaused = true;
-            if (state.mode === "work") {
-                state.secondsLeft = state.workMinutes * 60;
+            state.is_paused = true;
+            if (state.timer_mode === "work") {
+                state.seconds_left = state.work_mins * 60;
             } else {
-                state.secondsLeft = state.breakMinutes * 60;
+                state.seconds_left = state.break_mins * 60;
             }
         },
         skip: (state) => {
-            state.isPaused = true;
-            if (state.mode === "work" && state.sessionsRemaining > 1) {
-                state.mode = "break";
-                state.secondsLeft = state.breakMinutes * 60;
-                state.sessionsRemaining = state.sessionsRemaining - 1;
-            } else if (state.mode === "work" && state.sessionsRemaining === 1) {
-                state.mode = "longBreak";
-                state.secondsLeft = state.longBreakMinutes * 60;
-                state.sessionsRemaining = 0;
-            } else if (state.mode === "longBreak") {
-                state.mode = "work";
-                state.secondsLeft = state.workMinutes * 60;
-                state.sessionsRemaining = state.numOfSessionsToLongBreak;
+            state.is_paused = true;
+            if (state.timer_mode === "work" && state.sessions_remaining > 1) {
+                state.timer_mode = "break";
+                state.seconds_left = state.break_mins * 60;
+                state.sessions_remaining = state.sessions_remaining - 1;
+            } else if (state.timer_mode === "work" && state.sessions_remaining === 1) {
+                state.timer_mode = "longBreak";
+                state.seconds_left = state.long_break_mins * 60;
+                state.sessions_remaining = 0;
+            } else if (state.timer_mode === "longBreak") {
+                state.timer_mode = "work";
+                state.seconds_left = state.work_mins * 60;
+                state.sessions_remaining = state.num_sessions_to_long_break;
             } else {
-                state.mode = "work";
-                state.secondsLeft = state.workMinutes * 60;
+                state.timer_mode = "work";
+                state.seconds_left = state.work_mins * 60;
             }
         },
         setSellingPrice: (state, action: PayloadAction<number>) => {
-            state.pomodoroPrice = action.payload;
+            state.pomodoro_price = action.payload;
         },
         sellPomodoros: (state, action: PayloadAction<number>) => {
             state.pomodoros = state.pomodoros - action.payload;
@@ -134,14 +127,13 @@ export const PomodoroSlice = createSlice({
 })
 
 export const {
+    setPomodoro,
     setWorkMinutes,
     setBreakMinutes,
     setLongBreakMinutes,
     setNumOfSessionsToLongBreak,
     play,
     pause,
-    applyQueuedSettings,
-    applyQueuedSettingsAtReset,
     tick,
     reset,
     skip,
@@ -149,18 +141,16 @@ export const {
     sellPomodoros
 } = PomodoroSlice.actions
 
-export const selectWorkMinutes = (state: RootState) => state.pomodoro.workMinutes;
-export const selectBreakMinutes = (state: RootState) => state.pomodoro.breakMinutes;
-export const selectLongBreakMinutes = (state: RootState) => state.pomodoro.longBreakMinutes;
-export const selectNumOfSessionsToLongBreak = (state: RootState) => state.pomodoro.numOfSessionsToLongBreak;
-export const selectSessionsRemaining = (state: RootState) => state.pomodoro.sessionsRemaining;
-export const selectIsPaused = (state: RootState) => state.pomodoro.isPaused;
-export const selectSecondsLeft = (state: RootState) => state.pomodoro.secondsLeft;
+export const selectWorkMinutes = (state: RootState) => state.pomodoro.work_mins;
+export const selectBreakMinutes = (state: RootState) => state.pomodoro.break_mins;
+export const selectLongBreakMinutes = (state: RootState) => state.pomodoro.long_break_mins;
+export const selectNumOfSessionsToLongBreak = (state: RootState) => state.pomodoro.num_sessions_to_long_break;
+export const selectSessionsRemaining = (state: RootState) => state.pomodoro.sessions_remaining;
+export const selectIsPaused = (state: RootState) => state.pomodoro.is_paused;
+export const selectSecondsLeft = (state: RootState) => state.pomodoro.seconds_left;
 export const selectPomodoros = (state: RootState) => state.pomodoro.pomodoros;
-export const selectMode = (state: RootState) => state.pomodoro.mode
-export const selectPomodoroPrice = (state: RootState) => state.pomodoro.pomodoroPrice;
-export const selectWorkMinutesQueued = (state: RootState) => state.pomodoro.workMinutesQueued;
-export const selectBreakMinutesQueued = (state: RootState) => state.pomodoro.breakMinutesQueued;
-export const selectLongBreakMinutesQueued = (state: RootState) => state.pomodoro.longBreakMinutesQueued;
+export const selectMode = (state: RootState) => state.pomodoro.timer_mode
+export const selectPomodoroPrice = (state: RootState) => state.pomodoro.pomodoro_price;
+export const selectPomodoroState = (state: RootState) => state.pomodoro;
 
 export default PomodoroSlice.reducer;

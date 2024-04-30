@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navigation } from './features/Navigation/Navigation';
@@ -16,28 +16,21 @@ import { useSelector } from 'react-redux';
 import { checkAuthentication } from './api/login';
 import { authenticateUser } from './store/UserSlice';
 import { useDispatch } from 'react-redux';
-import { useAuthorizationCheck } from './components/Authorization/AuthorizationCheck';
+import { useAuthorizationCheck } from './hooks/AuthorizationCheck';
+import { getPomodoro } from './api/pomodoro';
+import { setPomodoro } from './store/PomodoroSlice';
 
 function App() {
-  useAuthorizationCheck();
+  const [isLoading, setIsLoading] = useState(true);
+  useAuthorizationCheck(() => setIsLoading(false));
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  
 
- /* useEffect(() => {
-    const authorizationCheck = async () => {
-      try {
-        const authenticated = await checkAuthentication();
-        if (authenticated) {
-          dispatch(authenticateUser())
-        } else {
-          dispatch(unauthenticateUser());
-        }
-      } catch (error) {
-        console.error('Error checking authentication:', error);
-      }
-    }
-    authorizationCheck();
-  }, [dispatch, isAuthenticated])*/
+
+  if (isLoading) {
+    return <div></div>
+  }
 
   return (
     <BrowserRouter>

@@ -83,3 +83,35 @@ const inventory = {
     quantity: 3
 }
 
+const usedRewards = [{
+    name: "Movie",
+    price: 50,
+    description: "2 hour long",
+    id: "124sdfgd23",
+    icon: "movie",
+    dateUsed: "02/14/2014"
+},
+{
+    name: "Movie",
+    price: 50,
+    description: "2 hour long",
+    id: "124sdfgd23",
+    icon: "movie",
+    dateUsed: "02/14/2014"
+}];
+
+const pomodoro = {
+    seconds_left: 10,
+    is_paused: true,
+    timer_mode: "work",
+    work_mins: 25,
+    break_mins: 5,
+    long_break_mins: 15,
+    work_mins_queued: null,
+    break_mins_queued: null,
+    long_break_mins_queued: null,
+    num_sessions_to_long_break: 4,
+    sessions_remaining: 4,
+    pomodoros: 10,
+    pomodoro_price: 10,
+};
