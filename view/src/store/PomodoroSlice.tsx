@@ -18,18 +18,6 @@ export const PomodoroSlice = createSlice({
     } as PomodoroState,
     reducers: {
         setPomodoro: (state, action: PayloadAction<PomodoroState>) => {
-            const {
-                seconds_left,
-                is_paused,
-                work_mins,
-                break_mins,
-                long_break_mins,
-                num_sessions_to_long_break,
-                sessions_remaining,
-                timer_mode,
-                pomodoros,
-                pomodoro_price
-            } = action.payload;
             return action.payload;
         },
         setWorkMinutes: (state, action: PayloadAction<number>) => {
@@ -52,8 +40,13 @@ export const PomodoroSlice = createSlice({
         },
         setNumOfSessionsToLongBreak: (state, action: PayloadAction<number>) => {
             const completedSessions = state.num_sessions_to_long_break - state.sessions_remaining;
+            if (completedSessions >= action.payload) {
+                state.sessions_remaining = action.payload;
+            } else {
+                state.sessions_remaining = action.payload - completedSessions;
+            }
             state.num_sessions_to_long_break = action.payload;
-            state.sessions_remaining = action.payload - completedSessions;
+            
         },
         play: (state) => {
             state.is_paused = false;
@@ -152,5 +145,7 @@ export const selectPomodoros = (state: RootState) => state.pomodoro.pomodoros;
 export const selectMode = (state: RootState) => state.pomodoro.timer_mode
 export const selectPomodoroPrice = (state: RootState) => state.pomodoro.pomodoro_price;
 export const selectPomodoroState = (state: RootState) => state.pomodoro;
+
+
 
 export default PomodoroSlice.reducer;

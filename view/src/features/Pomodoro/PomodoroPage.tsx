@@ -12,7 +12,7 @@ import { selectTotalCoins } from "../../store/RewardsSlice";
 import { SettingsMobile } from "./Settings/SettingsMobile/SettingsMobile";
 import { useCoinsFetch } from "../../hooks/CoinsFetch";
 import { useAuthorizationCheck } from "../../hooks/AuthorizationCheck";
-import { getPomodoro } from "../../api/pomodoro";
+
 
 
 export const PomodoroPage = () => {
@@ -37,18 +37,6 @@ export const PomodoroPage = () => {
         }
     };
 
-  /*  useEffect(() => {
-        const pomodoroFetch = async () => {
-            try {
-                const pomodoroData = await getPomodoro();
-                console.log(pomodoroData);
-                dispatch(setPomodoro(pomodoroData));
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        pomodoroFetch();
-    }, [dispatch])*/
 
 
     useEffect(() => {

@@ -8,7 +8,9 @@ import shop from "../../images/shop.png";
 import account from "../../images/account.png";
 import { logoutUser } from '../../api/logout';
 import { unauthenticateUser } from '../../store/UserSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { pausePomodoroTimer } from '../../api/pomodoro';
+import { selectSecondsLeft } from '../../store/PomodoroSlice';
 
 
 
@@ -16,8 +18,10 @@ export const Navigation = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const secondsLeft = useSelector(selectSecondsLeft)
 
     const handleLogout = async () => {
+        await pausePomodoroTimer(secondsLeft);
         setIsDropdownOpen(false);
         await logoutUser();
         dispatch(unauthenticateUser());

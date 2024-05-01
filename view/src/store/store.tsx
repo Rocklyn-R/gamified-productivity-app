@@ -3,6 +3,7 @@ import tasksReducer from "./TasksSlice";
 import rewardsReducer from "./RewardsSlice";
 import pomodoroReducer from "./PomodoroSlice";
 import userReducer from "./UserSlice"
+import { watchTimerModeChanges } from "./storeSubscriptions";
 
 export interface RootState {
     tasks: ReturnType<typeof tasksReducer>;
@@ -11,7 +12,7 @@ export interface RootState {
     user: ReturnType<typeof userReducer>;
 }
 
-export default configureStore({
+const store = configureStore({
     reducer: combineReducers({
         tasks: tasksReducer,
         rewards: rewardsReducer,
@@ -19,3 +20,7 @@ export default configureStore({
         user: userReducer
     })
 })
+
+store.dispatch(watchTimerModeChanges(store));
+
+export default store;

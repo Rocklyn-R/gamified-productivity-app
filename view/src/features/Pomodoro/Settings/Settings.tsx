@@ -3,17 +3,21 @@ import Card from "../../../components/Card/Card";
 import ReactSlider from "react-slider";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectWorkMinutes, 
-    selectBreakMinutes, 
-    selectPomodoroPrice, 
-    selectLongBreakMinutes, 
-    selectNumOfSessionsToLongBreak, 
-    setLongBreakMinutes, 
+import {
+    selectWorkMinutes,
+    selectBreakMinutes,
+    selectPomodoroPrice,
+    selectLongBreakMinutes,
+    selectNumOfSessionsToLongBreak,
+    setLongBreakMinutes,
     setNumOfSessionsToLongBreak,
+    selectMode,
+    selectSessionsRemaining,
 } from "../../../store/PomodoroSlice";
 import { useDispatch } from "react-redux";
 import { setWorkMinutes, setBreakMinutes, setSellingPrice } from "../../../store/PomodoroSlice";
 import { FaCoins } from "react-icons/fa";
+import { updatePomodoroSettings } from "../../../api/pomodoro";
 
 
 interface SettingsProps {
@@ -25,24 +29,36 @@ export const Settings: React.FC<SettingsProps> = ({ handleCloseSettings }) => {
     const breakMinutes = useSelector(selectBreakMinutes);
     const longBreakMinutes = useSelector(selectLongBreakMinutes);
     const numOfSessionsToLongBreak = useSelector(selectNumOfSessionsToLongBreak);
-
+    const timer_mode = useSelector(selectMode);
     const [workMinutesLocal, setWorkMinutesLocal] = useState(workMinutes);
     const [breakMinutesLocal, setBreakMinutesLocal] = useState(breakMinutes);
     const [longBreakMinutesLocal, setLongBreakMinutesLocal] = useState(longBreakMinutes);
     const [numOfSessionsToLongBreakLocal, setNumOfSessionsToLongBreakLocal] = useState(numOfSessionsToLongBreak);
     const pomodoroPrice = useSelector(selectPomodoroPrice);
     const [priceOfTomato, setPriceOfTomato] = useState(pomodoroPrice);
+    const sessionsRemaining = useSelector(selectSessionsRemaining);
 
 
     const dispatch = useDispatch();
 
-    const handleChangeSettings = () => {
-        dispatch(setWorkMinutes(workMinutesLocal));
-        dispatch(setBreakMinutes(breakMinutesLocal));
-        dispatch(setLongBreakMinutes(longBreakMinutesLocal));
-        dispatch(setNumOfSessionsToLongBreak(numOfSessionsToLongBreakLocal));
-        dispatch(setSellingPrice(priceOfTomato));
-        handleCloseSettings();
+    const handleChangeSettings = async () => {
+        const settingsUpdate = await updatePomodoroSettings(
+            timer_mode,
+            workMinutesLocal,
+            breakMinutesLocal,
+            longBreakMinutesLocal,
+            numOfSessionsToLongBreakLocal,
+            sessionsRemaining,
+            priceOfTomato
+        );
+        if (settingsUpdate) {
+            dispatch(setWorkMinutes(workMinutesLocal));
+            dispatch(setBreakMinutes(breakMinutesLocal));
+            dispatch(setLongBreakMinutes(longBreakMinutesLocal));
+            dispatch(setNumOfSessionsToLongBreak(numOfSessionsToLongBreakLocal));
+            dispatch(setSellingPrice(priceOfTomato));
+            handleCloseSettings();
+        }
     }
 
     const handleCancel = () => {

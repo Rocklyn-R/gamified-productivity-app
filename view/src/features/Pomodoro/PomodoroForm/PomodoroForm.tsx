@@ -7,6 +7,8 @@ import "./PomodoroForm.css";
 import tomato from "../../../images/tomato.png";
 import { addToCoins } from "../../../store/RewardsSlice";
 import { QuantityInput } from "../../../components/QuantityInput/QuantityInput";
+import { pomodoroSale } from "../../../api/pomodoro";
+import { addCoins } from "../../../api/coins";
 
 interface PomodoroFormProps {
     hideForm: () => void;
@@ -20,9 +22,11 @@ export const PomodoroForm: React.FC<PomodoroFormProps> = ({ hideForm }) => {
     const priceTotal = numOfPomodoros * pomodoroPrice;
     const dispatch = useDispatch();
 
-    const confirmPomodoroSale = (event: React.FormEvent<HTMLFormElement>) => {
+    const confirmPomodoroSale = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (numOfPomodoros > 0) {
+            await pomodoroSale(numOfPomodoros);
+            await addCoins(priceTotal);
             dispatch(addToCoins(priceTotal));
             dispatch(sellPomodoros(numOfPomodoros));
         }

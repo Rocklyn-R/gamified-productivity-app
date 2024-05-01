@@ -18,14 +18,26 @@ import { authenticateUser } from './store/UserSlice';
 import { useDispatch } from 'react-redux';
 import { useAuthorizationCheck } from './hooks/AuthorizationCheck';
 import { getPomodoro } from './api/pomodoro';
-import { setPomodoro } from './store/PomodoroSlice';
+import { selectSecondsLeft, setPomodoro } from './store/PomodoroSlice';
+import { usePomodoroFetch } from './hooks/PomodoroFetch';
+import { pausePomodoroTimer } from './api/pomodoro';
 
 function App() {
+  usePomodoroFetch();
   const [isLoading, setIsLoading] = useState(true);
   useAuthorizationCheck(() => setIsLoading(false));
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const dispatch = useDispatch();
-  
+  const secondsLeft = useSelector(selectSecondsLeft);
+
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+        await pausePomodoroTimer(secondsLeft);
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    }
+  }, [secondsLeft]);
 
 
   if (isLoading) {
