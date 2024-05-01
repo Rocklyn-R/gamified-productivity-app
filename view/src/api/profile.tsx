@@ -82,3 +82,43 @@ export const updateUserPassword = async (oldPassword: string, newPassword: strin
         console.log(error)
     }
 }
+
+export const createNewPassword = async (password: string) => {
+    try {
+        const response = await fetch('http://localhost:4000/profile/create-new-password', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ password })
+        })
+
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.log(error);
+    } 
+}
+
+export const unlinkUserFromGoogle = async () => {
+    try {
+        const response = await fetch('http://localhost:4000/profile/unlink-from-google', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}

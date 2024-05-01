@@ -10,6 +10,7 @@ export const UserSlice = createSlice({
         firstName: '',
         lastName: '',
         email: '',
+        google_linked: false
     } as UserState,
     reducers: {
         authenticateUser: (state) => {
@@ -26,6 +27,9 @@ export const UserSlice = createSlice({
         },
         setEmail: (state, action) => {
             state.email = action.payload;
+        }, 
+        setGoogleLinked: (state) => {
+            state.google_linked = true;
         }
     }
 })
@@ -35,7 +39,8 @@ export const {
     unauthenticateUser,
     setFirstName,
     setLastName,
-    setEmail
+    setEmail, 
+    setGoogleLinked
 } = UserSlice.actions;
 
 export const selectIsAuthenticated = (state: RootState) => state.user.isAuthenticated;

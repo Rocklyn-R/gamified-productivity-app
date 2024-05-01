@@ -4,57 +4,48 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { FaXmark } from "react-icons/fa6";
-import { updateUserPassword } from "../../../api/profile";
+import { createNewPassword } from "../../../api/profile";
 
-interface PasswordFormProps {
-    setEditPassword: (arg0: boolean) => void;
-    statusMessage: string;
-    setStatusMessage: (arg0: string) => void;
+interface CreatePasswordFormProps {
+    setCreatePassword: (arg0: boolean) => void;
+    setNoPassword: (arg0: boolean) => void;
 }
 
-
-export const PasswordForm: React.FC<PasswordFormProps> = ({ setEditPassword, statusMessage, setStatusMessage }) => {
-
-    const [oldPassword, setOldPassword] = useState("");
-    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-    const [showNewPassword, setShowNewPassword] = useState(false);
-    const [newPassword, setNewPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+export const CreatePasswordForm: React.FC<CreatePasswordFormProps> = ({ setCreatePassword, setNoPassword }) => {
+    const [password, setPassword] = useState("")
+    const [passwordRepeat, setPasswordRepeat] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("")
 
     const handleTogglePasswordVisibility = () => {
-        setShowCurrentPassword(!showCurrentPassword);
+        setShowPassword(!showPassword);
     }
 
-    const handleToggleNewPasswordVisibility = () => {
-        setShowNewPassword(!showNewPassword);
+    const handleToggleRepeatVisibility = () => {
+        setShowPasswordRepeat(!showPasswordRepeat);
     }
 
-
-    const handleUpdatePassword = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmitCreatePassword = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const passwordUpdated = await updateUserPassword(oldPassword, newPassword);
-        setOldPassword('');
-        setNewPassword('');
-        if (passwordUpdated === 'Success') {
-            setEditPassword(false);
-            setStatusMessage('Password successfully changed!');
-        } else if (passwordUpdated === 'Old password incorrect') {
-            setErrorMessage('Current password incorrect!');
+        if (password !== passwordRepeat) {
+            setErrorMessage("Passwords don't match. Try again.")
         } else {
-            setStatusMessage('An error ocurred');
+            await createNewPassword(password);
+            setCreatePassword(false);
+            setNoPassword(false);
         }
     }
 
     return (
         <>
-            <form onSubmit={handleUpdatePassword} className='update-password-form'>
+            <form className="create-password-form" onSubmit={handleSubmitCreatePassword}>
                 <div className="input-button-container">
                     <TextField
-                        type={showCurrentPassword ? 'text' : 'password'}
-                        label="Current" // MUI TextField uses a label prop instead of placeholder for floating label text
+                        type={showPassword ? 'text' : 'password'}
+                        label="Password" // MUI TextField uses a label prop instead of placeholder for floating label text
                         variant="outlined" // You can choose "filled" or "standard" as well, depending on your design preference
-                        value={oldPassword}
-                        onChange={(e) => setOldPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                         sx={{
                             width: '150px', marginRight: '10px',
@@ -87,7 +78,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setEditPassword, sta
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton onClick={handleTogglePasswordVisibility} edge='end'>
-                                        {showCurrentPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                        {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </IconButton>
                                 </InputAdornment>
                             ),
@@ -95,11 +86,10 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setEditPassword, sta
                         }}
                     />
                     <TextField
-                        type={showNewPassword ? 'text' : 'password'}
-                        label="New" // MUI TextField uses a label prop instead of placeholder for floating label text
+                        type={showPasswordRepeat ? 'text' : 'password'}
+                        label="Repeat" // MUI TextField uses a label prop instead of placeholder for floating label text
                         variant="outlined" // You can choose "filled" or "standard" as well, depending on your design preference
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
+                        onChange={(e) => setPasswordRepeat(e.target.value)}
                         required
                         sx={{
                             width: '150px', marginRight: '10px',
@@ -131,8 +121,8 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setEditPassword, sta
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <IconButton onClick={handleToggleNewPasswordVisibility} edge='end'>
-                                        {showNewPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                    <IconButton onClick={handleToggleRepeatVisibility} edge='end'>
+                                        {showPasswordRepeat ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                     </IconButton>
                                 </InputAdornment>
                             ),
@@ -140,11 +130,11 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setEditPassword, sta
                         }}
                     />
                     <button type="submit"><FaCheck /></button>
-                    <button type="button" onClick={() => { setEditPassword(false) }}><FaXmark /></button>
+                    <button type="button" onClick={() => { setCreatePassword(false) }}><FaXmark /></button>
                 </div>
                 {errorMessage &&
                     <div>
-                        <p id="error-message">Current password incorrect!</p>
+                        <p id="error-message">Passwords don't match. Try again.</p>
                     </div>}
 
             </form>

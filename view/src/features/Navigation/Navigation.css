@@ -60,23 +60,50 @@
 
 .profile-dropdown {
     position: relative;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.profile-dropdown-button {
+    background-color: #0c3d63;
+    padding: 0;
+    cursor: pointer;
+}
+
+.profile-dropdown button {
+    border: none;
 }
 
 .dropdown-menu {
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: #0c3d63;
     padding: 10px;
-    border-radius: 4px;
     display: flex;
     flex-direction: column;
-    min-width: 120px;
+    min-width: 140px;
+    border-radius: 5px;
 }
+
 
 .dropdown-menu li {
     margin-bottom: 5px;
+}
+
+.dropdown-menu button {
+    font-size: 1rem;
+    background-color: #0c3d63;
+    color: aliceblue;
+    border-radius: 5px;
+    padding: 7px;
+    cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+    background-color: transparent;
 }
 
 .profile-dropdown-container {
@@ -88,6 +115,7 @@
     top: 100%;
     left: 0;
 }
+
 
 
 /*Screens that don't have hover (most mobile devices except Samsung) */
@@ -115,11 +143,13 @@
         transform: translateY(0);
     }
 
+    .drop-down-li:active {
+        background-color: #0c3d63 !important;
+    }
+
     .navbar ul li:active {
         background-color: #135382;
     }
-
-
 }
 
 /*Samsung screens that have hover but don't behave like they do */
@@ -131,6 +161,7 @@
     .navbar ul li:active {
         background-color: #135382;
     }
+
 }
 
 @media (min-width: 768px) and (max-width: 991px) {

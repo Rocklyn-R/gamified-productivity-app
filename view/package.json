@@ -23,6 +23,7 @@
     "react-circular-progressbar": "^2.1.0",
     "react-datepicker": "^6.1.0",
     "react-dom": "^18.2.0",
+    "react-google-button": "^0.7.2",
     "react-helmet": "^6.1.0",
     "react-icons": "^5.0.1",
     "react-mobile-picker": "^1.0.0",

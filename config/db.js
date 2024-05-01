@@ -1,10 +1,15 @@
 const { Pool } = require('pg');
+require('dotenv').config();
+
+const DB_USER = process.env.DB_USER;
+const DATABASE = process.env.DATABASE;
+const PASSWORD = process.env.PASSWORD;
 
 const pool = new Pool({
-    user: 'user',
+    user: DB_USER,
     host: 'localhost',
-    database: 'Gamified_ToDo',
-    password: 'newpassword',
+    database: DATABASE,
+    password: PASSWORD,
     port: 5432,
 })
 

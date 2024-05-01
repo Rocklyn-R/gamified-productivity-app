@@ -66,9 +66,6 @@ export interface PomodoroState {
     work_mins: number;
     break_mins: number;
     long_break_mins: number;
-    //work_mins_queued: null | number;
-    //break_mins_queued: null | number;
-    //long_break_mins_queued: null | number;
     num_sessions_to_long_break: number;
     sessions_remaining: number;
     timer_mode: "work" | "break" | "longBreak";
@@ -80,5 +77,6 @@ export interface UserState {
     isAuthenticated: boolean,
     firstName: string,
     lastName: string,
-    email: string
+    email: string,
+    google_linked: boolean
 }

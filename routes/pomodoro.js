@@ -13,19 +13,19 @@ const {
 
 const pomodoroRouter = express.Router();
 
-pomodoroRouter.post('/', createPomodoro);
+pomodoroRouter.post('/', checkAuthenticated, createPomodoro);
 
-pomodoroRouter.get('/', getPomodoro);
+pomodoroRouter.get('/', checkAuthenticated, getPomodoro);
 
 //pomodoroRouter.put('/', updatePomodoro);
-pomodoroRouter.put('/update-settings', updatePomodoroSettings);
+pomodoroRouter.put('/update-settings', checkAuthenticated, updatePomodoroSettings);
 
-pomodoroRouter.put('/skip', skipUpdatePomodoro);
+pomodoroRouter.put('/skip',checkAuthenticated, skipUpdatePomodoro);
 
-pomodoroRouter.put('/update-pomodoro', updatePomodoroCurrentTime);
+pomodoroRouter.put('/update-pomodoro', checkAuthenticated, updatePomodoroCurrentTime);
 
-pomodoroRouter.put('/sell', sellPomodoro);
+pomodoroRouter.put('/sell', checkAuthenticated, sellPomodoro);
 
-pomodoroRouter.put('/pause', pausePomodoroTimer);
+pomodoroRouter.put('/pause', checkAuthenticated, pausePomodoroTimer);
 
 module.exports = pomodoroRouter;

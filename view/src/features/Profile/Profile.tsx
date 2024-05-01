@@ -1,8 +1,8 @@
 import "./Profile.css";
 import Card from "../../components/Card/Card";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getUserDetails } from "../../api/profile";
-import { setFirstName, setLastName, setEmail } from "../../store/UserSlice";
+import { setFirstName, setLastName, setEmail, setGoogleLinked } from "../../store/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFirstName, selectLastName, selectEmail } from "../../store/UserSlice";
 import { FaRegEdit } from "react-icons/fa";
@@ -16,8 +16,9 @@ import { NameForm } from "./ProfileForms/NameForm";
 import { EmailForm } from "./ProfileForms/EmailForm";
 import { PasswordForm } from "./ProfileForms/PasswordForm";
 import { useAuthorizationCheck } from "../../hooks/AuthorizationCheck";
-
-
+import GoogleButton from 'react-google-button'
+import { CreatePasswordForm } from "./ProfileForms/CreatePasswordForm";
+import { UnlinkMessage } from "./UnlinkMessage/UnlinkMessage";
 
 
 export const Profile = () => {
@@ -32,9 +33,12 @@ export const Profile = () => {
     const [firstNameLocal, setFirstNameLocal] = useState('');
     const [lastNameLocal, setLastNameLocal] = useState('');
     const [emailLocal, setEmailLocal] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [oldPassword, setOldPassword] = useState("");
     const [passwordChangeStatusMessage, setPasswordChangeStatusMessage] = useState('');
+    const [googleSignIn, setGoogleSignIn] = useState(false);
+    const [createPassword, setCreatePassword] = useState(false);
+    const [noPassword, setNoPassword] = useState(false);
+    const [showUnlinkMessage, setShowUnlinkMessage] = useState(false);
+    const overlayRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const getProfileDetails = async () => {
@@ -45,10 +49,21 @@ export const Profile = () => {
             setFirstNameLocal(user.first_name);
             setLastNameLocal(user.last_name);
             setEmailLocal(user.email);
+            if (user.google_id) {
+                console.log(user.google_id)
+                dispatch(setGoogleLinked());
+            }
+            if (user.google_id && !user.password) {
+                setGoogleSignIn(true);
+                setNoPassword(true);
+            }
+            if (user.google_id && user.password) {
+                setGoogleSignIn(true);
+            }
         }
 
         getProfileDetails();
-    }, [])
+    }, [dispatch])
 
     const handleEditName = () => {
         setEditName(true);
@@ -56,7 +71,7 @@ export const Profile = () => {
 
     useEffect(() => {
         if (passwordChangeStatusMessage === 'Password successfully changed!') {
-             const timer = setTimeout(() => {
+            const timer = setTimeout(() => {
                 setPasswordChangeStatusMessage('');
             }, 2000);
 
@@ -66,6 +81,21 @@ export const Profile = () => {
             setPasswordChangeStatusMessage('')
         }
     }, [passwordChangeStatusMessage, editPassword])
+
+    const handleOverlayClick = (event: MouseEvent) => {
+        if (event.target === overlayRef.current) {
+            setShowUnlinkMessage(false)
+        }
+    };
+
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleOverlayClick);
+
+        return () => {
+            document.removeEventListener('mousedown', handleOverlayClick);
+        };
+    }, []);
 
 
     return (
@@ -85,42 +115,86 @@ export const Profile = () => {
 
 
             ) : (
-                <div className="username-container">
+                <div className={googleSignIn ? "user-name-container-google" : "username-container"}>
                     <p>Name: {firstName} {lastName}</p>
-                    <button onClick={handleEditName}><FaRegEdit /></button>
+                    {!googleSignIn && <button onClick={handleEditName}><FaRegEdit /></button>}
                 </div>
             )}
-            {editEmail ? (
-                <div className="account-details-form-container">
-                    <EmailForm
-                        emailLocal={emailLocal}
-                        setEmailLocal={setEmailLocal}
-                        setEditEmail={setEditEmail}
-                    />
-                </div>
-            ) : (
-                <div className="user-email-container">
-                    <p>Email: {email}</p>
-                    <button onClick={() => setEditEmail(true)}><FaRegEdit /></button>
-                </div>
-            )}
-
-            {editPassword ? (
-                <div className="account-details-form-container">
-                    <PasswordForm 
-                        setEditPassword={setEditPassword}
-                        statusMessage={passwordChangeStatusMessage}
-                        setStatusMessage={setPasswordChangeStatusMessage}
-                    />
-                </div>
-            ) : (
-                <div className="user-password-container">
-                    <p>Password: ******** </p>
-                    <button onClick={() => setEditPassword(true)}><FaRegEdit /></button>
-                </div>
-            )}
+            {!googleSignIn && (
+                editEmail ? (
+                    <div className="account-details-form-container">
+                        <EmailForm
+                            emailLocal={emailLocal}
+                            setEmailLocal={setEmailLocal}
+                            setEditEmail={setEditEmail}
+                        />
+                    </div>
+                ) : (
+                    <div className="user-email-container">
+                        <p>Email: {email}</p>
+                        <button onClick={() => setEditEmail(true)}><FaRegEdit /></button>
+                    </div>
+                ))}
+            {(!noPassword) && (
+                editPassword ? (
+                    <div className="account-details-form-container">
+                        <PasswordForm
+                            setEditPassword={setEditPassword}
+                            statusMessage={passwordChangeStatusMessage}
+                            setStatusMessage={setPasswordChangeStatusMessage}
+                        />
+                    </div>
+                ) : (
+                    <div className="user-password-container">
+                        <p>Password: ******** </p>
+                        <button onClick={() => setEditPassword(true)}><FaRegEdit /></button>
+                    </div>
+                )
+            )
+            }
             {passwordChangeStatusMessage && <p>{passwordChangeStatusMessage}</p>}
+            {googleSignIn && noPassword && (
+                createPassword ? (
+                    <>
+                        <p>Create a new password:</p>
+                        <div className="create-password-container">
+                            <CreatePasswordForm
+                                setCreatePassword={setCreatePassword}
+                                setNoPassword={setNoPassword}
+                            />
+                        </div>
 
+                    </>
+                ) : (
+                    <div className="user-password-container">
+                        <p>Password: (none)</p>
+                        <button onClick={() => setCreatePassword(true)}><FaRegEdit /></button>
+                    </div>
+                )
+
+            )}
+            {googleSignIn &&
+
+                <div>
+                    <div className="signed-in-google-text">
+                        <p>Linked to Google account:</p>
+                    </div>
+                    <GoogleButton id="google-button" label={email} />
+                    {googleSignIn && !noPassword &&
+                        <button
+                            className="unlink-google"
+                            onClick={() => setShowUnlinkMessage(true)}
+                        >(Unlink Google account)
+                        </button>}
+                </div>}
+                {showUnlinkMessage && 
+                 <div className='overlay unlink-message' ref={overlayRef}>
+                    <UnlinkMessage 
+                        setShowUnlinkMessage={setShowUnlinkMessage}
+                        setGoogleSignIn={setGoogleSignIn}
+                    />
+                 </div>
+                }
         </Card>
     )
 }

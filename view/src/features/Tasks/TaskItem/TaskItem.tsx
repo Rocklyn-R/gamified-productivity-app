@@ -1,7 +1,7 @@
 import React from 'react';
 import { Task } from '../../../types/types';
 import { CompleteTask } from '../CompleteTask/CompleteTask';
-import "./task-item.css";
+import './TaskItem.css';
 import { formatDeadline } from '../../../utilities/utilities';
 import { FaCoins } from 'react-icons/fa';
 

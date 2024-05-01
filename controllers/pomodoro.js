@@ -37,47 +37,6 @@ const getPomodoro = async (req, res) => {
 }
 
 
-/*const updatePomodoro = async (req, res) => {
-    const user_id = 1
-    //const user_id = req.user.id;
-    const {
-        seconds_left, 
-        is_paused, timer_mode, 
-        work_mins, 
-        break_mins, 
-        long_break_mins, 
-        work_mins_queued, 
-        break_mins_queued, 
-        long_break_mins_queued,
-        num_sessions_to_long_break, 
-        sessions_remaining, 
-        pomodoros, 
-        pomodoro_price, 
-    } = req.body;
-    try {
-        const result = await pomodoroUpdate(
-            seconds_left, 
-            is_paused, timer_mode, 
-            work_mins, 
-            break_mins, 
-            long_break_mins, 
-            work_mins_queued, 
-            break_mins_queued, 
-            long_break_mins_queued,
-            num_sessions_to_long_break, 
-            sessions_remaining, 
-            pomodoros, 
-            pomodoro_price,
-            user_id
-        )
-        if (result) {
-            res.status(200).json({ message: "Pomodoro successfully updated" })
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error" })
-    }
-}*/
-
 const updatePomodoroSettings = async (req, res) => {
     const user_id = req.user.id;
     const {
@@ -174,7 +133,7 @@ const sellPomodoro = async (req, res) => {
 }
 
 const pausePomodoroTimer = async (req, res) => {
-    const user_id = 1;
+    const user_id = req.user.id;
     const { seconds_left } = req.body;
     try {
         const result = await pomodoroPauseTimer(seconds_left, user_id);

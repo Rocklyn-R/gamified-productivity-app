@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { useAuthorizationCheck } from '../../../hooks/AuthorizationCheck';
 import { getPomodoro } from '../../../api/pomodoro';
 import { setPomodoro } from '../../../store/PomodoroSlice';
+import GoogleButton from 'react-google-button'
 
 
 export const LoginPage = () => {
@@ -65,6 +66,12 @@ export const LoginPage = () => {
         }
     }
 
+    const handleGoogleSignIn = async () => {
+        const googleLoginURL = "http://localhost:4000/login/auth/google";
+        //const newWindow = window.open(googleLoginURL, "_blank", "width=500,height=600");
+        window.location.href = googleLoginURL;
+    }
+
     return (
         <Card className="log-in-container">
             <h1>Welcome to Task Master</h1>
@@ -116,6 +123,9 @@ export const LoginPage = () => {
             </form>
             {errorMessage && <p>{errorMessage}</p>}
             <h4>or</h4>
+            <div className='alternate-login'>
+                 <GoogleButton onClick={() => handleGoogleSignIn()} />
+            </div>
             <Link to="/signup" className='sign-up-link-text'><h2>Sign up</h2></Link>
         </Card>
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authenticateUser, unauthenticateUser, selectIsAuthenticated } from "../store/UserSlice";
 import { checkAuthentication } from "../api/login";
 
-export const useAuthorizationCheck = (callback?: () => void) => {
+export const useAuthorizationCheck = (callback?: () => void, callback2?: () => void) => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(selectIsAuthenticated)
 
@@ -13,6 +13,9 @@ export const useAuthorizationCheck = (callback?: () => void) => {
         const authenticated = await checkAuthentication();
         if (authenticated && !isAuthenticated) {
           dispatch(authenticateUser());
+          if (callback2) {
+            callback2();
+          }
         } else if (authenticated && isAuthenticated){
           return;
         } else {

@@ -1,4 +1,11 @@
-const { createUser, findUserById, userUpdateName, userUpdateEmail, userUpdatePassword } = require('../models/user');
+const { 
+    createUser, 
+    findUserById, 
+    userUpdateName, 
+    userUpdateEmail, 
+    userUpdatePassword,
+    userUnlinkFromGoogle
+} = require('../models/user');
 const passport = require('../config/passport');
 const bcrypt = require('bcrypt');
 
@@ -26,13 +33,13 @@ const getUserData = (req, res) => {
     if (!user) {
         return res.status(401).json({ message: 'User not authenticated' });
     }
+    console.log(user);
     res.status(200).json(user);
 }
 
 const editUserName = async (req, res) => {
     const { firstName, lastName } = req.body;
     const id = req.user.id;
-    console.log(req.user);
     try {
         //console.log("Running");
         const userUpdate = await userUpdateName(id, firstName, lastName);
@@ -86,6 +93,35 @@ const changeUserPassword = async (req, res) => {
     }
 }
 
+const createNewPassword = async (req, res) => {
+    const { password } = req.body;
+    const { id } = req.user;
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const createdPassword = await userUpdatePassword(id, hashedPassword);
+        if (createdPassword) {
+            res.status(200).json({ mesage: "Password successfully created" })
+        } else {
+            res.status(404).json({ message: "Password not created" })
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+const unlinkUserFromGoogle = async (req, res) => {
+   // const { id } = req.user;
+   const id = 23
+    try {
+        const result = await userUnlinkFromGoogle(id);
+        if (result) {
+            res.status(200).json({ mesage: "Google account successfully unlinked" })
+        } 
+    } catch (error) {
+        res.status(404).json({ message: "An error occurred unlinking Google"})
+    }
+}
 
 
 module.exports = {
@@ -93,5 +129,7 @@ module.exports = {
     getUserData,
     editUserName,
     editUserEmail,
-    changeUserPassword
+    changeUserPassword,
+    createNewPassword,
+    unlinkUserFromGoogle
 };

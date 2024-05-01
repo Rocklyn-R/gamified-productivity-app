@@ -67,3 +67,63 @@
     font-size: 1.3rem;
     cursor: pointer;
 }
+
+#google-button {
+    cursor: default !important;
+}
+
+.user-name-container-google, .google-user-password-container {
+    display: flex;
+    align-items: center;
+    width: 25%;
+    justify-content: center;
+    border: 1px solid white;
+    padding: 0 1rem;
+    margin-top: 1rem;
+}
+
+.signed-in-google-text {
+    color: aliceblue;
+}
+
+.create-password-container form, .account-details-form-container form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.create-password-container button {
+    height: 2rem;
+    border: none;
+    background-color: transparent;
+    color: aliceblue;
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.unlink-google {
+    margin-top: 1rem;
+    background: transparent;
+    border: none;
+    color: aliceblue;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.unlink-message p {
+    font-size: 1rem;
+    color:#135382;
+}
+
+.input-button-container {
+    display: flex;
+    align-items: center;
+}
+
+#error-message {
+    font-size: 1rem;
+    color: red;
+}

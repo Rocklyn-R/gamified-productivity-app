@@ -56,12 +56,15 @@ export const Navigation = () => {
                  <li>
                     {/* Profile Dropdown */}
                     <div className="profile-dropdown">
-                        <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                        <button 
+                        className='profile-dropdown-button'
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        >
                             <img src={account} width="24" height="24" alt="Profile" />
                         </button>
                         {isDropdownOpen && (
                             <ul className="dropdown-menu">
-                                <li>
+                                <li className="drop-down-li">
                                     <button onClick={handleViewAccount}>
                                         View Account
                                     </button>
