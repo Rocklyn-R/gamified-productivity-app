@@ -61,7 +61,7 @@ function App() {
     <BrowserRouter>
       <div className='App'>
         {isAuthenticated && <Navigation />}
-        <div className="content">
+        <div className={`${isAuthenticated ? 'content' : 'logged-out-content'}`}>
           <Routes>
             <Route
               path="/"

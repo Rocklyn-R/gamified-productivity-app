@@ -1,6 +1,7 @@
 .sign-up-container {
     background-color: #135382;
-    margin-top: 2rem;
+    margin-top: 0;
+    padding: 0;
     color: aliceblue;
     max-width: 300px;
     width: 100%;

@@ -14,6 +14,7 @@ import { setPomodoro } from '../../../store/PomodoroSlice';
 import GoogleButton from 'react-google-button'
 
 
+
 export const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -75,7 +76,7 @@ export const LoginPage = () => {
     return (
         <Card className="log-in-container">
             <h1>Welcome to Task Master</h1>
-            <h1>Log In</h1>
+            <h1>Sign In</h1>
             <form className='log-in-form' onSubmit={handleSubmitLogin}>
                 <TextField
                     type="text"

@@ -11,7 +11,7 @@ import { authenticateUser } from "../../../store/UserSlice";
 import { useDispatch } from "react-redux";
 import { createPomodoro } from "../../../api/pomodoro";
 import { v4 as uuidv4 } from "uuid";
-
+import GoogleButton from 'react-google-button'
 
 export const SignUp = () => {
     const [name, setName] = useState("");
@@ -48,6 +48,11 @@ export const SignUp = () => {
         }
     };
 
+    const handleGoogleSignIn = async () => {
+        const googleLoginURL = "http://localhost:4000/login/auth/google";
+        //const newWindow = window.open(googleLoginURL, "_blank", "width=500,height=600");
+        window.location.href = googleLoginURL;
+    }
 
 
     return (
@@ -139,6 +144,9 @@ export const SignUp = () => {
             {errorMessage && <p>{errorMessage}</p>}
             <h4>or</h4>
             <Link to="/login" className='sign-up-link-text'><h2>Log in</h2></Link>
+            <div className='alternate-login'>
+                 <GoogleButton onClick={() => handleGoogleSignIn()} />
+            </div>
         </Card>
 
     )
