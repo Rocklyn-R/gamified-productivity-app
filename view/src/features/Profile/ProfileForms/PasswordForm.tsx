@@ -47,8 +47,8 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setEditPassword, sta
 
     return (
         <>
-            <form onSubmit={handleUpdatePassword} className='update-password-form'>
-                <div className="input-button-container">
+            <form onSubmit={handleUpdatePassword} className="account-form-1">
+                <div className="account-text-field-container">
                     <TextField
                         type={showCurrentPassword ? 'text' : 'password'}
                         label="Current" // MUI TextField uses a label prop instead of placeholder for floating label text
@@ -139,9 +139,13 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setEditPassword, sta
                             autoComplete: 'off', // More specific to potentially improve browser compliance
                         }}
                     />
-                    <button type="submit"><FaCheck /></button>
+                 </div>    
+                    <div className="account-form-buttons">
+                          <button type="submit"><FaCheck /></button>
                     <button type="button" onClick={() => { setEditPassword(false) }}><FaXmark /></button>
-                </div>
+                    </div>
+                  
+               
                 {errorMessage &&
                     <div>
                         <p id="error-message">Current password incorrect!</p>

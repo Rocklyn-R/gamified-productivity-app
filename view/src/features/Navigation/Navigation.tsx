@@ -9,8 +9,8 @@ import account from "../../images/account.png";
 import { logoutUser } from '../../api/logout';
 import { unauthenticateUser } from '../../store/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { pausePomodoroTimer } from '../../api/pomodoro';
-import { selectSecondsLeft } from '../../store/PomodoroSlice';
+import { pomodoroUpdateSecondsLeft, pausePlayPomodoroTimer } from '../../api/pomodoro';
+import { pause, selectSecondsLeft,  } from '../../store/PomodoroSlice';
 
 
 
@@ -21,8 +21,10 @@ export const Navigation = () => {
     const secondsLeft = useSelector(selectSecondsLeft)
 
     const handleLogout = async () => {
-        await pausePomodoroTimer(secondsLeft);
+        dispatch(pause());
         setIsDropdownOpen(false);
+        await pausePlayPomodoroTimer(true);
+        await pomodoroUpdateSecondsLeft(secondsLeft);
         await logoutUser();
         dispatch(unauthenticateUser());
         navigate('/');
@@ -53,31 +55,29 @@ export const Navigation = () => {
                     <img alt="" src={gift} width='24' height="24" className='gift-icon' />
                     <span className="nav-text">Inventory</span>
                 </Link></li>
-                 <li>
                     {/* Profile Dropdown */}
                     <div className="profile-dropdown">
+                        <li>
                         <button 
                         className='profile-dropdown-button'
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                         >
                             <img src={account} width="24" height="24" alt="Profile" />
                         </button>
+                        </li>
                         {isDropdownOpen && (
-                            <ul className="dropdown-menu">
-                                <li className="drop-down-li">
+                            <div className="dropdown-menu dropdown-menu-flipped">
                                     <button onClick={handleViewAccount}>
                                         View Account
                                     </button>
-                                </li>
-                                <li>
+                        
                                     <button onClick={handleLogout}>
                                         Logout
                                     </button>
-                                </li>
-                            </ul>
+                            </div>
                         )}
                     </div>
-                </li>
+                
             </ul>
         </header>
     )

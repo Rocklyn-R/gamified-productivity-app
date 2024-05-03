@@ -12,7 +12,7 @@ interface EmailProps {
 }
 
 
-export const EmailForm: React.FC<EmailProps> = ({emailLocal, setEmailLocal, setEditEmail}) => {
+export const EmailForm: React.FC<EmailProps> = ({ emailLocal, setEmailLocal, setEditEmail }) => {
     const dispatch = useDispatch();
 
 
@@ -27,7 +27,7 @@ export const EmailForm: React.FC<EmailProps> = ({emailLocal, setEmailLocal, setE
 
     return (
         <>
-            <form onSubmit={handleUpdateEmail}>
+            <form onSubmit={handleUpdateEmail} className='account-form-1 version-2'>
                 <TextField
                     label="Email"
                     variant="outlined"
@@ -62,8 +62,10 @@ export const EmailForm: React.FC<EmailProps> = ({emailLocal, setEmailLocal, setE
                         },
                     }}
                 />
-                <button type="submit"><FaCheck /></button>
-                <button type="button" onClick={() => setEditEmail(false)}><FaXmark /></button>
+                <div className="account-form-buttons">
+                    <button type="submit"><FaCheck /></button>
+                    <button type="button" onClick={() => setEditEmail(false)}><FaXmark /></button>
+                </div>
             </form>
         </>
     )

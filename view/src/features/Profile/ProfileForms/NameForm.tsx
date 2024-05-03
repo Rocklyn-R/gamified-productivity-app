@@ -15,7 +15,7 @@ interface NameFormProps {
 }
 
 
-export const NameForm: React.FC<NameFormProps> = ({firstNameLocal, lastNameLocal, setFirstNameLocal, setLastNameLocal, setEditName}) => {
+export const NameForm: React.FC<NameFormProps> = ({ firstNameLocal, lastNameLocal, setFirstNameLocal, setLastNameLocal, setEditName }) => {
     const dispatch = useDispatch();
 
     const handleUpdateName = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,76 +31,87 @@ export const NameForm: React.FC<NameFormProps> = ({firstNameLocal, lastNameLocal
 
     return (
         <>
-        <form onSubmit={handleUpdateName}>
+            <form onSubmit={handleUpdateName} className='account-form-1'>
+                <div className="account-text-field-container">
+                    <div>
                         <TextField
-                            label="First name"
-                            variant="outlined"
-                            value={`${firstNameLocal}`}
-                            onChange={(e) => setFirstNameLocal(e.target.value)}
-                            sx={{
-                                width: '150px', marginRight: '10px',
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: 'aliceblue', // Outline color
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: 'aliceblue', // Outline color on hover
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: 'aliceblue', // Outline color on focus
-                                    },
+                        label="First name"
+                        variant="outlined"
+                        value={`${firstNameLocal}`}
+                        onChange={(e) => setFirstNameLocal(e.target.value)}
+                        sx={{
+                            width: '150px', marginRight: '10px',
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': {
+                                    borderColor: 'aliceblue', // Outline color
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: 'aliceblue', // Outline color on hover
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: 'aliceblue', // Outline color on focus
+                                },
 
-                                },
-                                '& .MuiInputLabel-root': {
-                                    color: 'aliceblue', // Label color
-                                },
-                                '& .MuiInputLabel-root.Mui-focused': {
-                                    color: 'aliceblue', // Label color on focus
-                                },
-                                '& .MuiInputBase-input': {
-                                    color: 'aliceblue', // Text color
-                                },
-                                '& .MuiInputBase-input:focus': {
-                                    color: 'aliceblue', // Text color on focus
-                                },
-                            }}
-                        />
-                        <TextField
-                            label="Last Name"
-                            variant="outlined"
-                            value={`${lastNameLocal}`}
-                            onChange={(e) => setLastNameLocal(e.target.value)}
-                            sx={{
-                                width: '150px', marginRight: '10px',
+                            },
+                            '& .MuiInputLabel-root': {
+                                color: 'aliceblue', // Label color
+                            },
+                            '& .MuiInputLabel-root.Mui-focused': {
+                                color: 'aliceblue', // Label color on focus
+                            },
+                            '& .MuiInputBase-input': {
+                                color: 'aliceblue', // Text color
+                            },
+                            '& .MuiInputBase-input:focus': {
+                                color: 'aliceblue', // Text color on focus
+                            },
+                        }}
+                    />
+                    </div>
+                    <div>
+                         <TextField
+                        label="Last Name"
+                        variant="outlined"
+                        value={`${lastNameLocal}`}
+                        onChange={(e) => setLastNameLocal(e.target.value)}
+                        sx={{
+                            width: '150px', marginRight: '10px',
 
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: 'aliceblue', // Outline color
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: 'aliceblue', // Outline color on hover
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: 'aliceblue', // Outline color on focus
-                                    },
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': {
+                                    borderColor: 'aliceblue', // Outline color
                                 },
-                                '& .MuiInputLabel-root': {
-                                    color: 'aliceblue', // Label color
+                                '&:hover fieldset': {
+                                    borderColor: 'aliceblue', // Outline color on hover
                                 },
-                                '& .MuiInputLabel-root.Mui-focused': {
-                                    color: 'aliceblue', // Label color on focus
+                                '&.Mui-focused fieldset': {
+                                    borderColor: 'aliceblue', // Outline color on focus
                                 },
-                                '& .MuiInputBase-input': {
-                                    color: 'aliceblue', // Text color
-                                },
-                                '& .MuiInputBase-input:focus': {
-                                    color: 'aliceblue', // Text color on focus
-                                },
-                            }}
-                        />
-                        <button type="submit"><FaCheck /></button>
-                        <button type="button" onClick={() => {setEditName(false)}}><FaXmark /></button>
-                    </form>
+                            },
+                            '& .MuiInputLabel-root': {
+                                color: 'aliceblue', // Label color
+                            },
+                            '& .MuiInputLabel-root.Mui-focused': {
+                                color: 'aliceblue', // Label color on focus
+                            },
+                            '& .MuiInputBase-input': {
+                                color: 'aliceblue', // Text color
+                            },
+                            '& .MuiInputBase-input:focus': {
+                                color: 'aliceblue', // Text color on focus
+                            },
+                        }}
+                    />
+                </div>
+                    </div>
+                   
+
+                <div className="account-form-buttons">
+                    <button type="submit"><FaCheck /></button>
+                    <button type="button" onClick={() => { setEditName(false) }}><FaXmark /></button>
+                </div>
+
+            </form>
         </>
     )
 }

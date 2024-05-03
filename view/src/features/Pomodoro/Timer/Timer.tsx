@@ -27,7 +27,8 @@ import tomato from "../../../images/tomato.png";
 import { FaCoins } from "react-icons/fa";
 import { selectTotalCoins } from "../../../store/RewardsSlice";
 import { skipTimerUpdate } from "../../../api/pomodoro";
-import { pausePomodoroTimer } from "../../../api/pomodoro";
+import { pomodoroUpdateSecondsLeft } from "../../../api/pomodoro";
+import { pausePlayPomodoroTimer } from "../../../api/pomodoro";
 
 
 let intervalId: any = null;
@@ -56,6 +57,10 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
         if (isPaused) {
             clearInterval(intervalId);
         }
+        if (!isPaused) {
+            clearInterval(intervalId);
+            startTimer();
+        }
 
     }, [isPaused]);
 
@@ -63,7 +68,8 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
 
 
     const pauseTimer = async () => {
-        await pausePomodoroTimer(secondsLeft);
+        await pomodoroUpdateSecondsLeft(secondsLeft);
+        await pausePlayPomodoroTimer(true);
         dispatch(pause());
     };
 
@@ -82,16 +88,19 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
     };
 
 
-    const playTimer = () => {
+    const playTimer = async () => {
         dispatch(play());
         startTimer();
+        await pausePlayPomodoroTimer(false);
     }
 
-    const resetTimer = () => {
+    const resetTimer = async () => {
         dispatch(reset());
+        await pausePlayPomodoroTimer(true);
     }
 
     const skipTimer = async () => {
+        dispatch(skip());
       await skipTimerUpdate(
             sessionsRemaining,
             mode,
@@ -100,7 +109,7 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
             longBreakMinutes,
             sessionsToLongBreak
         )
-        dispatch(skip());
+        await pausePlayPomodoroTimer(true);
     }
 
 

@@ -2,10 +2,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
     height: fit-content;
     margin-top: 2rem;
+    width: 100%;
     background-color: #135382;
+    min-width: fit-content;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+    justify-content: center;
 }
 
 .account-details-container h1 {
@@ -20,15 +25,18 @@
 .account-details-container p {
     color: aliceblue;
     font-size: 1.3rem;
+    display: flex;
+    text-align: start;
 }
 
 .account-details-form-container {
     margin-top: 1rem;
 }
 
-.account-details-form-container form {
+.create-password-container form {
     display: flex;
     align-items: center;
+    flex-direction: column;
 }
 
 .account-details-form-container button {
@@ -47,17 +55,23 @@
     color: lightgreen;
 }
 
-.username-container, .user-email-container, .user-password-container {
+.username-container,
+.user-email-container,
+.user-password-container {
     display: flex;
+    width: 30%;
     align-items: center;
-    width: 25%;
     justify-content: space-between;
     border: 1px solid white;
     padding: 0 1rem;
     margin-top: 1rem;
+    box-sizing: border-box;
+    min-width: 450px;
 }
 
-.username-container button, .user-email-container button, .user-password-container button {
+.username-container button,
+.user-email-container button,
+.user-password-container button {
     height: 2rem;
     border: none;
     background-color: transparent;
@@ -72,24 +86,27 @@
     cursor: default !important;
 }
 
-.user-name-container-google, .google-user-password-container {
+.user-name-container-google,
+.google-user-password-container {
     display: flex;
     align-items: center;
-    width: 25%;
     justify-content: center;
     border: 1px solid white;
+    width: 30%;
     padding: 0 1rem;
     margin-top: 1rem;
+    box-sizing: border-box;
+    min-width: 450px;
 }
 
 .signed-in-google-text {
     color: aliceblue;
 }
 
-.create-password-container form, .account-details-form-container form {
+.create-password-container form,
+.account-details-form-container form {
     display: flex;
     align-items: center;
-    flex-direction: column;
 }
 
 .create-password-container button {
@@ -115,7 +132,7 @@
 
 .unlink-message p {
     font-size: 1rem;
-    color:#135382;
+    color: #135382;
 }
 
 .input-button-container {
@@ -126,4 +143,118 @@
 #error-message {
     font-size: 1rem;
     color: red;
+}
+
+.account-form-1 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.account-form-buttons {
+    display: flex;
+}
+
+.account-text-field-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.main-app-header {
+    padding: 0;
+    margin: 0;
+    color: aliceblue;
+    font-size: 2rem;
+}
+
+@media screen and (max-width: 470px) {
+
+    .user-name-container-google,
+    .google-user-password-container,
+    .username-container,
+    .user-email-container,
+    .user-password-container {
+        min-width: 400px;
+    }
+}
+
+@media screen and (max-width: 415px) {
+
+    .user-name-container-google,
+    .google-user-password-container,
+    .username-container,
+    .user-email-container,
+    .user-password-container {
+        min-width: 365px;
+    }
+
+    .account-details-container p {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 374px) {
+    .account-form-1 {
+        flex-wrap: wrap;
+    }
+
+    .account-form-buttons {
+        margin-top: .5rem;
+    }
+
+    .account-text-field-container,
+    .version-2 {
+        margin-left: 10px;
+    }
+
+    .account-form-bottom-input {
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 370px) {
+
+    .user-name-container-google,
+    .google-user-password-container,
+    .username-container,
+    .user-email-container,
+    .user-password-container {
+        min-width: 315px;
+    }
+}
+
+@media screen and (max-width: 330px) {
+
+    .user-name-container-google,
+    .google-user-password-container,
+    .username-container,
+    .user-email-container,
+    .user-password-container {
+        min-width: 265px;
+    }
+
+    .account-text-field-container div {
+        margin-top: 4px;
+    }
+}
+
+@media (max-width: 350px) {
+    .account-details-container h1 {
+        font-size: 1.4rem
+    }
+}
+
+
+@media (min-width: 351px) and (max-width: 450px) {
+
+    .account-details-container h1 {
+        font-size: 1.6rem;
+    }
+}
+
+@media (min-width: 451px) and (max-width: 650px) {
+    .account-details-container h1 {
+        font-size: 1.8rem;
+    }
 }

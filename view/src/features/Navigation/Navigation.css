@@ -23,8 +23,8 @@
     font-size: 1.3rem;
     display: flex;
     position: relative;
-    border-radius: 50%;
     -webkit-tap-highlight-color: transparent;
+    border-radius: 50%;
 }
 
 .navbar ul li a {
@@ -60,16 +60,17 @@
 
 .profile-dropdown {
     position: relative;
-    padding: 0;
+    padding: 0px;
     margin: 0;
     display: flex;
     align-items: center;
 }
 
 .profile-dropdown-button {
-    background-color: #0c3d63;
+    background-color: transparent;
     padding: 0;
     cursor: pointer;
+    -webkit-tap-higlight-color: transparent;
 }
 
 .profile-dropdown button {
@@ -81,30 +82,32 @@
     top: 100%;
     left: 0;
     background-color: #0c3d63;
-    padding: 10px;
+    padding: 15px 10px;
     display: flex;
     flex-direction: column;
     min-width: 140px;
     border-radius: 5px;
+    align-items: flex-start;
 }
 
 
 .dropdown-menu li {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border-radius: 0 !important;
 }
 
 .dropdown-menu button {
     font-size: 1rem;
-    background-color: #0c3d63;
+    background-color: transparent;
     color: aliceblue;
     border-radius: 5px;
-    padding: 7px;
+    padding: 10px;
     cursor: pointer;
+    width: 100%;
+    text-align: start;
 }
 
-.dropdown-menu button:hover {
-    background-color: transparent;
-}
 
 .profile-dropdown-container {
     position: relative;
@@ -116,6 +119,38 @@
     left: 0;
 }
 
+@media screen and (max-width: 800px) {
+    .dropdown-menu {
+    left: 50%; 
+    transform: translateX(-20%); 
+}
+}
+
+@media screen and (max-width: 700px) {
+    .dropdown-menu {
+    left: 50%; 
+    transform: translateX(-30%); 
+}
+}
+
+@media screen and (max-width: 600px) {
+    .dropdown-menu {
+    right: 50%;
+    transform: translate(-45%); 
+}
+.dropdown-menu button {
+    text-align: center;
+}
+}
+@media screen and (max-width: 500px) {
+    .dropdown-menu {
+    right: 50%;
+    transform: translate(-75%); 
+}
+.dropdown-menu button {
+    text-align: start;
+}
+}
 
 
 /*Screens that don't have hover (most mobile devices except Samsung) */
@@ -126,6 +161,10 @@
 
  
     .navbar ul li:hover {
+        background-color: #135382;
+    }
+
+    .dropdown-menu button:hover, .dropdown-menu button:active {
         background-color: #135382;
     }
 
@@ -150,6 +189,15 @@
     .navbar ul li:active {
         background-color: #135382;
     }
+
+    .profile-dropdown button:active {
+        background-color: #135382;
+    }
+
+    .dropdown-menu button:hover {
+        background-color: #135382;
+    }
+
 }
 
 /*Samsung screens that have hover but don't behave like they do */

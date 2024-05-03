@@ -50,7 +50,6 @@ export const Profile = () => {
             setLastNameLocal(user.last_name);
             setEmailLocal(user.email);
             if (user.google_id) {
-                console.log(user.google_id)
                 dispatch(setGoogleLinked());
             }
             if (user.google_id && !user.password) {
@@ -100,7 +99,7 @@ export const Profile = () => {
 
     return (
         <Card className="account-details-container">
-            <h1>Account Details</h1>
+            <h1 className="main-app-header">Account Details</h1>
 
             {editName ? (
                 <div className="account-details-form-container">
@@ -135,7 +134,7 @@ export const Profile = () => {
                         <button onClick={() => setEditEmail(true)}><FaRegEdit /></button>
                     </div>
                 ))}
-            {(!noPassword) && (
+            {!noPassword && (
                 editPassword ? (
                     <div className="account-details-form-container">
                         <PasswordForm
