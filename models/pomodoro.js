@@ -148,6 +148,7 @@ const pomodoroSkipUpdate = async (
 const pomodoroCurrentTimeUpdate = async (
     user_id,
     seconds_left,
+    is_paused,
     timer_mode,
     sessions_remaining,
     pomodoros
@@ -155,12 +156,13 @@ const pomodoroCurrentTimeUpdate = async (
     const query = `
     UPDATE pomodoro
     SET seconds_left = $1,
-    timer_mode = $2,
-    sessions_remaining = $3,
-    pomodoros = $4
-    WHERE user_id = $5` 
+    is_paused = $2,
+    timer_mode = $3,
+    sessions_remaining = $4,
+    pomodoros = $5
+    WHERE user_id = $6` 
     try {
-        const result = await db.query(query, [seconds_left, timer_mode, sessions_remaining, pomodoros, user_id]);
+        const result = await db.query(query, [seconds_left, is_paused, timer_mode, sessions_remaining, pomodoros, user_id]);
         return result;
     } catch (error) {
         throw error;
@@ -180,7 +182,7 @@ const pomodoroSell = async (quantity, user_id) => {
     }
 }
 
-const pomodoroPauseTimer = async (seconds_left, user_id) => {
+const pomodoroUpdateSecondsLeft = async (seconds_left, user_id) => {
     const query = `UPDATE pomodoro SET seconds_left = $1 WHERE user_id = $2`;
     try {
         const result = await db.query(query, [seconds_left, user_id])
@@ -190,6 +192,15 @@ const pomodoroPauseTimer = async (seconds_left, user_id) => {
     }
 }
 
+const pomodoroPausePlayTimer = async (is_paused_boolean, user_id) => {
+    const query = `UPDATE pomodoro SET is_paused = $1 WHERE user_id = $2`;
+    try {
+        const result = await db.query(query, [is_paused_boolean, user_id])
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
     pomodoroCreate,
@@ -198,5 +209,6 @@ module.exports = {
     pomodoroSkipUpdate,
     pomodoroCurrentTimeUpdate,
     pomodoroSell,
-    pomodoroPauseTimer
+    pomodoroUpdateSecondsLeft,
+    pomodoroPausePlayTimer
 }

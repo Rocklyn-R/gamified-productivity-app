@@ -108,6 +108,7 @@ export const skipTimerUpdate = async (
 
 export const updatePomodoroCurrentTime = async (
     seconds_left: number,
+    is_paused: boolean,
     timer_mode: "work" | "break" | "longBreak",
     sessions_remaining: number,
     pomodoros: number
@@ -122,6 +123,7 @@ export const updatePomodoroCurrentTime = async (
             credentials: 'include',
             body: JSON.stringify({
                 seconds_left,
+                is_paused,
                 timer_mode,
                 sessions_remaining,
                 pomodoros
@@ -137,7 +139,6 @@ export const updatePomodoroCurrentTime = async (
 
 export const pomodoroSale = async (quantity: number) => {
     try {
-        console.log("THIS RUNNIN")
         const response = await fetch('http://localhost:4000/pomodoro/sell', {
             method: 'PUT',
             headers: {
@@ -154,15 +155,33 @@ export const pomodoroSale = async (quantity: number) => {
     } 
 }
 
-export const pausePomodoroTimer = async (seconds_left: number) => {
+export const pomodoroUpdateSecondsLeft = async (seconds_left: number) => {
     try {
-        const response = await fetch('http://localhost:4000/pomodoro/pause', {
+        const response = await fetch('http://localhost:4000/pomodoro/update-seconds', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
             body: JSON.stringify({ seconds_left })
+        })
+        if (response.ok) {
+            return true;
+        } else return false;
+    } catch (error) {
+        console.log(error);
+    }  
+}
+
+export const pausePlayPomodoroTimer = async (is_paused_boolean: boolean) => {
+    try {
+        const response = await fetch('http://localhost:4000/pomodoro/pause-or-play', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({ is_paused_boolean })
         })
         if (response.ok) {
             return true;

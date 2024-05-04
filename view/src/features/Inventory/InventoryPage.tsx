@@ -3,22 +3,17 @@ import Card from "../../components/Card/Card";
 import "./InventoryPage.css";
 import { FaCoins } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { selectTotalCoins, selectInventory, selectUsedRewards, setInventory } from "../../store/RewardsSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { selectTotalCoins, selectInventory, selectUsedRewards } from "../../store/RewardsSlice";
+import { useSelector } from "react-redux";
 import { RewardItem } from "../Rewards/RewardItem/RewardItem";
 import { ViewInventoryItem } from "./ViewInventoryItem/ViewInventoryItem";
 import { InventoryItem } from "../../types/types";
 import { GrHistory } from "react-icons/gr";
-import { getInventoryItems } from "../../api/inventory";
 import { useAuthorizationCheck } from "../../hooks/AuthorizationCheck";
-import { useCoinsFetch } from "../../hooks/CoinsFetch";
-import { useRewardHistoryFetch } from "../../hooks/RewardHistoryFetch";
 
 export const InventoryPage = () => {
     useAuthorizationCheck();
-    useCoinsFetch();
-    useRewardHistoryFetch();
-    
+
     const totalCoins = useSelector(selectTotalCoins);
     const inventory = useSelector(selectInventory);
     const [showItemDetails, setShowItemDetails] = useState(false);
@@ -30,17 +25,6 @@ export const InventoryPage = () => {
         icon: "",
         quantity: 0
     });
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        const fetchInventoryItems = async () => {
-            const inventoryData = await getInventoryItems();
-            if (inventoryData) {
-                dispatch(setInventory(inventoryData))
-            };
-        }
-        fetchInventoryItems();
-    }, [dispatch])
 
     const usedRewards = useSelector(selectUsedRewards)
 

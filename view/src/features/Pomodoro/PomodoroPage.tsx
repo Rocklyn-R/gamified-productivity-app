@@ -4,27 +4,25 @@ import Card from "../../components/Card/Card";
 import { Timer } from "./Timer/Timer";
 import { IoIosSettings } from "react-icons/io";
 import { Settings } from "./Settings/Settings";
-import { useDispatch, useSelector } from "react-redux";
-import { selectIsPaused, selectSessionsRemaining, setPomodoro } from "../../store/PomodoroSlice";
+import { useSelector } from "react-redux";
+import { selectIsPaused, selectSessionsRemaining } from "../../store/PomodoroSlice";
 import { PomodoroForm } from "./PomodoroForm/PomodoroForm";
 import { FaCoins } from "react-icons/fa";
 import { selectTotalCoins } from "../../store/RewardsSlice";
 import { SettingsMobile } from "./Settings/SettingsMobile/SettingsMobile";
-import { useCoinsFetch } from "../../hooks/CoinsFetch";
 import { useAuthorizationCheck } from "../../hooks/AuthorizationCheck";
 
 
 
 export const PomodoroPage = () => {
     useAuthorizationCheck();
-    useCoinsFetch();
+
     const [showSettings, setShowSettings] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);
     const isPaused = useSelector(selectIsPaused);
     const [showSellPomodoros, setShowSellPomodoros] = useState(false);
     const sessionsRemaining = useSelector(selectSessionsRemaining);
     const totalCoins = useSelector(selectTotalCoins);
-    const dispatch = useDispatch();
 
     const handleOpenSettings = () => {
         setShowSettings(true);

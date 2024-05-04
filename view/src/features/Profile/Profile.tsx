@@ -1,17 +1,10 @@
 import "./Profile.css";
 import Card from "../../components/Card/Card";
 import { useEffect, useState, useRef } from "react";
-import { getUserDetails } from "../../api/profile";
-import { setFirstName, setLastName, setEmail, setGoogleLinked } from "../../store/UserSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { selectGoogleLinked, selectPasswordExists } from "../../store/UserSlice";
+import { useSelector } from "react-redux";
 import { selectFirstName, selectLastName, selectEmail } from "../../store/UserSlice";
 import { FaRegEdit } from "react-icons/fa";
-import { TextField, IconButton, InputAdornment } from "@mui/material";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { FaCheck } from "react-icons/fa6";
-import { updateUserName } from "../../api/profile";
-import { FaXmark } from "react-icons/fa6";
 import { NameForm } from "./ProfileForms/NameForm";
 import { EmailForm } from "./ProfileForms/EmailForm";
 import { PasswordForm } from "./ProfileForms/PasswordForm";
@@ -23,46 +16,24 @@ import { UnlinkMessage } from "./UnlinkMessage/UnlinkMessage";
 
 export const Profile = () => {
     useAuthorizationCheck();
-    const dispatch = useDispatch();
     const firstName = useSelector(selectFirstName);
     const lastName = useSelector(selectLastName);
     const email = useSelector(selectEmail);
+    const googleLinked = useSelector(selectGoogleLinked);
+    const passwordExists = useSelector(selectPasswordExists);
     const [editName, setEditName] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
     const [editPassword, setEditPassword] = useState(false);
-    const [firstNameLocal, setFirstNameLocal] = useState('');
-    const [lastNameLocal, setLastNameLocal] = useState('');
-    const [emailLocal, setEmailLocal] = useState('');
+    const [firstNameLocal, setFirstNameLocal] = useState(firstName);
+    const [lastNameLocal, setLastNameLocal] = useState(lastName);
+    const [emailLocal, setEmailLocal] = useState(email);
     const [passwordChangeStatusMessage, setPasswordChangeStatusMessage] = useState('');
-    const [googleSignIn, setGoogleSignIn] = useState(false);
+    const [googleSignIn, setGoogleSignIn] = useState(googleLinked);
     const [createPassword, setCreatePassword] = useState(false);
-    const [noPassword, setNoPassword] = useState(false);
+    const [noPassword, setNoPassword] = useState(passwordExists);
     const [showUnlinkMessage, setShowUnlinkMessage] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const getProfileDetails = async () => {
-            const user = await getUserDetails();
-            dispatch(setFirstName(user.first_name));
-            dispatch(setLastName(user.last_name));
-            dispatch(setEmail(user.email));
-            setFirstNameLocal(user.first_name);
-            setLastNameLocal(user.last_name);
-            setEmailLocal(user.email);
-            if (user.google_id) {
-                dispatch(setGoogleLinked());
-            }
-            if (user.google_id && !user.password) {
-                setGoogleSignIn(true);
-                setNoPassword(true);
-            }
-            if (user.google_id && user.password) {
-                setGoogleSignIn(true);
-            }
-        }
-
-        getProfileDetails();
-    }, [dispatch])
 
     const handleEditName = () => {
         setEditName(true);

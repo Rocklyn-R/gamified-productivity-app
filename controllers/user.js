@@ -6,7 +6,6 @@ const {
     userUpdatePassword,
     userUnlinkFromGoogle
 } = require('../models/user');
-const passport = require('../config/passport');
 const bcrypt = require('bcrypt');
 
 const createUserController = async (req, res, next) => {
@@ -33,7 +32,6 @@ const getUserData = (req, res) => {
     if (!user) {
         return res.status(401).json({ message: 'User not authenticated' });
     }
-    console.log(user);
     res.status(200).json(user);
 }
 
@@ -111,8 +109,7 @@ const createNewPassword = async (req, res) => {
 }
 
 const unlinkUserFromGoogle = async (req, res) => {
-   // const { id } = req.user;
-   const id = 23
+   const { id } = req.user;
     try {
         const result = await userUnlinkFromGoogle(id);
         if (result) {

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import { UserState } from "../types/types";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 
 export const UserSlice = createSlice({
@@ -10,7 +11,8 @@ export const UserSlice = createSlice({
         firstName: '',
         lastName: '',
         email: '',
-        google_linked: false
+        google_linked: false,
+        password: true
     } as UserState,
     reducers: {
         authenticateUser: (state) => {
@@ -28,8 +30,11 @@ export const UserSlice = createSlice({
         setEmail: (state, action) => {
             state.email = action.payload;
         }, 
-        setGoogleLinked: (state) => {
-            state.google_linked = true;
+        setGoogleLinked: (state, action: PayloadAction<boolean>) => {
+            state.google_linked = action.payload;
+        },
+        setPasswordExists: (state, action: PayloadAction<boolean>) => {
+            state.password = action.payload;
         }
     }
 })
@@ -40,12 +45,15 @@ export const {
     setFirstName,
     setLastName,
     setEmail, 
-    setGoogleLinked
+    setGoogleLinked,
+    setPasswordExists
 } = UserSlice.actions;
 
 export const selectIsAuthenticated = (state: RootState) => state.user.isAuthenticated;
 export const selectFirstName = (state: RootState) => state.user.firstName;
 export const selectLastName = (state: RootState) => state.user.lastName;
 export const selectEmail = (state: RootState) => state.user.email;
+export const selectGoogleLinked = (state: RootState) => state.user.google_linked;
+export const selectPasswordExists = (state: RootState) => state.user.password;
 
 export default UserSlice.reducer;

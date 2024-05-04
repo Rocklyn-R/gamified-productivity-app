@@ -1,21 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import "./RewardsPage.css";
 import Card from "../../components/Card/Card";
-import { selectTotalCoins, selectItemsInShop, setShopItems } from '../../store/RewardsSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { selectTotalCoins, selectItemsInShop } from '../../store/RewardsSlice';
+import { useSelector } from 'react-redux';
 import { FaCoins } from "react-icons/fa";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { ItemForm } from './ItemForm/ItemForm';
 import { RewardItem } from './RewardItem/RewardItem';
 import { ViewReward } from './ViewReward/ViewReward';
 import { Reward } from '../../types/types';
-import { getShopItems } from '../../api/shop';
 import { useAuthorizationCheck } from '../../hooks/AuthorizationCheck';
-import { useCoinsFetch } from '../../hooks/CoinsFetch';
+
 
 export const RewardsPage = () => {
     useAuthorizationCheck();
-    useCoinsFetch();
     
     const totalCoins = useSelector(selectTotalCoins);
     const [showForm, setShowForm] = useState(false);
@@ -29,20 +27,7 @@ export const RewardsPage = () => {
         id: "",
         icon: ""
     });
-    const dispatch = useDispatch();
 
-    useEffect(() => {
-        const fetchRewards = async () => {
-            try {
-                const shopData = await getShopItems();
-                dispatch(setShopItems(shopData))
-            } catch (error) {
-                throw error;
-            }
-
-        }
-        fetchRewards();
-    }, [dispatch]);
 
     const handleAddNewItem = () => {
         setShowForm(true);

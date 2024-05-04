@@ -3,7 +3,6 @@ import './ViewInventoryItem.css';
 import Card from "../../../components/Card/Card";
 import { useDispatch } from "react-redux";
 import { InventoryItem } from "../../../types/types";
-import { FaCoins } from "react-icons/fa";
 import { spendReward } from "../../../store/RewardsSlice";
 import { renderIcon } from "../../../utilities/utilities";
 import { QuantityInput } from "../../../components/QuantityInput/QuantityInput";
@@ -23,15 +22,6 @@ export const ViewInventoryItem: React.FC<ViewInventoryItemProps> = ({ selectedIn
     const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     const dispatch = useDispatch();
-    
-    const newItemWithNewId = {
-        name: selectedInventoryItem.name,
-        price: selectedInventoryItem.price,
-        description: selectedInventoryItem.description,
-        id: uuidv4(),
-        icon: selectedInventoryItem.icon,
-        quantity: selectedInventoryItem.quantity
-    }
 
     const handleUseReward = async () => {
         if (selectedInventoryItem.quantity < quantity) {
@@ -55,8 +45,6 @@ export const ViewInventoryItem: React.FC<ViewInventoryItemProps> = ({ selectedIn
             hideInventoryItem();
         }
     }
-
-
 
     return (
         <Card className="view-inventory-item-container overlay-card">

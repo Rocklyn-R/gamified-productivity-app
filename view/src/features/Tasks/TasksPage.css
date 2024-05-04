@@ -64,6 +64,11 @@
     display: none;
 }
 
+.add-tasks-message {
+    color: aliceblue;
+    margin-top: 0;
+}
+
 @media (max-width: 350px) {
     .date-box h1 {
         font-size: 1.4rem

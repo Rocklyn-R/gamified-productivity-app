@@ -1,7 +1,7 @@
 import { TextField, IconButton, InputAdornment } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { FaXmark } from "react-icons/fa6";
 import { updateUserPassword } from "../../../api/profile";

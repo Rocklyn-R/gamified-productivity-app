@@ -1,10 +1,12 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getPomodoro } from "../api/pomodoro";
 import { setPomodoro } from "../store/PomodoroSlice";
+import { selectIsAuthenticated } from "../store/UserSlice";
 
 export const usePomodoroFetch = () => {
     const dispatch = useDispatch();
+    const isAuthenticated = useSelector(selectIsAuthenticated);
 
     useEffect(() => {
         const pomodoroFetch = async () => {
@@ -16,6 +18,9 @@ export const usePomodoroFetch = () => {
                 console.log(error)
             }
         }
-        pomodoroFetch();
-    }, [dispatch])
+        if (isAuthenticated) {
+            pomodoroFetch(); 
+        }
+       
+    }, [dispatch, isAuthenticated])
 }

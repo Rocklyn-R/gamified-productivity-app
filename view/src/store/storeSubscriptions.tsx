@@ -1,11 +1,9 @@
 import { RootState } from "./store";
 import { Dispatch } from 'redux';
-import { updatePomodoroCurrentTime } from "../api/pomodoro";
+import { updatePomodoroCurrentTime,  } from "../api/pomodoro";
 
 export const watchTimerModeChanges = (store: any) => (dispatch: Dispatch, getState: () => RootState) => {
     let previousTimerMode = getState().pomodoro.timer_mode;
-    let previousSessionsRemaining = getState().pomodoro.sessions_remaining;
-    let previousPomodoros = getState().pomodoro.pomodoros;
     
     // Subscribe to store changes
     const unsubscribeFromStoreChanges = store.subscribe(async () => {
@@ -13,11 +11,13 @@ export const watchTimerModeChanges = (store: any) => (dispatch: Dispatch, getSta
         const currentSecondsLeft = getState().pomodoro.seconds_left;
         const currentSessionsRemaining = getState().pomodoro.sessions_remaining;
         const currentPomodoros = getState().pomodoro.pomodoros;
+        const currentIsPaused = getState().pomodoro.is_paused
         // If timer_mode has changed, dispatch an API call to update the database
         if (currentTimerMode !== previousTimerMode) {
             // Call API here
             await updatePomodoroCurrentTime(
                 currentSecondsLeft,
+                currentIsPaused,
                 currentTimerMode,
                 currentSessionsRemaining,
                 currentPomodoros

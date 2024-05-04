@@ -37,7 +37,7 @@ export const SignUp = () => {
             } else if (response === 'Success') {
                 dispatch(authenticateUser());
                 const pomodoroId = uuidv4();
-                const pomodoroCreation = await createPomodoro(pomodoroId);
+                await createPomodoro(pomodoroId);
                 setErrorMessage("");
                 navigate('/tasks');  
             } else {

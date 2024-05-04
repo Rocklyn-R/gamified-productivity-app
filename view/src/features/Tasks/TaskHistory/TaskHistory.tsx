@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Card from '../../../components/Card/Card';
 import { selectHistoryTasks } from '../../../store/TasksSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { TaskItem } from '../TaskItem/TaskItem';
 import "./TaskHistory.css";
 import { IoArrowBackOutline } from "react-icons/io5";

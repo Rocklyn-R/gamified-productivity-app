@@ -78,5 +78,6 @@ export interface UserState {
     firstName: string,
     lastName: string,
     email: string,
-    google_linked: boolean
+    google_linked: boolean,
+    password: boolean
 }

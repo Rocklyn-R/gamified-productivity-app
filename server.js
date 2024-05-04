@@ -9,6 +9,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const initializePassport = require('./config/passport');
 require('dotenv').config();
+const { checkAuthenticatedOnLoginSignup } = require('./middleware/authentication.js');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -58,7 +59,9 @@ app.use('/shop-rewards', shopRouter);
 app.use('/inventory', inventoryRouter);
 app.use('/pomodoro', pomodoroRouter);
 
-
+app.get('/auth', checkAuthenticatedOnLoginSignup, (req, res) => {
+    return res.status(200).json({ message: 'User is authorized'});
+  });
 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`)

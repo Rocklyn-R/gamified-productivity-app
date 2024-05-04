@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Card from '../../components/Card/Card';
 import './TasksPage.css';
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { TaskForm } from './TaskForm/TaskForm';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectTasks, selectHistoryTasks, setTasks, setHistoryTasks } from '../../store/TasksSlice';
+import { selectTasks, selectHistoryTasks } from '../../store/TasksSlice';
 import { ViewTask } from './ViewTask/ViewTask';
 import { Task } from "../../types/types";
 import { TaskItem } from "./TaskItem/TaskItem";
@@ -12,17 +12,15 @@ import { GrHistory } from "react-icons/gr";
 import { Link } from "react-router-dom";
 import { markAsOverDue } from '../../store/TasksSlice';
 import { OverdueTasks } from './OverdueTasks/OverdueTasks';
-import { selectTotalCoins, setCoins } from '../../store/RewardsSlice';
+import { selectTotalCoins } from '../../store/RewardsSlice';
 import { FaCoins } from 'react-icons/fa';
 import { day, date } from '../../utilities/utilities';
-import { getTasks, changeToOverDue, getHistoryTasks } from '../../api/tasks';
-import { getCoins } from '../../api/coins';
+import { changeToOverDue } from '../../api/tasks';
 import { useAuthorizationCheck } from '../../hooks/AuthorizationCheck';
-import { useTaskHistoryFetch } from '../../hooks/TaskHistoryFetch';
+
 
 export const Tasks = () => {
     useAuthorizationCheck();
-    useTaskHistoryFetch();
     
     const tasks = useSelector(selectTasks);
     const [showForm, setShowForm] = useState(false);
@@ -47,30 +45,7 @@ export const Tasks = () => {
     const dispatch = useDispatch();
     const [showOverdueTasks, setShowOverdueTasks] = useState(false);
 
-    useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const taskData = await getTasks();
-                dispatch(setTasks(taskData))
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchTasks();
 
-    }, [dispatch]);
-
-    useEffect(() => {
-        const fetchCoins = async () => {
-            try {
-                const fetchedCoins = await getCoins();
-                dispatch(setCoins(fetchedCoins));
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchCoins();
-    }, [dispatch]);
 
 
     const handleAddTaskClick = () => {
@@ -147,7 +122,7 @@ export const Tasks = () => {
                     <h1><FaCoins className='coin-icon' /> {totalCoins}</h1>
                 </div>
 
-                {tasks.length === 0 && <p>Add new tasks!</p>}
+                {tasks.length === 0 && <p className='add-tasks-message'>Add new tasks!</p>}
                 <div className='todo-list'>
                     {tasks.filter(task => !task.overdue).map((task, index) => {
                         return <TaskItem task={task} index={index} handleViewTaskClick={handleViewTaskClick} />

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateUserName } from "../../../api/profile";
 import { TextField } from "@mui/material";

@@ -32,5 +32,5 @@ export const useAuthorizationCheck = (callback?: () => void, callback2?: () => v
     
     // Trigger authentication check when component mounts or when isAuthenticated changes
     authorizationCheck();
-  }, [dispatch]);
+  }, [dispatch, callback, callback2, isAuthenticated]);
 };

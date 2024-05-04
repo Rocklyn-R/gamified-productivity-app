@@ -1,5 +1,5 @@
 import "./Timer.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { FaPlay } from "react-icons/fa";
@@ -50,29 +50,6 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
     const sessionsRemaining = useSelector(selectSessionsRemaining);
     const sessionsToLongBreak = useSelector(selectNumOfSessionsToLongBreak)
 
-
-
-    useEffect(() => {
-
-        if (isPaused) {
-            clearInterval(intervalId);
-        }
-        if (!isPaused) {
-            clearInterval(intervalId);
-            startTimer();
-        }
-
-    }, [isPaused]);
-
-
-
-
-    const pauseTimer = async () => {
-        await pomodoroUpdateSecondsLeft(secondsLeft);
-        await pausePlayPomodoroTimer(true);
-        dispatch(pause());
-    };
-
     const startTimer = () => {
         let iterations = 0;
         const maxIterations = secondsLeft;
@@ -86,6 +63,33 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
         }, 1000);
         intervalId = id;
     };
+
+
+    useEffect(() => {
+
+        if (isPaused) {
+            clearInterval(intervalId);
+        }
+        
+
+    }, [isPaused]);
+
+    useEffect(() => {
+       if (!isPaused) {
+            clearInterval(intervalId);
+            startTimer();
+        } 
+    })
+
+
+
+
+    const pauseTimer = async () => {
+        await pomodoroUpdateSecondsLeft(secondsLeft);
+        await pausePlayPomodoroTimer(true);
+        dispatch(pause());
+    };
+
 
 
     const playTimer = async () => {

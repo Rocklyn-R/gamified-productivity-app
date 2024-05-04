@@ -1,25 +1,25 @@
 import { useEffect } from "react";
-import { getCoins } from "../api/coins";
 import { useDispatch, useSelector } from "react-redux";
-import { setCoins } from "../store/RewardsSlice";
+import { getShopItems } from "../api/shop";
+import { setShopItems } from "../store/RewardsSlice";
 import { selectIsAuthenticated } from "../store/UserSlice";
 
-
-export const useCoinsFetch = () => {
+export const useRewardsFetch = () => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(selectIsAuthenticated);
 
     useEffect(() => {
-        const fetchCoins = async () => {
+        const fetchRewards = async () => {
             try {
-                const fetchedCoins = await getCoins();
-                dispatch(setCoins(fetchedCoins));
+                const shopData = await getShopItems();
+                dispatch(setShopItems(shopData))
             } catch (error) {
-                console.log(error);
+                throw error;
             }
+
         }
         if (isAuthenticated) {
-         fetchCoins();   
+           fetchRewards(); 
         }
         
     }, [dispatch, isAuthenticated]);

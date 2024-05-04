@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux';
 import { IoArrowBackOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { renderIcon } from '../../../utilities/utilities';
-import { formatDate } from '../../../utilities/utilities';
-import { useRewardHistoryFetch } from '../../../hooks/RewardHistoryFetch';
 import { useAuthorizationCheck } from '../../../hooks/AuthorizationCheck';
 import { MdDeleteOutline } from "react-icons/md";
 import { DeleteMessage } from '../../../components/DeleteMessage/DeleteMessage';
@@ -16,7 +14,6 @@ import { UsedRewards } from '../../../types/types';
 
 export const RewardHistory = () => {
     useAuthorizationCheck();
-    useRewardHistoryFetch();
 
     const usedRewards = useSelector(selectUsedRewards);
     const [showDeleteMessage, setShowDeleteMessage] = useState(false)
@@ -44,10 +41,6 @@ export const RewardHistory = () => {
             document.removeEventListener('mousedown', handleOverlayClick);
         };
     }, []);
-
-    const handleDeleteClick = () => {
-        setShowDeleteMessage(true);
-    }
 
     const hideDeleteMessage = () => {
         setShowDeleteMessage(false)

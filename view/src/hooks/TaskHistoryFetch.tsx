@@ -1,10 +1,12 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getHistoryTasks } from "../api/tasks";
 import { setHistoryTasks } from "../store/TasksSlice";
+import { selectIsAuthenticated } from "../store/UserSlice";
 
 export const useTaskHistoryFetch = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector(selectIsAuthenticated)
     
     useEffect(() => {
         const fetchHistoryTasks = async () => {
@@ -15,6 +17,8 @@ export const useTaskHistoryFetch = () => {
                 console.log(error);
             }
         }
-        fetchHistoryTasks();
-    }, [dispatch]);
+        if (isAuthenticated) {
+           fetchHistoryTasks(); 
+        }
+    }, [dispatch, isAuthenticated]);
 }

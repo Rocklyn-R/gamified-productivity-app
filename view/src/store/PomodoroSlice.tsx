@@ -115,6 +115,9 @@ export const PomodoroSlice = createSlice({
         },
         sellPomodoros: (state, action: PayloadAction<number>) => {
             state.pomodoros = state.pomodoros - action.payload;
+        },
+        setSecondsLeft: (state, action: PayloadAction<number>) => {
+            state.seconds_left = action.payload;
         }
     }
 })
@@ -131,7 +134,8 @@ export const {
     reset,
     skip,
     setSellingPrice,
-    sellPomodoros
+    sellPomodoros,
+    setSecondsLeft
 } = PomodoroSlice.actions
 
 export const selectWorkMinutes = (state: RootState) => state.pomodoro.work_mins;

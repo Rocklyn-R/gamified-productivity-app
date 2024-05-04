@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navigation } from './features/Navigation/Navigation';
@@ -11,15 +11,13 @@ import { PomodoroPage } from './features/Pomodoro/PomodoroPage';
 import { LoginPage } from './features/Authentication/Login/LoginPage';
 import { SignUp } from './features/Authentication/Signup/SignupPage';
 import { Profile } from './features/Profile/Profile';
-import { selectIsAuthenticated, unauthenticateUser } from './store/UserSlice';
+import { selectIsAuthenticated } from './store/UserSlice';
 import { useSelector } from 'react-redux';
-import { checkAuthentication } from './api/login';
-import { authenticateUser } from './store/UserSlice';
 import { useDispatch } from 'react-redux';
 import { useAuthorizationCheck } from './hooks/AuthorizationCheck';
-import { getPomodoro } from './api/pomodoro';
-import { selectSecondsLeft, setPomodoro } from './store/PomodoroSlice';
-import { pausePomodoroTimer } from './api/pomodoro';
+import { selectBreakMinutes, selectIsPaused, selectLongBreakMinutes, selectMode, selectNumOfSessionsToLongBreak, selectSecondsLeft, selectSessionsRemaining, selectWorkMinutes } from './store/PomodoroSlice';
+import { pomodoroUpdateSecondsLeft, skipTimerUpdate } from './api/pomodoro';
+import { setSecondsLeft, skip } from './store/PomodoroSlice';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,30 +25,56 @@ function App() {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const secondsLeft = useSelector(selectSecondsLeft);
   const dispatch = useDispatch();
+  const isPaused = useSelector(selectIsPaused);
+  const sessionsRemaining = useSelector(selectSessionsRemaining);
+  const mode = useSelector(selectMode);
+  const workMinutes = useSelector(selectWorkMinutes)
+  const breakMinutes = useSelector(selectBreakMinutes);
+  const longBreakMinutes = useSelector(selectLongBreakMinutes);
+  const sessionsToLongBreak = useSelector(selectNumOfSessionsToLongBreak);
 
-  useEffect(() => {
-    if(isAuthenticated) {
-      const pomodoroFetch = async () => {
-        try {
-            const pomodoroData = await getPomodoro();
-            console.log(pomodoroData);
-            dispatch(setPomodoro(pomodoroData));
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    pomodoroFetch()
-    }
-  }, [isAuthenticated])
-  useEffect(() => {
+  
+
     const handleBeforeUnload = async () => {
-        await pausePomodoroTimer(secondsLeft);
+      localStorage.removeItem('pomodoroTimerState');
+      if (!isPaused) {
+        const currentTime = Math.floor(Date.now() / 1000);
+        const timerState = {
+          secondsLeft: secondsLeft,
+          timeOfUnload: currentTime
+        };
+        localStorage.setItem('pomodoroTimerState', JSON.stringify(timerState))
+      }
     }
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    }
-  }, [secondsLeft]);
+    window.addEventListener('beforeunload', handleBeforeUnload)
+
+
+
+    const handleLoad = async () => {
+        const savedTimerState = localStorage.getItem('pomodoroTimerState');
+        if (savedTimerState) {
+          const { secondsLeft, timeOfUnload } = JSON.parse(savedTimerState);
+          const currentTime = Math.floor(Date.now() / 1000);
+          const newSecondsLeft = secondsLeft - (currentTime - timeOfUnload)
+          console.log('WORKING', newSecondsLeft);
+          if (newSecondsLeft > 0) {
+            dispatch(setSecondsLeft(newSecondsLeft));
+            await pomodoroUpdateSecondsLeft(newSecondsLeft);
+          } else {
+            dispatch(skip());
+            await pomodoroUpdateSecondsLeft(newSecondsLeft);
+            await skipTimerUpdate(
+              sessionsRemaining,
+              mode,
+              workMinutes,
+              breakMinutes,
+              longBreakMinutes,
+              sessionsToLongBreak
+          )
+          }
+        }
+      }
+    window.addEventListener('load', handleLoad);
 
 
   if (isLoading) {

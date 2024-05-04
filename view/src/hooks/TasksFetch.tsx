@@ -1,26 +1,25 @@
 import { useEffect } from "react";
-import { getCoins } from "../api/coins";
+import { setTasks } from "../store/TasksSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setCoins } from "../store/RewardsSlice";
+import { getTasks } from "../api/tasks";
 import { selectIsAuthenticated } from "../store/UserSlice";
 
-
-export const useCoinsFetch = () => {
+export const useTasksFetch = () => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(selectIsAuthenticated);
 
     useEffect(() => {
-        const fetchCoins = async () => {
+        const fetchTasks = async () => {
             try {
-                const fetchedCoins = await getCoins();
-                dispatch(setCoins(fetchedCoins));
+                const taskData = await getTasks();
+                dispatch(setTasks(taskData))
             } catch (error) {
                 console.log(error);
             }
         }
         if (isAuthenticated) {
-         fetchCoins();   
+           fetchTasks();
+ 
         }
-        
     }, [dispatch, isAuthenticated]);
 }
