@@ -1,7 +1,7 @@
 import "./Settings.css";
 import Card from "../../../components/Card/Card";
 import ReactSlider from "react-slider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
     selectWorkMinutes,
@@ -13,11 +13,13 @@ import {
     setNumOfSessionsToLongBreak,
     selectMode,
     selectSessionsRemaining,
+    selectSecondsLeft,
+    setSecondsLeft
 } from "../../../store/PomodoroSlice";
 import { useDispatch } from "react-redux";
 import { setWorkMinutes, setBreakMinutes, setSellingPrice } from "../../../store/PomodoroSlice";
 import { FaCoins } from "react-icons/fa";
-import { updatePomodoroSettings } from "../../../api/pomodoro";
+import { updatePomodoroSettings, pomodoroUpdateSecondsLeft } from "../../../api/pomodoro";
 
 
 interface SettingsProps {
@@ -37,33 +39,100 @@ export const Settings: React.FC<SettingsProps> = ({ handleCloseSettings }) => {
     const pomodoroPrice = useSelector(selectPomodoroPrice);
     const [priceOfTomato, setPriceOfTomato] = useState(pomodoroPrice);
     const sessionsRemaining = useSelector(selectSessionsRemaining);
-
+    const secondsLeft = useSelector(selectSecondsLeft);
 
     const dispatch = useDispatch();
 
     const handleChangeSettings = async () => {
-        const settingsUpdate = await updatePomodoroSettings(
-            timer_mode,
-            workMinutesLocal,
-            breakMinutesLocal,
-            longBreakMinutesLocal,
-            numOfSessionsToLongBreakLocal,
-            sessionsRemaining,
-            priceOfTomato
-        );
-        if (settingsUpdate) {
-            dispatch(setWorkMinutes(workMinutesLocal));
-            dispatch(setBreakMinutes(breakMinutesLocal));
-            dispatch(setLongBreakMinutes(longBreakMinutesLocal));
-            dispatch(setNumOfSessionsToLongBreak(numOfSessionsToLongBreakLocal));
+            if (workMinutes !== workMinutesLocal) {
+                dispatch(setWorkMinutes(workMinutesLocal));
+                const workMinsInSecs = workMinutesLocal * 60;
+                if (timer_mode === 'work' && workMinsInSecs > secondsLeft) {
+                    const differenceInSeconds = (workMinutesLocal - workMinutes) * 60;
+                    const newSecondsLeft = secondsLeft + differenceInSeconds;
+                    dispatch(setSecondsLeft(newSecondsLeft))
+                    await pomodoroUpdateSecondsLeft(newSecondsLeft);
+                } 
+                if (timer_mode === 'work' && workMinsInSecs <= secondsLeft) {
+                    const secondsLeft = workMinutesLocal * 60;
+                    dispatch(setSecondsLeft(secondsLeft))
+                    await pomodoroUpdateSecondsLeft(secondsLeft);
+                }
+            }
+            if (breakMinutes !== breakMinutesLocal) {
+                dispatch(setBreakMinutes(breakMinutesLocal));
+                const breakMinsInSecs = breakMinutesLocal * 60;
+                if (timer_mode === 'break' && breakMinsInSecs > secondsLeft) {
+                    const differenceInSeconds = (breakMinutesLocal - breakMinutes) * 60;
+                    const newSecondsLeft = secondsLeft + differenceInSeconds;
+                    dispatch(setSecondsLeft(newSecondsLeft));
+                    await pomodoroUpdateSecondsLeft(newSecondsLeft);
+                } 
+                if (timer_mode === 'break' && breakMinsInSecs <= secondsLeft) {
+                    const secondsLeft = breakMinutesLocal * 60;
+                    dispatch(setSecondsLeft(secondsLeft));
+                    await pomodoroUpdateSecondsLeft(secondsLeft);
+                }
+            }
+            if (longBreakMinutes !== longBreakMinutesLocal) {
+                dispatch(setLongBreakMinutes(longBreakMinutesLocal));
+                const longBreakMinsInSecs = longBreakMinutesLocal * 60;
+                if (timer_mode === 'longBreak' && longBreakMinsInSecs > secondsLeft) {
+                    const differenceInSeconds = (longBreakMinutesLocal - longBreakMinutes) * 60;
+                    const newSecondsLeft = secondsLeft + differenceInSeconds;
+                    dispatch(setSecondsLeft(newSecondsLeft));
+                    await pomodoroUpdateSecondsLeft(newSecondsLeft);
+                }
+                if (timer_mode === 'longBreak' && longBreakMinsInSecs <= secondsLeft) {
+                    const secondsLeft = longBreakMinutesLocal * 60;
+                    dispatch(setSecondsLeft(secondsLeft));
+                    await pomodoroUpdateSecondsLeft(secondsLeft);
+                }
+            }
+            if (numOfSessionsToLongBreak !== numOfSessionsToLongBreakLocal) {
+                dispatch(setNumOfSessionsToLongBreak(numOfSessionsToLongBreakLocal));
+            }
             dispatch(setSellingPrice(priceOfTomato));
-            handleCloseSettings();
-        }
+
+            await updatePomodoroSettings(
+                timer_mode,
+                workMinutesLocal,
+                breakMinutesLocal,
+                longBreakMinutesLocal,
+                numOfSessionsToLongBreakLocal,
+                sessionsRemaining,
+                priceOfTomato
+            );
+
+        handleCloseSettings();
     }
 
     const handleCancel = () => {
         handleCloseSettings();
     }
+ 
+    useEffect(() => {
+        const changeSettings = async () => {
+            await updatePomodoroSettings(
+                timer_mode,
+                workMinutes,
+                breakMinutes,
+                longBreakMinutes,
+                numOfSessionsToLongBreak,
+                sessionsRemaining,
+                pomodoroPrice
+            );
+            await pomodoroUpdateSecondsLeft(secondsLeft);
+        }
+        changeSettings();
+    }, [timer_mode,
+        workMinutes,
+        breakMinutes,
+        longBreakMinutes,
+        numOfSessionsToLongBreak,
+        sessionsRemaining,
+        pomodoroPrice,
+        secondsLeft])
 
 
     return (
