@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getRewardHistory } from "../api/inventory";
 import { useDispatch, useSelector } from "react-redux";
-import { setUsedRewards } from "../store/RewardsSlice";
+import { selectUsedRewards, setUsedRewards } from "../store/RewardsSlice";
 import { selectIsAuthenticated } from "../store/UserSlice";
 
 export const useRewardHistoryFetch = () => {
