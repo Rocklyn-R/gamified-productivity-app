@@ -11,11 +11,16 @@ import {
     setBreakMinutes,
     setLongBreakMinutes,
     setNumOfSessionsToLongBreak,
-    setSellingPrice
+    setSellingPrice,
+    selectSecondsLeft,
+    selectMode,
+    selectSessionsRemaining,
+    setSecondsLeft
 } from "../../../../store/PomodoroSlice";
 import Card from "../../../../components/Card/Card";
 import { NumberPicker } from "./NumberPicker/NumberPicker";
 import { FaCoins } from "react-icons/fa";
+import { pomodoroUpdateSecondsLeft, updatePomodoroSettings } from "../../../../api/pomodoro";
 
 type ModeType = "work" | "break" | "longBreak" | "numOfSessions" | "tomatoPrice" | ""
 interface ShowPickerState {
@@ -46,6 +51,9 @@ export const SettingsMobile: React.FC<SettingsMobileProps> = ({ handleCloseSetti
     const [tomatoPriceLocal, setTomatoPriceLocal] = useState(pomodoroPrice)
 
     const [showPicker, setShowPicker] = useState<ShowPickerState>({ show: false, mode: "" });
+    const secondsLeft = useSelector(selectSecondsLeft);
+    const timer_mode = useSelector(selectMode);
+    const sessionsRemaining = useSelector(selectSessionsRemaining);
 
     const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -101,25 +109,80 @@ export const SettingsMobile: React.FC<SettingsMobileProps> = ({ handleCloseSetti
                     : tomatoPriceLocal;
 
 
-    const handleChangeSettings = () => {
-        dispatch(setWorkMinutes(workMinutesLocal));
-        dispatch(setBreakMinutes(breakMinutesLocal));
-        dispatch(setLongBreakMinutes(longBreakMinutesLocal));
-        dispatch(setNumOfSessionsToLongBreak(numOfSessionsToLongBreakLocal));
+    const handleChangeSettings = async () => {
+        if (workMinutes !== workMinutesLocal) {
+            dispatch(setWorkMinutes(workMinutesLocal));
+            const workMinsInSecs = workMinutesLocal * 60;
+            if (timer_mode === 'work' && workMinsInSecs > secondsLeft) {
+                const differenceInSeconds = (workMinutesLocal - workMinutes) * 60;
+                const newSecondsLeft = secondsLeft + differenceInSeconds;
+                dispatch(setSecondsLeft(newSecondsLeft))
+                await pomodoroUpdateSecondsLeft(newSecondsLeft);
+            }
+            if (timer_mode === 'work' && workMinsInSecs <= secondsLeft) {
+                const secondsLeft = workMinutesLocal * 60;
+                dispatch(setSecondsLeft(secondsLeft))
+                await pomodoroUpdateSecondsLeft(secondsLeft);
+            }
+        }
+        if (breakMinutes !== breakMinutesLocal) {
+            dispatch(setBreakMinutes(breakMinutesLocal));
+            const breakMinsInSecs = breakMinutesLocal * 60;
+            if (timer_mode === 'break' && breakMinsInSecs > secondsLeft) {
+                const differenceInSeconds = (breakMinutesLocal - breakMinutes) * 60;
+                const newSecondsLeft = secondsLeft + differenceInSeconds;
+                dispatch(setSecondsLeft(newSecondsLeft));
+                await pomodoroUpdateSecondsLeft(newSecondsLeft);
+            }
+            if (timer_mode === 'break' && breakMinsInSecs <= secondsLeft) {
+                const secondsLeft = breakMinutesLocal * 60;
+                dispatch(setSecondsLeft(secondsLeft));
+                await pomodoroUpdateSecondsLeft(secondsLeft);
+            }
+        }
+        if (longBreakMinutes !== longBreakMinutesLocal) {
+            dispatch(setLongBreakMinutes(longBreakMinutesLocal));
+            const longBreakMinsInSecs = longBreakMinutesLocal * 60;
+            if (timer_mode === 'longBreak' && longBreakMinsInSecs > secondsLeft) {
+                const differenceInSeconds = (longBreakMinutesLocal - longBreakMinutes) * 60;
+                const newSecondsLeft = secondsLeft + differenceInSeconds;
+                dispatch(setSecondsLeft(newSecondsLeft));
+                await pomodoroUpdateSecondsLeft(newSecondsLeft);
+            }
+            if (timer_mode === 'longBreak' && longBreakMinsInSecs <= secondsLeft) {
+                const secondsLeft = longBreakMinutesLocal * 60;
+                dispatch(setSecondsLeft(secondsLeft));
+                await pomodoroUpdateSecondsLeft(secondsLeft);
+            }
+        }
+        if (numOfSessionsToLongBreak !== numOfSessionsToLongBreakLocal) {
+            dispatch(setNumOfSessionsToLongBreak(numOfSessionsToLongBreakLocal));
+        }
         dispatch(setSellingPrice(tomatoPriceLocal));
+
+        await updatePomodoroSettings(
+            timer_mode,
+            workMinutesLocal,
+            breakMinutesLocal,
+            longBreakMinutesLocal,
+            numOfSessionsToLongBreakLocal,
+            sessionsRemaining,
+            tomatoPriceLocal
+        );
+
         handleCloseSettings();
     }
 
-const handleShowPicker = (modeType: ModeType) => {
-    setTimeout(() => {
-        setShowPicker({ show: true, mode: modeType });
-      }, 100); 
-}
+    const handleShowPicker = (modeType: ModeType) => {
+        setTimeout(() => {
+            setShowPicker({ show: true, mode: modeType });
+        }, 100);
+    }
 
     return (
         <>
             <Card className="pomodoro-mobile-settings overlay-card">
-            <button
+                <button
                     type="button"
                     className='close'
                     onClick={handleCloseSettings}

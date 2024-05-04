@@ -21,6 +21,7 @@ import {
     selectPomodoros,
     selectSessionsRemaining,
     selectNumOfSessionsToLongBreak,
+    selectIsLoadingPomodoro,
 } from "../../../store/PomodoroSlice";
 import { BsFillSkipEndFill } from "react-icons/bs";
 import tomato from "../../../images/tomato.png";
@@ -71,14 +72,14 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
             clearInterval(intervalId);
         }
         
-
-    }, [isPaused]);
-
-    useEffect(() => {
-       if (!isPaused) {
+  if (!isPaused) {
             clearInterval(intervalId);
             startTimer();
         } 
+    }, [isPaused]);
+
+    useEffect(() => {
+     
     })
 
 

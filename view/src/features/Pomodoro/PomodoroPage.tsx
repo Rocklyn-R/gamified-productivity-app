@@ -4,26 +4,28 @@ import Card from "../../components/Card/Card";
 import { Timer } from "./Timer/Timer";
 import { IoIosSettings } from "react-icons/io";
 import { Settings } from "./Settings/Settings";
-import { useSelector } from "react-redux";
-import { selectIsPaused, selectSessionsRemaining } from "../../store/PomodoroSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectIsPaused, selectSessionsRemaining, setPomodoro, selectIsLoadingPomodoro, setIsLoading } from "../../store/PomodoroSlice";
 import { PomodoroForm } from "./PomodoroForm/PomodoroForm";
 import { FaCoins } from "react-icons/fa";
 import { selectTotalCoins } from "../../store/RewardsSlice";
 import { SettingsMobile } from "./Settings/SettingsMobile/SettingsMobile";
-import { useAuthorizationCheck } from "../../hooks/AuthorizationCheck";
+import { getPomodoro } from "../../api/pomodoro";
+import { selectIsAuthenticated } from "../../store/UserSlice";
+
 
 
 
 export const PomodoroPage = () => {
-    useAuthorizationCheck();
-
     const [showSettings, setShowSettings] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);
     const isPaused = useSelector(selectIsPaused);
     const [showSellPomodoros, setShowSellPomodoros] = useState(false);
     const sessionsRemaining = useSelector(selectSessionsRemaining);
     const totalCoins = useSelector(selectTotalCoins);
-
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const isLoading = useSelector(selectIsLoadingPomodoro)
     const handleOpenSettings = () => {
         setShowSettings(true);
     }
@@ -35,6 +37,18 @@ export const PomodoroPage = () => {
         }
     };
 
+    useEffect(() => {
+        const pomodoroFetch = async () => {
+            const pomodoroData = await getPomodoro();
+            if (pomodoroData) {
+               dispatch(setPomodoro(pomodoroData));
+               dispatch(setIsLoading(false));
+            }
+        if (isAuthenticated && isLoading) {
+            pomodoroFetch(); 
+        }
+    }
+    }, [dispatch, isAuthenticated]);
 
 
     useEffect(() => {
@@ -58,6 +72,8 @@ export const PomodoroPage = () => {
         setShowSellPomodoros(false);
     }
 
+
+
     return (
 
         <Card className="pomodoro-container">
@@ -76,7 +92,7 @@ export const PomodoroPage = () => {
             )}
 
 
-            <Timer handleShowSellPomodoros={handleShowSellPomodoros} />
+            {!isLoading && <Timer handleShowSellPomodoros={handleShowSellPomodoros} />}
             {showSettings && (
                 <div className="overlay" ref={overlayRef}>
                     <div className="settings-div">
