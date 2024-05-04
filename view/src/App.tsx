@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navigation } from './features/Navigation/Navigation';
@@ -21,7 +21,8 @@ import { setSecondsLeft, skip } from './store/PomodoroSlice';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  useAuthorizationCheck(() => setIsLoading(false));
+  const callback = useCallback(() => setIsLoading(false), []);
+  useAuthorizationCheck(callback);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const secondsLeft = useSelector(selectSecondsLeft);
   const dispatch = useDispatch();
@@ -32,7 +33,6 @@ function App() {
   const breakMinutes = useSelector(selectBreakMinutes);
   const longBreakMinutes = useSelector(selectLongBreakMinutes);
   const sessionsToLongBreak = useSelector(selectNumOfSessionsToLongBreak);
-
   
 
     const handleBeforeUnload = async () => {

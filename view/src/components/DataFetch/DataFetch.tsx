@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectBreakMinutes, 
     selectIsPaused, 
@@ -12,24 +13,20 @@ import { selectBreakMinutes,
 } from "../../store/PomodoroSlice";
 import { pomodoroUpdateSecondsLeft, skipTimerUpdate } from "../../api/pomodoro";
 import App from "../../App";
-import { useTasksFetch } from "../../hooks/TasksFetch";
 import { useCoinsFetch } from "../../hooks/CoinsFetch";
 import { useRewardsFetch } from "../../hooks/RewardsFetch";
 import { useTaskHistoryFetch } from "../../hooks/TaskHistoryFetch";
 import { useRewardHistoryFetch } from "../../hooks/RewardHistoryFetch";
 import { selectIsAuthenticated } from "../../store/UserSlice";
-import { useInventoryFetch } from "../../hooks/InventoryFetch";
 import { usePomodoroFetch } from "../../hooks/PomodoroFetch";
 import { useProfileFetch } from "../../hooks/ProfileFetch";
 
 export const DataFetch = () => {
-    useTasksFetch();
     useCoinsFetch();
     useTaskHistoryFetch();
     usePomodoroFetch();
     useRewardsFetch();
     useRewardHistoryFetch();
-    useInventoryFetch();
     useProfileFetch();
 
 

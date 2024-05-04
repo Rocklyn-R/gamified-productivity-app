@@ -8,10 +8,10 @@ import { createNewPassword } from "../../../api/profile";
 
 interface CreatePasswordFormProps {
     setCreatePassword: (arg0: boolean) => void;
-    setNoPassword: (arg0: boolean) => void;
+    setPasswordExists: (arg0: boolean) => void;
 }
 
-export const CreatePasswordForm: React.FC<CreatePasswordFormProps> = ({ setCreatePassword, setNoPassword }) => {
+export const CreatePasswordForm: React.FC<CreatePasswordFormProps> = ({ setCreatePassword, setPasswordExists }) => {
     const [password, setPassword] = useState("")
     const [passwordRepeat, setPasswordRepeat] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +33,7 @@ export const CreatePasswordForm: React.FC<CreatePasswordFormProps> = ({ setCreat
         } else {
             await createNewPassword(password);
             setCreatePassword(false);
-            setNoPassword(false);
+            setPasswordExists(true);
         }
     }
 

@@ -38,7 +38,7 @@ export const checkAuthentication = async () => {
             return false;
         } else if (response.status === 200 && data.message === 'User not signed in') {
             return false;
-        } else return true
+        } else return true;
 
     } catch (error: any) {
         console.error('Error checking authentication:', error.message);

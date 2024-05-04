@@ -10,13 +10,16 @@ import { Task } from "../../types/types";
 import { TaskItem } from "./TaskItem/TaskItem";
 import { GrHistory } from "react-icons/gr";
 import { Link } from "react-router-dom";
-import { markAsOverDue } from '../../store/TasksSlice';
+import { markAsOverDue, setTasks } from '../../store/TasksSlice';
 import { OverdueTasks } from './OverdueTasks/OverdueTasks';
 import { selectTotalCoins } from '../../store/RewardsSlice';
 import { FaCoins } from 'react-icons/fa';
 import { day, date } from '../../utilities/utilities';
 import { changeToOverDue } from '../../api/tasks';
 import { useAuthorizationCheck } from '../../hooks/AuthorizationCheck';
+import { selectIsAuthenticated } from '../../store/UserSlice';
+import { getTasks } from '../../api/tasks';
+import e from 'express';
 
 
 export const Tasks = () => {
@@ -44,8 +47,23 @@ export const Tasks = () => {
     const totalCoins = useSelector(selectTotalCoins)
     const dispatch = useDispatch();
     const [showOverdueTasks, setShowOverdueTasks] = useState(false);
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const [isLoading, setIsLoading] = useState(true);
 
-
+    useEffect(() => {
+        const fetchTasks = async () => {
+             const taskData = await getTasks();
+             if (taskData) {
+                 dispatch(setTasks(taskData));
+                 setIsLoading(false);
+             }
+        };
+        if (isAuthenticated && tasks.length === 0) {
+           fetchTasks(); 
+        } else {
+            setIsLoading(false);
+        }
+    }, [dispatch, isAuthenticated]);
 
 
     const handleAddTaskClick = () => {
@@ -122,7 +140,7 @@ export const Tasks = () => {
                     <h1><FaCoins className='coin-icon' /> {totalCoins}</h1>
                 </div>
 
-                {tasks.length === 0 && <p className='add-tasks-message'>Add new tasks!</p>}
+                {tasks.length === 0 && !isLoading && <p className='add-tasks-message'>Add new tasks!</p>}
                 <div className='todo-list'>
                     {tasks.filter(task => !task.overdue).map((task, index) => {
                         return <TaskItem task={task} index={index} handleViewTaskClick={handleViewTaskClick} />

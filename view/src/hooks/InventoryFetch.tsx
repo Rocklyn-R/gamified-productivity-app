@@ -20,5 +20,6 @@ export const useInventoryFetch = () => {
             fetchInventoryItems();
         }
 
+
     }, [dispatch, isAuthenticated])
 }

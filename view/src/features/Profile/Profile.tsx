@@ -20,7 +20,7 @@ export const Profile = () => {
     const lastName = useSelector(selectLastName);
     const email = useSelector(selectEmail);
     const googleLinked = useSelector(selectGoogleLinked);
-    const passwordExists = useSelector(selectPasswordExists);
+    const passwordExistence = useSelector(selectPasswordExists);
     const [editName, setEditName] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
     const [editPassword, setEditPassword] = useState(false);
@@ -30,7 +30,7 @@ export const Profile = () => {
     const [passwordChangeStatusMessage, setPasswordChangeStatusMessage] = useState('');
     const [googleSignIn, setGoogleSignIn] = useState(googleLinked);
     const [createPassword, setCreatePassword] = useState(false);
-    const [noPassword, setNoPassword] = useState(passwordExists);
+    const [passwordExists, setPasswordExists] = useState(passwordExistence);
     const [showUnlinkMessage, setShowUnlinkMessage] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -105,7 +105,7 @@ export const Profile = () => {
                         <button onClick={() => setEditEmail(true)}><FaRegEdit /></button>
                     </div>
                 ))}
-            {!noPassword && (
+            {passwordExists && (
                 editPassword ? (
                     <div className="account-details-form-container">
                         <PasswordForm
@@ -123,14 +123,14 @@ export const Profile = () => {
             )
             }
             {passwordChangeStatusMessage && <p>{passwordChangeStatusMessage}</p>}
-            {googleSignIn && noPassword && (
+            {googleSignIn && !passwordExists && (
                 createPassword ? (
                     <>
                         <p>Create a new password:</p>
                         <div className="create-password-container">
                             <CreatePasswordForm
                                 setCreatePassword={setCreatePassword}
-                                setNoPassword={setNoPassword}
+                                setPasswordExists={setPasswordExists}
                             />
                         </div>
 
@@ -150,7 +150,7 @@ export const Profile = () => {
                         <p>Linked to Google account:</p>
                     </div>
                     <GoogleButton id="google-button" label={email} />
-                    {googleSignIn && !noPassword &&
+                    {googleSignIn && passwordExists &&
                         <button
                             className="unlink-google"
                             onClick={() => setShowUnlinkMessage(true)}

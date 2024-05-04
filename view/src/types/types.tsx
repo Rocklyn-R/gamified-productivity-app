@@ -71,6 +71,7 @@ export interface PomodoroState {
     timer_mode: "work" | "break" | "longBreak";
     pomodoros: number;
     pomodoro_price: number;
+    isLoading: boolean;
 }
 
 export interface UserState {

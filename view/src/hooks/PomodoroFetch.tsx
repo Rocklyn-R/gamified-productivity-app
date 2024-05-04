@@ -22,5 +22,5 @@ export const usePomodoroFetch = () => {
             pomodoroFetch(); 
         }
        
-    }, [dispatch, isAuthenticated])
+    }, [dispatch, isAuthenticated]);
 }
