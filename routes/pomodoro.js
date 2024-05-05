@@ -9,7 +9,8 @@ const {
     updatePomodoroCurrentTime,
     sellPomodoro,
     updateSecondsLeftPomodoroTimer,
-    pausePlayPomodoroTimer
+    pausePlayPomodoroTimer,
+    addTomatoPomodoro
 } = require('../controllers/pomodoro');
 
 const pomodoroRouter = express.Router();
@@ -29,6 +30,8 @@ pomodoroRouter.put('/sell', checkAuthenticated, sellPomodoro);
 
 pomodoroRouter.put('/update-seconds', checkAuthenticated, updateSecondsLeftPomodoroTimer);
 
-pomodoroRouter.put('/pause-or-play', pausePlayPomodoroTimer)
+pomodoroRouter.put('/pause-or-play', pausePlayPomodoroTimer);
+
+pomodoroRouter.put('/add-tomato', addTomatoPomodoro);
 
 module.exports = pomodoroRouter;

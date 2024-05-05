@@ -202,6 +202,17 @@ const pomodoroPausePlayTimer = async (is_paused_boolean, user_id) => {
     }
 }
 
+const pomodoroAddTomato = async (num_pomodoros, user_id) => {
+    const query = 'UPDATE pomodoro SET pomodoros = $1 WHERE user_id = $2';
+    try {
+        const result = await db.query(query, [num_pomodoros, user_id]);
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 module.exports = {
     pomodoroCreate,
     pomodoroGet,
@@ -210,5 +221,6 @@ module.exports = {
     pomodoroCurrentTimeUpdate,
     pomodoroSell,
     pomodoroUpdateSecondsLeft,
-    pomodoroPausePlayTimer
+    pomodoroPausePlayTimer,
+    pomodoroAddTomato
 }

@@ -13,11 +13,8 @@ import { SignUp } from './features/Authentication/Signup/SignupPage';
 import { Profile } from './features/Profile/Profile';
 import { selectIsAuthenticated } from './store/UserSlice';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import { useAuthorizationCheck } from './hooks/AuthorizationCheck';
-import { selectBreakMinutes, selectIsPaused, selectLongBreakMinutes, selectMode, selectNumOfSessionsToLongBreak, selectSecondsLeft, selectSessionsRemaining, selectWorkMinutes } from './store/PomodoroSlice';
-import { pomodoroUpdateSecondsLeft, skipTimerUpdate } from './api/pomodoro';
-import { setSecondsLeft, skip } from './store/PomodoroSlice';
+import { selectBreakMinutes, selectIsPaused, selectLongBreakMinutes, selectMode, selectNumOfSessionsToLongBreak, selectPomodoros, selectSecondsLeft, selectSessionsRemaining, selectWorkMinutes } from './store/PomodoroSlice';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +22,6 @@ function App() {
   useAuthorizationCheck(callback);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const secondsLeft = useSelector(selectSecondsLeft);
-  const dispatch = useDispatch();
   const isPaused = useSelector(selectIsPaused);
   const sessionsRemaining = useSelector(selectSessionsRemaining);
   const mode = useSelector(selectMode);
@@ -33,34 +29,46 @@ function App() {
   const breakMinutes = useSelector(selectBreakMinutes);
   const longBreakMinutes = useSelector(selectLongBreakMinutes);
   const sessionsToLongBreak = useSelector(selectNumOfSessionsToLongBreak);
-  
+  const pomodoros = useSelector(selectPomodoros);
 
-    const handleBeforeUnload = async () => {
+
+
+ 
+   const handleBeforeUnload = async () => {
       localStorage.removeItem('pomodoroTimerState');
       if (!isPaused) {
         const currentTime = Math.floor(Date.now() / 1000);
         const timerState = {
-          secondsLeft: secondsLeft,
-          timeOfUnload: currentTime
+          secondsLeftSaved: secondsLeft,
+          timeOfUnload: currentTime,
+          pomodoros: pomodoros,
+          sessionsRemaining: sessionsRemaining,
+          mode: mode,
+          totalSessions: sessionsToLongBreak,
+          workMinutes: workMinutes,
+          breakMinutes: breakMinutes,
+          longBreakMinutes: longBreakMinutes
         };
-        localStorage.setItem('pomodoroTimerState', JSON.stringify(timerState))
+        localStorage.setItem('pomodoroTimerState', JSON.stringify(timerState));
       }
     }
-    window.addEventListener('beforeunload', handleBeforeUnload)
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
 
-
-    const handleLoad = async () => {
+ 
+   /* const handleLoad = async () => {
+      const currentPath = window.location.pathname;
+      console.log(currentPath);
         const savedTimerState = localStorage.getItem('pomodoroTimerState');
         if (savedTimerState) {
-          const { secondsLeft, timeOfUnload } = JSON.parse(savedTimerState);
+          const { secondsLeftSaved, timeOfUnload, pathClosedFrom } = JSON.parse(savedTimerState);
           const currentTime = Math.floor(Date.now() / 1000);
-          const newSecondsLeft = secondsLeft - (currentTime - timeOfUnload)
+          const newSecondsLeft = secondsLeftSaved - (currentTime - timeOfUnload)
           console.log('WORKING', newSecondsLeft);
-          if (newSecondsLeft > 0) {
+          if (newSecondsLeft > 0 && currentPath === '/pomodoro') {
             dispatch(setSecondsLeft(newSecondsLeft));
             await pomodoroUpdateSecondsLeft(newSecondsLeft);
-          } else {
+          } else if (newSecondsLeft <= 0) {
             dispatch(skip());
             await pomodoroUpdateSecondsLeft(newSecondsLeft);
             await skipTimerUpdate(
@@ -71,11 +79,24 @@ function App() {
               longBreakMinutes,
               sessionsToLongBreak
           )
+          } else if (newSecondsLeft > 0 && currentPath !== '/pomodoro') {
+            await pomodoroUpdateSecondsLeft(newSecondsLeft);
+            intervalId1 = setInterval(async () => {
+              if (window.location.pathname === '/pomodoro') {
+                clearInterval(intervalId1);
+                console.log(newSecondsLeft);
+                const newSeconds = newSecondsLeft - counter;
+                console.log(newSeconds);
+                console.log(`Seconds until path became '/pomodoro': ${counter}`)
+              } else {
+                counter++;
+              }
+            }, 1000);
           }
         }
       }
-    window.addEventListener('load', handleLoad);
-
+    window.addEventListener('load', handleLoad); */
+ 
 
   if (isLoading) {
     return <div></div>

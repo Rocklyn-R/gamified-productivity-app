@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Card from "../../components/Card/Card";
 import "./InventoryPage.css";
 import { FaCoins } from "react-icons/fa";
@@ -46,7 +46,7 @@ export const InventoryPage = () => {
         } else {
             setIsLoading(false);
         }
-    }, [dispatch, isAuthenticated]);
+    }, [dispatch, isAuthenticated, inventory.length]);
 
 
     const usedRewards = useSelector(selectUsedRewards)

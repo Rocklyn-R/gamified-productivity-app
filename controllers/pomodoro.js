@@ -6,7 +6,8 @@ const {
     pomodoroCurrentTimeUpdate,
     pomodoroSell,
     pomodoroUpdateSecondsLeft,
-    pomodoroPausePlayTimer
+    pomodoroPausePlayTimer,
+    pomodoroAddTomato
 } = require('../models/pomodoro');
 
 const createPomodoro = async (req, res) => {
@@ -162,6 +163,19 @@ const pausePlayPomodoroTimer = async (req, res) => {
     }
 }
 
+const addTomatoPomodoro = async (req, res) => {
+    const user_id = req.user.id;
+    const { num_pomodoros } = req.body
+    try {
+        const result = await pomodoroAddTomato(user_id);
+        if (result) {
+            res.status(200).json({ message: "Tomato successfully added" })
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" })
+    }
+}
+
 
 
 module.exports = {
@@ -172,5 +186,6 @@ module.exports = {
     updatePomodoroCurrentTime,
     sellPomodoro,
     updateSecondsLeftPomodoroTimer,
-    pausePlayPomodoroTimer
+    pausePlayPomodoroTimer,
+    addTomatoPomodoro
 };

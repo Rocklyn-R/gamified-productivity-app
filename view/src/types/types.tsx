@@ -72,6 +72,7 @@ export interface PomodoroState {
     pomodoros: number;
     pomodoro_price: number;
     isLoading: boolean;
+    seconds_offset: number
 }
 
 export interface UserState {

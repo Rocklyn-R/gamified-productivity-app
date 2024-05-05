@@ -1,5 +1,5 @@
 import "./Timer.css";
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { FaPlay } from "react-icons/fa";
@@ -20,8 +20,7 @@ import {
     selectLongBreakMinutes,
     selectPomodoros,
     selectSessionsRemaining,
-    selectNumOfSessionsToLongBreak,
-    selectIsLoadingPomodoro,
+    selectNumOfSessionsToLongBreak
 } from "../../../store/PomodoroSlice";
 import { BsFillSkipEndFill } from "react-icons/bs";
 import tomato from "../../../images/tomato.png";
@@ -51,7 +50,7 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
     const sessionsRemaining = useSelector(selectSessionsRemaining);
     const sessionsToLongBreak = useSelector(selectNumOfSessionsToLongBreak)
 
-    const startTimer = () => {
+    const startTimer = useCallback(() => {
         let iterations = 0;
         const maxIterations = secondsLeft;
         const id = setInterval(() => {
@@ -63,7 +62,8 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
             }
         }, 1000);
         intervalId = id;
-    };
+        // eslint-disable-next-line
+    }, []);
 
 
     useEffect(() => {
@@ -71,17 +71,16 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
         if (isPaused) {
             clearInterval(intervalId);
         }
-        
-  if (!isPaused) {
-            clearInterval(intervalId);
-            startTimer();
-        } 
     }, [isPaused]);
 
+ 
     useEffect(() => {
-     
-    })
-
+        if (!isPaused) {
+            clearInterval(intervalId);
+            startTimer();
+            console.log("this")
+        }  
+    }, [isPaused, startTimer])
 
 
 
@@ -102,8 +101,17 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
     const resetTimer = async () => {
         dispatch(reset());
         await pausePlayPomodoroTimer(true);
+        let newSecondsLeft = secondsLeft;
+        if (mode === "work") {
+            newSecondsLeft = workMinutes * 60;
+        } else if (mode === "break") {
+            newSecondsLeft = breakMinutes * 60;
+        } else if (mode === "longBreak") {
+            newSecondsLeft = longBreakMinutes * 60;
+        }
+        await pomodoroUpdateSecondsLeft(newSecondsLeft);
     }
-
+ 
     const skipTimer = async () => {
         dispatch(skip());
       await skipTimerUpdate(

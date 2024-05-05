@@ -114,7 +114,6 @@ export const updatePomodoroCurrentTime = async (
     pomodoros: number
 ) => {
     try {
-        console.log("THIS RUNNIN")
         const response = await fetch('http://localhost:4000/pomodoro/update-pomodoro', {
             method: 'PUT',
             headers: {
@@ -182,6 +181,23 @@ export const pausePlayPomodoroTimer = async (is_paused_boolean: boolean) => {
             },
             credentials: 'include',
             body: JSON.stringify({ is_paused_boolean })
+        })
+        if (response.ok) {
+            return true;
+        } else return false;
+    } catch (error) {
+        console.log(error);
+    }  
+}
+
+export const addTomatoPomodoro = async (num_pomodoros: number) => {
+    try {
+        const response = await fetch('http://localhost:4000/pomodoro/add-tomato', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
         })
         if (response.ok) {
             return true;
