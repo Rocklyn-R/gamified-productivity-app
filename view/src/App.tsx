@@ -56,47 +56,6 @@ function App() {
 
 
  
-   /* const handleLoad = async () => {
-      const currentPath = window.location.pathname;
-      console.log(currentPath);
-        const savedTimerState = localStorage.getItem('pomodoroTimerState');
-        if (savedTimerState) {
-          const { secondsLeftSaved, timeOfUnload, pathClosedFrom } = JSON.parse(savedTimerState);
-          const currentTime = Math.floor(Date.now() / 1000);
-          const newSecondsLeft = secondsLeftSaved - (currentTime - timeOfUnload)
-          console.log('WORKING', newSecondsLeft);
-          if (newSecondsLeft > 0 && currentPath === '/pomodoro') {
-            dispatch(setSecondsLeft(newSecondsLeft));
-            await pomodoroUpdateSecondsLeft(newSecondsLeft);
-          } else if (newSecondsLeft <= 0) {
-            dispatch(skip());
-            await pomodoroUpdateSecondsLeft(newSecondsLeft);
-            await skipTimerUpdate(
-              sessionsRemaining,
-              mode,
-              workMinutes,
-              breakMinutes,
-              longBreakMinutes,
-              sessionsToLongBreak
-          )
-          } else if (newSecondsLeft > 0 && currentPath !== '/pomodoro') {
-            await pomodoroUpdateSecondsLeft(newSecondsLeft);
-            intervalId1 = setInterval(async () => {
-              if (window.location.pathname === '/pomodoro') {
-                clearInterval(intervalId1);
-                console.log(newSecondsLeft);
-                const newSeconds = newSecondsLeft - counter;
-                console.log(newSeconds);
-                console.log(`Seconds until path became '/pomodoro': ${counter}`)
-              } else {
-                counter++;
-              }
-            }, 1000);
-          }
-        }
-      }
-    window.addEventListener('load', handleLoad); */
- 
 
   if (isLoading) {
     return <div></div>
