@@ -91,12 +91,15 @@ export const formatDeadline = (deadline: string) => {
 }
 
 export const convertDateToString = (value: string) => {
+    const timezoneOffsetMinutes = new Date().getTimezoneOffset();
+
     const today = new Date();
-    today.setHours(23, 59, 59, 999);
+    today.setHours(23 - timezoneOffsetMinutes / 60, 59, 59, 999); 
 
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(23, 59, 59, 999);
+    tomorrow.setHours(23 - timezoneOffsetMinutes / 60, 59, 59, 999);
+
     if (value === "today") {
         const isoString = today.toISOString();
         return isoString;
@@ -106,9 +109,7 @@ export const convertDateToString = (value: string) => {
     } else if (value === "nodeadline") {
         return ""
     } else return ""
-
 }
-
 
 
 const currentDate = new Date();
