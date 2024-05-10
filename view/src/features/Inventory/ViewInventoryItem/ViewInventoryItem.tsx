@@ -31,17 +31,9 @@ export const ViewInventoryItem: React.FC<ViewInventoryItemProps> = ({ selectedIn
         const useItem = await spendInventoryItem(selectedInventoryItem.id, quantity);
         if (useItem) {
             const id = uuidv4();
-            const newItemWithNewId = {
-                name: selectedInventoryItem.name,
-                price: selectedInventoryItem.price,
-                description: selectedInventoryItem.description,
-                id: id,
-                icon: selectedInventoryItem.icon,
-                quantity: selectedInventoryItem.quantity
-            }
             const date_used = getFormattedDate();
             await addToRewardHistory(id, selectedInventoryItem.id, date_used)
-            dispatch(spendReward({ item: newItemWithNewId, quantity: quantity }));
+            dispatch(spendReward({ item: selectedInventoryItem, quantity: quantity, newId: id }));
             hideInventoryItem();
         }
     }

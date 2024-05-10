@@ -41,7 +41,7 @@ export const InventoryPage = () => {
             };
         };
 
-        if (isAuthenticated && inventory.length === 0) {
+        if (isAuthenticated) {
             fetchInventoryItems();
         } else {
             setIsLoading(false);
@@ -91,7 +91,7 @@ export const InventoryPage = () => {
                         <h1><FaCoins className='coin-icon' /> {totalCoins}</h1>
                     </div>
                     {inventory.length === 0 && !isLoading && (
-                        <p className="inventory-empty-message">Inventory empty! Create and buy rewards in the shop!</p>
+                        <p className="inventory-empty-message">Inventory empty!<br/>Create and buy rewards in the shop!</p>
                     )}
                     {inventory.map((item, index) => (
                         <RewardItem

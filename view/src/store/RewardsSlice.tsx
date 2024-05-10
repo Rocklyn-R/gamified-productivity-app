@@ -78,11 +78,13 @@ export const RewardsSlice = createSlice({
             state.usedRewards = action.payload;
         },
 
-        spendReward: (state, action: PayloadAction<{item: InventoryItem, quantity: number}>) => {
-            const { item, quantity } = action.payload;
+        spendReward: (state, action: PayloadAction<{item: InventoryItem, quantity: number, newId: string}>) => {
+            const { item, quantity, newId } = action.payload;
             const existingItemIndex = state.inventory.findIndex(inventoryItem => inventoryItem.id === item.id);
+            console.log(existingItemIndex);
             if (existingItemIndex !== -1) {
                 state.inventory[existingItemIndex].quantity -= quantity;
+                console.log(state.inventory[existingItemIndex].quantity);
                 if (state.inventory[existingItemIndex].quantity === 0) {
                     // If the quantity becomes 0, remove the item from the inventory
                     state.inventory.splice(existingItemIndex, 1);
@@ -94,7 +96,7 @@ export const RewardsSlice = createSlice({
                 name: item.name,
                 price: item.price,
                 description: item.description,
-                id: item.id,
+                id: newId,
                 icon: item.icon,
                 date_used: formattedDate
             });
