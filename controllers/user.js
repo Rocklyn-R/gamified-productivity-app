@@ -4,7 +4,8 @@ const {
     userUpdateName, 
     userUpdateEmail, 
     userUpdatePassword,
-    userUnlinkFromGoogle
+    userUnlinkFromGoogle,
+    userDeleteAccount
 } = require('../models/user');
 const bcrypt = require('bcrypt');
 
@@ -120,6 +121,40 @@ const unlinkUserFromGoogle = async (req, res) => {
     }
 }
 
+const deleteUserAccount = async (req, res) => {
+    const { id } = req.user;
+    const { password } = req.body;
+    console.log(password);
+    try {
+        const user = await findUserById(id);
+        const storedPassword = user.password;
+        console.log(storedPassword);
+        const matchedPassword = await bcrypt.compare(password, storedPassword);
+        if (matchedPassword) {
+            console.log("THIS THIS")
+            const accountDeletion = await userDeleteAccount(id);
+            if (accountDeletion) {
+                req.logout(function(err) {
+                    if (err) {
+                        console.error("Error logging out:", err);
+                        // Handle error
+                        res.status(500).json({ message: "Error logging out" });
+                    } else {
+                        console.log("Logged out successfully");
+                        res.status(200).json({ message: "Account successfully deleted" });
+                    }
+                });
+            }
+        } else {
+            console.log("password no match")
+            res.status(404).json({ message: "Password don't match" })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal Server Error" })
+    }
+}
+
 
 module.exports = {
     createUserController,
@@ -128,5 +163,6 @@ module.exports = {
     editUserEmail,
     changeUserPassword,
     createNewPassword,
-    unlinkUserFromGoogle
+    unlinkUserFromGoogle,
+    deleteUserAccount
 };

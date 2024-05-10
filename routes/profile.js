@@ -6,7 +6,8 @@ const {
     editUserEmail, 
     changeUserPassword, 
     createNewPassword,
-    unlinkUserFromGoogle 
+    unlinkUserFromGoogle, 
+    deleteUserAccount
 } = require('../controllers/user');
 const { checkAuthenticated } = require('../middleware/authentication');
 
@@ -22,6 +23,8 @@ profileRouter.put('/changePassword', checkAuthenticated, changeUserPassword);
 
 profileRouter.put('/create-new-password', createNewPassword);
 
-profileRouter.put('/unlink-from-google', unlinkUserFromGoogle)
+profileRouter.put('/unlink-from-google', unlinkUserFromGoogle);
+
+profileRouter.delete('/delete-account', deleteUserAccount);
 
 module.exports = profileRouter;

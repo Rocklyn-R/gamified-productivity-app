@@ -27,7 +27,8 @@ const inventoryItemsGet = async (id) => {
            inventory.quantity AS quantity
     FROM inventory
     JOIN shop ON inventory.shop_item_id = shop.id
-    WHERE inventory.user_id = $1;
+    WHERE inventory.user_id = $1
+    ORDER BY inventory.date_modified DESC;
 `;
     try {
         const result = await db.query(query, [id]);
@@ -38,10 +39,18 @@ const inventoryItemsGet = async (id) => {
 };
 
 const inventoryItemUse = async (id, quantity) => {
-    const query = 'UPDATE inventory SET quantity = quantity - $1 WHERE shop_item_id = $2';
+    const selectQuery = 'SELECT quantity FROM inventory WHERE shop_item_id = $1';
+    const updateQuery = 'UPDATE inventory SET quantity = quantity - $1 WHERE shop_item_id = $2';
+    const deleteQuery = 'DELETE FROM inventory WHERE shop_item_id = $1';
     try {
-        const result = await db.query(query, [quantity, id]);
-        return result;
+        const quantityResult = await db.query(selectQuery, [id]);
+        if (quantityResult.rows[0].quantity > 1) {
+            const updateResult = await db.query(updateQuery, [quantity, id]);
+            return updateResult;
+        } else {
+            const deleteResult = await db.query(deleteQuery, [id]);
+            return deleteResult;
+        }
     } catch (error) {
         throw error;
     }

@@ -2,7 +2,7 @@ import "./Profile.css";
 import Card from "../../components/Card/Card";
 import { useEffect, useState, useRef } from "react";
 import { selectGoogleLinked, selectPasswordExists } from "../../store/UserSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectFirstName, selectLastName, selectEmail } from "../../store/UserSlice";
 import { FaRegEdit } from "react-icons/fa";
 import { NameForm } from "./ProfileForms/NameForm";
@@ -12,6 +12,10 @@ import { useAuthorizationCheck } from "../../hooks/AuthorizationCheck";
 import GoogleButton from 'react-google-button'
 import { CreatePasswordForm } from "./ProfileForms/CreatePasswordForm";
 import { UnlinkMessage } from "./UnlinkMessage/UnlinkMessage";
+import { useProfileFetch } from "../../hooks/ProfileFetch";
+import { getUserDetails } from "../../api/profile";
+import { setFirstName, setLastName, setEmail, setGoogleLinked, setPasswordExists } from "../../store/UserSlice";
+import { DeleteAccount } from "./ProfileForms/DeleteAccount/DeleteAccount";
 
 
 export const Profile = () => {
@@ -20,7 +24,7 @@ export const Profile = () => {
     const lastName = useSelector(selectLastName);
     const email = useSelector(selectEmail);
     const googleLinked = useSelector(selectGoogleLinked);
-    const passwordExistence = useSelector(selectPasswordExists);
+    const passwordExists = useSelector(selectPasswordExists);
     const [editName, setEditName] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
     const [editPassword, setEditPassword] = useState(false);
@@ -28,16 +32,16 @@ export const Profile = () => {
     const [lastNameLocal, setLastNameLocal] = useState(lastName);
     const [emailLocal, setEmailLocal] = useState(email);
     const [passwordChangeStatusMessage, setPasswordChangeStatusMessage] = useState('');
-    const [googleSignIn, setGoogleSignIn] = useState(googleLinked);
     const [createPassword, setCreatePassword] = useState(false);
-    const [passwordExists, setPasswordExists] = useState(passwordExistence);
     const [showUnlinkMessage, setShowUnlinkMessage] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);
-
+    const [deleteAccount, setDeleteAccount] = useState(false);
 
     const handleEditName = () => {
         setEditName(true);
     }
+
+
 
     useEffect(() => {
         if (passwordChangeStatusMessage === 'Password successfully changed!') {
@@ -54,7 +58,8 @@ export const Profile = () => {
 
     const handleOverlayClick = (event: MouseEvent) => {
         if (event.target === overlayRef.current) {
-            setShowUnlinkMessage(false)
+            setShowUnlinkMessage(false);
+            setDeleteAccount(false);
         }
     };
 
@@ -66,6 +71,8 @@ export const Profile = () => {
             document.removeEventListener('mousedown', handleOverlayClick);
         };
     }, []);
+
+    
 
 
     return (
@@ -85,12 +92,12 @@ export const Profile = () => {
 
 
             ) : (
-                <div className={googleSignIn ? "user-name-container-google" : "username-container"}>
+                <div className={googleLinked ? "user-name-container-google" : "username-container"}>
                     <p>Name: {firstName} {lastName}</p>
-                    {!googleSignIn && <button onClick={handleEditName}><FaRegEdit /></button>}
+                    {!googleLinked && <button onClick={handleEditName}><FaRegEdit /></button>}
                 </div>
             )}
-            {!googleSignIn && (
+            {!googleLinked && (
                 editEmail ? (
                     <div className="account-details-form-container">
                         <EmailForm
@@ -123,14 +130,13 @@ export const Profile = () => {
             )
             }
             {passwordChangeStatusMessage && <p>{passwordChangeStatusMessage}</p>}
-            {googleSignIn && !passwordExists && (
+            {googleLinked && !passwordExists && (
                 createPassword ? (
                     <>
                         <p>Create a new password:</p>
                         <div className="create-password-container">
                             <CreatePasswordForm
                                 setCreatePassword={setCreatePassword}
-                                setPasswordExists={setPasswordExists}
                             />
                         </div>
 
@@ -143,14 +149,14 @@ export const Profile = () => {
                 )
 
             )}
-            {googleSignIn &&
+            {googleLinked &&
 
                 <div>
                     <div className="signed-in-google-text">
                         <p>Linked to Google account:</p>
                     </div>
                     <GoogleButton id="google-button" label={email} />
-                    {googleSignIn && passwordExists &&
+                    {googleLinked && passwordExists &&
                         <button
                             className="unlink-google"
                             onClick={() => setShowUnlinkMessage(true)}
@@ -161,10 +167,22 @@ export const Profile = () => {
                  <div className='overlay unlink-message' ref={overlayRef}>
                     <UnlinkMessage 
                         setShowUnlinkMessage={setShowUnlinkMessage}
-                        setGoogleSignIn={setGoogleSignIn}
                     />
                  </div>
                 }
+                {passwordExists && (
+                    <div className="delete-account-container">
+                        <button className="delete-account-button" onClick={() => setDeleteAccount(true)}>Delete my account</button>
+                    </div>
+                )}
+                {deleteAccount && (
+                    <div className="overlay" ref={overlayRef}>
+                        <DeleteAccount 
+                            setDeleteAccount={setDeleteAccount}
+                        />
+                    </div>
+                )}
+              
         </Card>
     )
 }

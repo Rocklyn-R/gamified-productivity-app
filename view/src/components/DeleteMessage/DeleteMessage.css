@@ -11,3 +11,7 @@
 .delete-message-container {
     padding: 20px;
 }
+
+.delete-message-container h4 {
+    color: #0c3d63;
+}

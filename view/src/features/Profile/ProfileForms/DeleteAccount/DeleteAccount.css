@@ -1,0 +1,23 @@
+.delete-account-box p, .delete-account-box h4 {
+    color:#0c3d63 !important;
+    text-align: center;
+}
+
+.delete-account-box {
+    padding: 1rem 2rem;
+}
+
+.delete-account-box button {
+    color:#0c3d63;
+}
+
+#password-incorrect-error {
+    display: flex;
+    justify-content: center;
+    font-size: 1rem;
+    color: #c11b1d !important;
+}
+
+.delete-cancel-container {
+    margin-top: 1rem;
+}

@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 const tasksGet = async (id) => {
-    const query = 'SELECT id, name, notes, coin_reward, deadline, coin_penalty, completion_status, overdue FROM task WHERE user_id = $1 and completion_status = $2';
+    const query = 'SELECT id, name, notes, coin_reward, deadline, coin_penalty, completion_status, overdue FROM task WHERE user_id = $1 and completion_status = $2 ORDER BY date_modified ASC';
     try {
         const result = await db.query(query, [id, 'pending']);
         return result.rows;
@@ -43,7 +43,9 @@ const taskChangeCompletionStatus = async (completion_status, id) => {
 };
 
 const tasksHistoryGet = async (user_id) => {
-    const query = 'SELECT id, name, notes, coin_reward, deadline, coin_penalty, completion_status, overdue FROM task WHERE user_id = $1 and completion_status IN ($2, $3)';
+    const query = `SELECT id, name, notes, coin_reward, deadline, coin_penalty, completion_status, overdue FROM task 
+    WHERE user_id = $1 and completion_status IN ($2, $3)
+    ORDER BY date_modified ASC`;
     try {
         const result = await db.query(query, [user_id, 'incomplete', 'completed']);
         return result.rows;

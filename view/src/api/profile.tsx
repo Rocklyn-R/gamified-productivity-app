@@ -122,3 +122,27 @@ export const unlinkUserFromGoogle = async () => {
         console.log(error);
     }
 }
+
+export const deleteUserAccount = async (password: string) => {
+    try {
+        const response = await fetch('http://localhost:4000/profile/delete-account', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ password })
+        })
+        if (response.ok) {
+            const responseData = await response.json();
+            console.log(responseData);
+            return true;
+        } else {
+            const errorData = await response.json(); // Parse error response body as JSON
+            console.error(errorData); // Log error message
+            return false;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}

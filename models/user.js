@@ -116,6 +116,32 @@ const userUnlinkFromGoogle = async (id) => {
     }
 }
 
+const userDeleteAccount = async (id) => {
+    const deleteTasksQuery = 'DELETE FROM task WHERE user_id = $1';
+    const deleteCoinsQuery = 'DELETE FROM coins WHERE user_id = $1';
+    const deletePomodoroQuery = 'DELETE FROM pomodoro WHERE user_id = $1';
+    const deleteRewardHistory = 'DELETE FROM reward_history WHERE user_id = $1';
+    const deleteInventoryQuery = 'DELETE FROM inventory WHERE user_id = $1';
+    const deleteShopQuery = 'DELETE FROM shop WHERE user_id = $1';
+    const deleteUserQuery = 'DELETE from app_user WHERE id = $1';
+    try {
+        const taskDeletion = await db.query(deleteTasksQuery, [id]);
+        const coinDeletion = await db.query(deleteCoinsQuery, [id]);
+        const pomodoroDeletion = await db.query(deletePomodoroQuery, [id]);
+        const rewardHistoryDeletion = await db.query(deleteRewardHistory, [id]);
+        const inventoryDeletion = await db.query(deleteInventoryQuery, [id]);
+        if (rewardHistoryDeletion && inventoryDeletion) {
+            const shopDeletion = await db.query(deleteShopQuery, [id]);
+            if (shopDeletion) {
+                const userDeletion = await db.query(deleteUserQuery, [id]);
+                return userDeletion;
+            }
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 
 module.exports = {
@@ -126,5 +152,6 @@ module.exports = {
     userUpdateEmail,
     userUpdatePassword,
     findByGoogleIdOrCreate,
-    userUnlinkFromGoogle
+    userUnlinkFromGoogle,
+    userDeleteAccount
 }

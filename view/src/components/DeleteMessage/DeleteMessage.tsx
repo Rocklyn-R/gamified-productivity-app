@@ -75,7 +75,7 @@ export const DeleteMessage: React.FC<DeleteMessageProps> = ({
             <h4>Delete</h4>
             {selectedTask && <p>Do you really wish to delete this task{history && " from your history"}?</p>}
             {selectedReward && <p>Do you really wish to delete this item?</p>}
-            {rewardHistory && <p>Do you really wish to delete this item?</p>}
+            {rewardHistory && <p>Do you really wish to delete this item from your history?</p>}
             <button className="command-button" onClick={hideDeleteMessage}>Cancel</button>
             <button className="command-button" onClick={handleDelete}>Delete</button>
         </Card>
