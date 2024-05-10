@@ -132,7 +132,8 @@
 
 .unlink-message p {
     font-size: 1rem;
-    color: #135382;
+    color: #0c3d63;
+    text-align: center;
 }
 
 .input-button-container {
@@ -146,13 +147,14 @@
 }
 
 .account-form-1 {
-    width: 100%;
     display: flex;
     justify-content: center;
 }
 
 .account-form-buttons {
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .account-text-field-container {
@@ -167,6 +169,22 @@
     color: aliceblue;
     font-size: 2rem;
 }
+
+.delete-account-button {
+    margin-top: 16rem;
+    background-color: transparent;
+    border: none;
+    color: aliceblue;
+    text-decoration: underline;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.delete-account-container p {
+    color:#0c3d63;
+}
+
+
 
 @media screen and (max-width: 470px) {
 
@@ -239,9 +257,15 @@
     }
 }
 
-@media (max-width: 350px) {
+@media screen and (max-width: 350px) {
     .account-details-container h1 {
         font-size: 1.4rem
+    }
+}
+
+@media screen and (max-width: 330px) {
+    .account-text-field-container, .account-details-form-container form {
+        display: block;
     }
 }
 
@@ -256,5 +280,11 @@
 @media (min-width: 451px) and (max-width: 650px) {
     .account-details-container h1 {
         font-size: 1.8rem;
+    }
+}
+
+@media screen and (max-height: 745px) {
+    .delete-account-button {
+        margin-top: 13rem;
     }
 }

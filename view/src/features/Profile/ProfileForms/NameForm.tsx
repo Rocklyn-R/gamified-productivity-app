@@ -34,76 +34,76 @@ export const NameForm: React.FC<NameFormProps> = ({ firstNameLocal, lastNameLoca
                 <div className="account-text-field-container">
                     <div>
                         <TextField
-                        label="First name"
-                        variant="outlined"
-                        value={`${firstNameLocal}`}
-                        onChange={(e) => setFirstNameLocal(e.target.value)}
-                        sx={{
-                            width: '150px', marginRight: '10px',
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                    borderColor: 'aliceblue', // Outline color
-                                },
-                                '&:hover fieldset': {
-                                    borderColor: 'aliceblue', // Outline color on hover
-                                },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: 'aliceblue', // Outline color on focus
-                                },
+                            label="First name"
+                            variant="outlined"
+                            value={`${firstNameLocal}`}
+                            onChange={(e) => setFirstNameLocal(e.target.value)}
+                            sx={{
+                                width: '150px', marginRight: '10px',
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: 'aliceblue', // Outline color
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'aliceblue', // Outline color on hover
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: 'aliceblue', // Outline color on focus
+                                    },
 
-                            },
-                            '& .MuiInputLabel-root': {
-                                color: 'aliceblue', // Label color
-                            },
-                            '& .MuiInputLabel-root.Mui-focused': {
-                                color: 'aliceblue', // Label color on focus
-                            },
-                            '& .MuiInputBase-input': {
-                                color: 'aliceblue', // Text color
-                            },
-                            '& .MuiInputBase-input:focus': {
-                                color: 'aliceblue', // Text color on focus
-                            },
-                        }}
-                    />
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: 'aliceblue', // Label color
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: 'aliceblue', // Label color on focus
+                                },
+                                '& .MuiInputBase-input': {
+                                    color: 'aliceblue', // Text color
+                                },
+                                '& .MuiInputBase-input:focus': {
+                                    color: 'aliceblue', // Text color on focus
+                                },
+                            }}
+                        />
                     </div>
                     <div>
-                         <TextField
-                        label="Last Name"
-                        variant="outlined"
-                        value={`${lastNameLocal}`}
-                        onChange={(e) => setLastNameLocal(e.target.value)}
-                        sx={{
-                            width: '150px', marginRight: '10px',
+                        <TextField
+                            label="Last Name"
+                            variant="outlined"
+                            value={`${lastNameLocal}`}
+                            onChange={(e) => setLastNameLocal(e.target.value)}
+                            sx={{
+                                width: '150px', marginRight: '10px',
 
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                    borderColor: 'aliceblue', // Outline color
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: 'aliceblue', // Outline color
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'aliceblue', // Outline color on hover
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: 'aliceblue', // Outline color on focus
+                                    },
                                 },
-                                '&:hover fieldset': {
-                                    borderColor: 'aliceblue', // Outline color on hover
+                                '& .MuiInputLabel-root': {
+                                    color: 'aliceblue', // Label color
                                 },
-                                '&.Mui-focused fieldset': {
-                                    borderColor: 'aliceblue', // Outline color on focus
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: 'aliceblue', // Label color on focus
                                 },
-                            },
-                            '& .MuiInputLabel-root': {
-                                color: 'aliceblue', // Label color
-                            },
-                            '& .MuiInputLabel-root.Mui-focused': {
-                                color: 'aliceblue', // Label color on focus
-                            },
-                            '& .MuiInputBase-input': {
-                                color: 'aliceblue', // Text color
-                            },
-                            '& .MuiInputBase-input:focus': {
-                                color: 'aliceblue', // Text color on focus
-                            },
-                        }}
-                    />
-                </div>
+                                '& .MuiInputBase-input': {
+                                    color: 'aliceblue', // Text color
+                                },
+                                '& .MuiInputBase-input:focus': {
+                                    color: 'aliceblue', // Text color on focus
+                                },
+                            }}
+                        />
                     </div>
-                   
+                </div>
+
 
                 <div className="account-form-buttons">
                     <button type="submit"><FaCheck /></button>

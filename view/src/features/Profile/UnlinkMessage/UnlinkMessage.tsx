@@ -1,18 +1,20 @@
 import React from "react";
 import Card from "../../../components/Card/Card";
 import { unlinkUserFromGoogle } from "../../../api/profile";
+import { setGoogleLinked } from "../../../store/UserSlice";
+import { useDispatch } from "react-redux";
 
 interface UnlinkMessageProps {
     setShowUnlinkMessage: (arg0: boolean) => void;
-    setGoogleSignIn: (arg0: boolean) => void;
 }
 
 
-export const UnlinkMessage: React.FC<UnlinkMessageProps> = ({ setShowUnlinkMessage, setGoogleSignIn }) => {
-   
+export const UnlinkMessage: React.FC<UnlinkMessageProps> = ({ setShowUnlinkMessage }) => {
+    const dispatch = useDispatch();
+
     const handleUnlinkUser = async () => {
         await unlinkUserFromGoogle();
-        setGoogleSignIn(false);
+        dispatch(setGoogleLinked(false));
         setShowUnlinkMessage(false);
     }
     

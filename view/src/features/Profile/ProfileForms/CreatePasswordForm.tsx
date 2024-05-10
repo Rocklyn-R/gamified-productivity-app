@@ -5,18 +5,20 @@ import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { FaXmark } from "react-icons/fa6";
 import { createNewPassword } from "../../../api/profile";
+import { useDispatch } from "react-redux";
+import { setPasswordExists } from "../../../store/UserSlice";
 
 interface CreatePasswordFormProps {
     setCreatePassword: (arg0: boolean) => void;
-    setPasswordExists: (arg0: boolean) => void;
 }
 
-export const CreatePasswordForm: React.FC<CreatePasswordFormProps> = ({ setCreatePassword, setPasswordExists }) => {
+export const CreatePasswordForm: React.FC<CreatePasswordFormProps> = ({ setCreatePassword }) => {
     const [password, setPassword] = useState("")
     const [passwordRepeat, setPasswordRepeat] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("")
+    const [errorMessage, setErrorMessage] = useState("");
+    const dispatch = useDispatch();
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -33,14 +35,14 @@ export const CreatePasswordForm: React.FC<CreatePasswordFormProps> = ({ setCreat
         } else {
             await createNewPassword(password);
             setCreatePassword(false);
-            setPasswordExists(true);
+            dispatch(setPasswordExists(true));
         }
     }
 
     return (
         <>
             <form className="create-password-form" onSubmit={handleSubmitCreatePassword}>
-                <div className="input-button-container">
+                <div className="account-text-field-container">
                     <TextField
                         type={showPassword ? 'text' : 'password'}
                         label="Password" // MUI TextField uses a label prop instead of placeholder for floating label text
@@ -129,8 +131,11 @@ export const CreatePasswordForm: React.FC<CreatePasswordFormProps> = ({ setCreat
                             autoComplete: 'off', // More specific to potentially improve browser compliance
                         }}
                     />
-                    <button type="submit"><FaCheck /></button>
-                    <button type="button" onClick={() => { setCreatePassword(false) }}><FaXmark /></button>
+                    <div className="account-form-buttons">
+                        <button type="submit"><FaCheck /></button>
+                        <button type="button" onClick={() => { setCreatePassword(false) }}><FaXmark /></button>
+                    </div>
+
                 </div>
                 {errorMessage &&
                     <div>
