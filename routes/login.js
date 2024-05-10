@@ -11,7 +11,7 @@ loginRouter.get('/', checkAuthenticatedOnLoginSignup, (req, res) => {
 });
 
 loginRouter.post('/', passport.authenticate('local', {
-  failureRedirect: '/login',
+  failureRedirect: '/failure',
 }), (req, res) => {
   return res.status(200).send();
 });
@@ -24,6 +24,9 @@ loginRouter.get('/google-redirect', passport.authenticate('google', {
   successRedirect: successLoginUrl
 }))
 
+loginRouter.get('/failure', (req, res) => {
+  res.status(401).json({ message: "Incorrect email or password" })
+})
 
 loginRouter.get('/auth/failure', (req, res) => {
   res.send("Something went wrong")

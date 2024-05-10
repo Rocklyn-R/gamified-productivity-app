@@ -26,8 +26,11 @@ const googleOptions = {
 const localAuthenticateUser = async (username, password, done) => {
     try {
         const user = await findUserByEmail(username);
+        if (!user || !user.password) {
+            return done(null, false, { message: 'Incorrect email or password' });
+        }
         const matchedPassword = await bcrypt.compare(password, user.password);
-        if (!user || !matchedPassword) {
+        if (!matchedPassword) {
             return done(null, false, { message: 'Incorrect email or password' });
         }
         return done(null, user);
@@ -50,7 +53,12 @@ passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
     try {
         const user = await findUserById(id);
-        done(null, user); // Pass the retrieved user object to the callback
+        if (user) {
+            done(null, user); // Pass the retrieved user object to the callback 
+        } else {
+            done(null, false)
+        }
+
     } catch (error) {
         done(error); // Pass any errors to the callback
     }

@@ -11,17 +11,15 @@ export const logInUser = async (email: string, password: string) => {
         }),
         credentials: 'include'
     });
-        if (response.status === 401) {
-            return true;
-        } 
+    const responseData = await response.json();
+    console.log(responseData)
         if (!response.ok) {
-            throw new Error('Internal server error')
+            return "Incorrect email or password"
         }
         return true;
     } catch (error) {
-        return "Internal Server Error";
-    }
-    
+        return "Incorrect email or password";
+    } 
 }
 
 export const checkAuthentication = async () => {

@@ -33,14 +33,11 @@ export const LoginPage = () => {
         try {
             // Make a POST request to your server's signup endpoint using fetch
             const response = await logInUser(email, password);
-
-            if (!response) {
+            if (response === 'Incorrect email or password') {
                 setErrorMessage('Incorrect email or password. Try again.');
                 setEmail('');
                 setPassword('');
                 return;
-            } else if (response === 'Internal Server Error'){
-                setErrorMessage('Internal server error')
             } else {
                 setErrorMessage('');
                 dispatch(authenticateUser());
