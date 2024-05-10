@@ -1,12 +1,12 @@
 .form-container {
     background-color: aliceblue;
     border-radius: .5rem;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
     display: flex;
     flex-direction: column;
     width: fit-content;
     min-width: 20rem;
     height: fit-content;
+    color: #0c3d63;
 }
 
 .form-container form, .reward-form-container form {
@@ -46,16 +46,7 @@
     margin-bottom: 1.5rem;
 }
 
-.deadline-box {
-    width: 100%;
-}
 
-#notes, #task-name, #coin-reward, #item-name, #price, #description, #deadline, #penalty {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
 
 
 .submit-task-button {
@@ -85,4 +76,16 @@
 }
 
 
- 
+.form-container .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root {
+    color: #0c3d63 !important; /* Your custom label color */
+}
+
+
+.form-container .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    color: #0c3d63 !important;
+}
+
+
+.form-container .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+    color: #0c3d63 !important;
+}

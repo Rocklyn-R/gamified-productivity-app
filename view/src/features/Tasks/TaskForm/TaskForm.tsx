@@ -16,7 +16,6 @@ import dayjs from 'dayjs';
 import { createNewTask, updateTask } from '../../../api/tasks';
 
 
-
 interface TaskFormProps {
     handleCloseForm: () => void;
     isEditMode?: boolean,
@@ -29,7 +28,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
     const dispatch = useDispatch();
     const [taskName, setTaskName] = useState("");
     const [notes, setNotes] = useState('');
-    const [deadlineOption, setDeadlineOption] = useState("");
+    const [deadlineOption, setDeadlineOption] = useState("nodeadline");
     const [deadline, setDeadline] = useState<string | null>(null);
     const [coinReward, setCoinReward] = useState(0);
     const [submitError, setSubmitError] = useState(false);
@@ -45,10 +44,13 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
             if (selectedTask.deadline === "") {
                 setDeadlineOption("nodeadline");
             } else if (selectedTask.deadline === convertDateToString("tomorrow")) {
+                console.log(convertDateToString("tomorrow"));
                 setDeadlineOption("tomorrow")
             } else if (selectedTask.deadline === convertDateToString("today")) {
                 setDeadlineOption("today");
             } else {
+                console.log(selectedTask.deadline);
+                console.log(convertDateToString("tomorrow"));
                 setDeadlineOption("custom");
                 setDeadline(selectedTask.deadline);
             }
@@ -177,8 +179,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                 {submitError && <p>An error occured. Try again</p>}
                 <TextField
                     type="text"
-                    label="Task Name" // MUI TextField uses a label prop instead of placeholder for floating label text
-                    variant="outlined" // You can choose "filled" or "standard" as well, depending on your design preference
+                    label="Task Name"
+                    variant="outlined"
                     value={taskName}
                     onChange={(e) => setTaskName(e.target.value)}
                     required
@@ -186,10 +188,29 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                         width: '100%',
                         marginTop: "1rem",
                         marginBottom: '20px',
-                        color: "#0c3d63" // Using the sx prop to apply margin
+                        '& .MuiInputLabel-root': {
+                            color: '#0c3d63', // Default label color
+                            '&.Mui-focused': {
+                                color: '#0c3d63', // Label color when focused
+                            },
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused': { 
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-input': { 
+                            color: '#0c3d63',
+                        },
                     }}
-                    InputProps={{
-                        autoComplete: 'off', // More specific to potentially improve browser compliance
+                    inputProps={{
+                        autoComplete: "off",
+                        maxLength: 100
                     }}
                 />
 
@@ -201,10 +222,30 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                     onChange={(e) => setNotes(e.target.value)}
                     sx={{
                         width: '100%',
-                        marginBottom: '20px', // Using the sx prop to apply margin
+                        marginBottom: '20px',
+                        '& .MuiInputLabel-root': {
+                            color: '#0c3d63', // Default label color
+                            '&.Mui-focused': {
+                                color: '#0c3d63', // Label color when focused
+                            },
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused': { 
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-input': { 
+                            color: '#0c3d63',
+                        },
                     }}
-                    InputProps={{
-                        autoComplete: 'off', // More specific to potentially improve browser compliance
+                    inputProps={{
+                        autoComplete: "off",
+                        maxLength: 200
                     }}
                 />
 
@@ -215,10 +256,30 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                     onChange={(e) => setCoinReward(parseInt(e.target.value, 10))}
                     sx={{
                         width: '100%',
-                        marginBottom: '20px', // Using the sx prop to apply margin
+                        marginBottom: '20px',
+                        '& .MuiInputLabel-root': {
+                            color: '#0c3d63', // Default label color
+                            '&.Mui-focused': {
+                                color: '#0c3d63', // Label color when focused
+                            },
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused': { 
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-input': { 
+                            color: '#0c3d63',
+                        },
                     }}
                     InputProps={{
-                        autoComplete: 'off', // More specific to potentially improve browser compliance
+                        autoComplete: 'off',
+                        inputProps: { max: 100000 }, // Set maximum value
                     }}
                 />
                 <FormControl fullWidth >
@@ -231,13 +292,38 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                         sx={{
                             width: '100%',
                             marginBottom: '20px',
-                            textAlign: 'start'
+                            textAlign: 'start',
+                            '& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root': {
+                                color: '#0c3d63', // Default label color
+                            },
+                            '& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root.Mui-focused': {
+                                color: '#0c3d63', // Label color when focused
+                            },
+                            '& .MuiSelect-root': {
+                                color: '#0c3d63', // Default text color
+                            },
+                            '& .MuiSelect-icon': {
+                                color: '#0c3d63', // Dropdown icon color
+                            },
+                            color: "#0c3d63",
+                            '.MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#0c3d63',
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#0c3d63',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                              borderColor: '#0c3d63',
+                            },
+                            '.MuiSvgIcon-root ': {
+                              fill: "#0c3d63",
+                            },
                         }}
                     >
-                        <MenuItem value={"nodeadline"}>No deadline</MenuItem>
-                        <MenuItem value={"today"}>Today</MenuItem>
-                        <MenuItem value={"tomorrow"}>Tomorrow</MenuItem>
-                        <MenuItem value={"custom"}>Custom</MenuItem>
+                        <MenuItem sx={{ color: '#0c3d63' }} value={"nodeadline"}>No deadline</MenuItem>
+                        <MenuItem sx={{ color: '#0c3d63' }} value={"today"}>Today</MenuItem>
+                        <MenuItem sx={{ color: '#0c3d63' }} value={"tomorrow"}>Tomorrow</MenuItem>
+                        <MenuItem sx={{ color: '#0c3d63' }} value={"custom"}>Custom</MenuItem>
                     </Select>
                 </FormControl>
 
@@ -251,7 +337,16 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                             sx={{
                                 width: '100%',
                                 marginBottom: '20px',
-                                textAlign: 'start'
+                                textAlign: 'start',
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                    borderColor: '#0c3d63', // Border color
+                                },
+                                '& .MuiSvgIcon-root': {
+                                    fill: '#0c3d63', // Icon color
+                                },
+                                '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                    borderColor: '#0c3d63', // Border color when focused
+                                },
                             }}
                         />
                     </LocalizationProvider>
@@ -266,18 +361,36 @@ export const TaskForm: React.FC<TaskFormProps> = ({ handleCloseForm, isEditMode,
                             onChange={(e) => setPenalty(parseInt(e.target.value, 10))}
                             sx={{
                                 width: '100%',
-                                marginBottom: '20px', // Using the sx prop to apply margin
+                                marginBottom: '20px',
+                                '& .MuiInputLabel-root': {
+                                    color: '#0c3d63', // Default label color
+                                    '&.Mui-focused': {
+                                        color: '#0c3d63', // Label color when focused
+                                    },
+                                },
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: '#0c3d63',
+                                    }
+                                },
+                                '& .MuiOutlinedInput-root.Mui-focused': { 
+                                    '& fieldset': {
+                                        borderColor: '#0c3d63',
+                                    }
+                                },
+                                '& .MuiOutlinedInput-input': { 
+                                    color: '#0c3d63',
+                                },
                             }}
                             InputProps={{
-                                autoComplete: 'off', // More specific to potentially improve browser compliance
+                                autoComplete: 'off',
+                                inputProps: { max: 100000 },
                             }}
                         />
                     </>
 
                 )}
                 <button type="submit" value="Submit" className="command-button no-select">{selectedTask ? "Done editing" : "Create task"}</button>
-
-
             </form>
         </Card>
 

@@ -115,10 +115,29 @@ export const ItemForm: React.FC<ItemFormProps> = ({ handleCloseForm, isEditMode,
                         width: '100%',
                         marginTop: "1rem",
                         marginBottom: '20px',
-                        color: "#0c3d63" // Using the sx prop to apply margin
+                        '& .MuiInputLabel-root': {
+                            color: '#0c3d63', // Default label color
+                            '&.Mui-focused': {
+                                color: '#0c3d63', // Label color when focused
+                            },
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused': { 
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-input': { 
+                            color: '#0c3d63',
+                        },// Using the sx prop to apply margin Using the sx prop to apply margin
                     }}
                     inputProps={{
-                        autoComplete: "off"
+                        autoComplete: "off",
+                        maxLength: 100
                     }}
                 />
                 <TextField
@@ -131,10 +150,29 @@ export const ItemForm: React.FC<ItemFormProps> = ({ handleCloseForm, isEditMode,
                     sx={{
                         width: '100%',
                         marginBottom: '20px',
-                        color: "#0c3d63" // Using the sx prop to apply margin
+                        '& .MuiInputLabel-root': {
+                            color: '#0c3d63', // Default label color
+                            '&.Mui-focused': {
+                                color: '#0c3d63', // Label color when focused
+                            },
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused': { 
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-input': { 
+                            color: '#0c3d63',
+                        },// Using the sx prop to apply margin
                     }}
                     inputProps={{
-                        autoComplete: "off"
+                        autoComplete: "off",
+                        maxLength: 100
                     }}
                 />
                 <TextField
@@ -146,10 +184,29 @@ export const ItemForm: React.FC<ItemFormProps> = ({ handleCloseForm, isEditMode,
                     sx={{
                         width: '100%',
                         marginBottom: '20px',
-                        color: "#0c3d63" // Using the sx prop to apply margin
+                        '& .MuiInputLabel-root': {
+                            color: '#0c3d63', // Default label color
+                            '&.Mui-focused': {
+                                color: '#0c3d63', // Label color when focused
+                            },
+                        },
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused': { 
+                            '& fieldset': {
+                                borderColor: '#0c3d63',
+                            }
+                        },
+                        '& .MuiOutlinedInput-input': { 
+                            color: '#0c3d63',
+                        }, // Using the sx prop to apply margin
                     }}
                     InputProps={{
-                        autoComplete: 'off', // More specific to potentially improve browser compliance
+                        autoComplete: 'off',
+                        inputProps: { max: 100000 }, // Set maximum value
                     }}
                 />
                 <label>Select icon:</label>
