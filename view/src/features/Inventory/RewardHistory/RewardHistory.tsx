@@ -54,22 +54,21 @@ export const RewardHistory = () => {
     return (
 
     <>
-    <Link to="../inventory"><IoArrowBackOutline className="back-icon" /></Link>
+    <Link to="../inventory"><IoArrowBackOutline className="back-icon back-reward-history" /></Link>
     <Card className="rewards-history">
             <h1>REWARD HISTORY</h1>
             {usedRewards.map(item => (
                 <div className='inventory-history-box'>
-                    <div className='history-container-1'>
+    
                         <img alt="" src={renderIcon(item.icon)} height="24" />
                         <div className='history-container-2'>
                             <p>{item.name}</p>
-                            <p className='reward-description'>{item.description}</p>
+                            <p className='reward-description-history'>{item.description}</p>
                         </div>
-                    </div>
                     <div className='date-used-delete-container'>
                         <div className='history-date-used'>
                         <p>Used:</p>
-                        <p className='reward-description'>{item.date_used}</p>
+                        <p className='reward-description-history'>{item.date_used}</p>
                     </div>
                     <button onClick={() => handleDeleteButtonClick(item)} className='delete-task history-delete-button'><MdDeleteOutline className='delete-reward-icon' /></button>
                     </div>

@@ -15,7 +15,8 @@ import { useAuthorizationCheck } from '../../../hooks/AuthorizationCheck';
 
 export const TaskHistory = () => {
     useAuthorizationCheck();
-    useTaskHistoryFetch();
+    const [dataLoading, setDataLoading] = useState(true)
+    useTaskHistoryFetch(() => setDataLoading(false));
     const historyTasks = useSelector(selectHistoryTasks);
     const totalCoins = useSelector(selectTotalCoins)
     const [viewHistoryTask, setViewHistoryTask] = useState(false);
@@ -52,7 +53,7 @@ export const TaskHistory = () => {
     }, []);
 
     useEffect(() => {
-        if (historyTasks.length === 0) {
+        if (historyTasks.length === 0 && dataLoading === false) {
             navigate('../tasks'); // Use navigate to navigate
         }
     }, [historyTasks, navigate]);

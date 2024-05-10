@@ -18,8 +18,8 @@ export const useProfileFetch = () => {
             if (user.google_id) {
                 dispatch(setGoogleLinked(true));
             }
-            if (!user.password) {
-                setPasswordExists(false);
+            if (!user.password) {           
+                dispatch(setPasswordExists(false));
             }
         }
         if (isAuthenticated) {

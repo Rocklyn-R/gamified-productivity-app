@@ -9,6 +9,8 @@
 .view-rewards-container {
     display: flex;
     justify-content: center;
+    max-width: 300px;
+    min-width: 250px;
 }
 
 .view-rewards-container button {
@@ -16,8 +18,7 @@
 }
 
 .view-rewards-container p {
-    margin-left: 2rem;
-    margin-right: 2rem;
+    word-wrap: break-word;
 }
 
 .view-rewards-container img {
@@ -44,4 +45,14 @@
     margin-bottom: 0;
     margin-top: 1rem;
     color: #c11b1d;
+}
+
+@media screen and (max-width: 360px) {
+    .view-rewards-container {
+        max-width: 240px;
+        max-height: 80%;
+    }
+    .view-rewards-container p {
+        font-size: .8rem;
+    }
 }

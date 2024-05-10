@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getHistoryTasks } from "../api/tasks";
 import { setHistoryTasks } from "../store/TasksSlice";
 import { selectIsAuthenticated } from "../store/UserSlice";
+import { useNavigate } from "react-router-dom";
 
-export const useTaskHistoryFetch = () => {
+export const useTaskHistoryFetch = (callback?: () => void) => {
     const dispatch = useDispatch();
-    const isAuthenticated = useSelector(selectIsAuthenticated)
+    const isAuthenticated = useSelector(selectIsAuthenticated);
     
     useEffect(() => {
         const fetchHistoryTasks = async () => {
@@ -19,6 +20,9 @@ export const useTaskHistoryFetch = () => {
         }
         if (isAuthenticated) {
            fetchHistoryTasks(); 
+           if (callback) {
+            callback();
+           }
         }
     }, [dispatch, isAuthenticated]);
 }
