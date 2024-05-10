@@ -31,7 +31,7 @@ export const RewardItem: React.FC<RewardItemProps> = ({ reward, index, handleVie
                 <div className="icon-container">
                     <img alt="" src={renderIcon(reward.icon)}  />
                     </div>    
-                    <div className="reward-details">
+                    <div className={inventory ? 'inventory-reward-details' : 'reward-details'}>
                         <p>{reward.name}</p>
                         <p className="reward-description">{reward.description}</p>
                     </div>

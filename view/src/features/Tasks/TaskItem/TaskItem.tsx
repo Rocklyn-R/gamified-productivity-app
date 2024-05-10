@@ -30,8 +30,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, index, handleViewTaskC
                      handleViewTaskClick(task)
                 } }}
             >
-                <div>
-                    <p id="task-name-text">{task.name}</p>
+                <div className={overdue ? 'overdue-task-name-container' : 'task-name-container'}>
+                    <p>{task.name}</p>
                 </div>
 
                 <div className='deadline-details'>

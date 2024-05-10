@@ -5,6 +5,7 @@
     width: 100%;
     min-height: 5rem;
     max-width: 18rem;
+    max-height: 5rem;
     cursor: pointer;
     border: none;
     border-radius: .4rem;
@@ -13,7 +14,10 @@
     font-size: 1rem;
     background: linear-gradient(to bottom right, aliceblue, #6fa8dc);
     padding: .5rem;
+    overflow: hidden;
+    white-space: nowrap;
 }
+
 
 .view-reward p {
     margin: 0;
@@ -35,15 +39,29 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    min-width: 4rem;
-    max-width: 9rem;
+    max-width: 63%;
+}
 
+.inventory-reward-details {
+    margin-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 55%;
+}
+
+
+.reward-details p, .inventory-reward-details p {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .reward-item {
     display: flex;
     justify-content: center;
     width: 100%;
+    
 }
 
 .icon-with-details {
@@ -54,6 +72,7 @@
 .reward-description {
     font-size: .8rem;
     text-align: start;
+    overflow: hidden;
 }
 
 .reward-quantity {
@@ -74,7 +93,10 @@
 
 
 @media (max-width: 300px) {
-    .view-reward {
-        width: 80%;
+    .reward-details {
+        max-width: 55%;
+    }
+    .inventory-reward-details {
+        max-width: 40%;
     }
 }

@@ -69,6 +69,11 @@
     margin-top: 0;
 }
 
+.todo-list {
+    display: flex;
+    flex-direction: column;
+}
+
 @media (max-width: 350px) {
     .date-box h1 {
         font-size: 1.4rem

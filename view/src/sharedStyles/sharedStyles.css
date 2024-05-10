@@ -193,6 +193,14 @@
     user-select: none;
 }
 
+.close {
+    color: #0c3d63;
+}
+
+.delete-message-container {
+    padding: 20px;
+}
+
 
 @media (max-width: 350px) {
     .task-history-icon, .inventory-link, .inventory-history-icon {
@@ -276,6 +284,13 @@
    }
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
-    
+@media screen and (max-width: 360px) {
+    .view-rewards-container, .view-inventory-item-container {
+        max-width: 240px;
+        max-height: 80%;
+    }
+    .view-rewards-container p, .view-inventory-item-container p {
+        font-size: .8rem;
+        word-break: break-word;
+    }
 }

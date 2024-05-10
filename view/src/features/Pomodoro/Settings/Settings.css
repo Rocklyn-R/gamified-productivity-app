@@ -8,7 +8,7 @@
 }
 
 .pomodoro-settings-container h4 {
-    color: #135382;
+    color: #0c3d63;
 }
 
 .pomodoro-settings-container label {
@@ -17,7 +17,7 @@
     margin-bottom: 1rem;
     justify-content: center;
     align-items: center;
-    color: #135382;
+    color: #0c3d63;
 }
 
 #first-pomodoro-settings-label {
@@ -26,13 +26,13 @@
 
 .slider {
     height: 30px;
-    border: 2px solid #135382;
+    border: 2px solid #0c3d63;
     border-radius: 20px;
     width: 80%;
 }
 
 .thumb {
-    background-color: #135382;
+    background-color: #0c3d63;
     cursor: pointer;
     width: 30px;
     height: 30px;
