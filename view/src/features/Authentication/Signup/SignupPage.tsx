@@ -39,7 +39,7 @@ export const SignUp = () => {
                 const pomodoroId = uuidv4();
                 await createPomodoro(pomodoroId);
                 setErrorMessage("");
-                navigate('/tasks');  
+                navigate('/tasks');
             } else {
                 setErrorMessage('Failed to sign up');
             }
@@ -59,7 +59,7 @@ export const SignUp = () => {
         <Card className="sign-up-container">
             <h1>Sign Up</h1>
             <form className='sign-up-form' onSubmit={handleSubmit}>
-            <TextField
+                <TextField
                     type="text"
                     label="First name" // MUI TextField uses a label prop instead of placeholder for floating label text
                     variant="outlined" // You can choose "filled" or "standard" as well, depending on your design preference
@@ -145,7 +145,7 @@ export const SignUp = () => {
             <h4>or</h4>
             <Link to="/login" className='sign-up-link-text'><h2>Log in</h2></Link>
             <div className='alternate-login'>
-                 <GoogleButton onClick={() => handleGoogleSignIn()} />
+                <GoogleButton onClick={() => handleGoogleSignIn()} />
             </div>
         </Card>
 

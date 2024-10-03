@@ -112,7 +112,7 @@ export const LoginPage = () => {
             <div className='alternate-login'>
                  <GoogleButton onClick={() => handleGoogleSignIn()} />
             </div>
-            <Link to="/signup" className='sign-up-link-text'><h2>Sign up</h2></Link>
+            <Link to="/signup" className='sign-up-link-text-2'><h2>Sign up</h2></Link>
         </Card>
 
     )

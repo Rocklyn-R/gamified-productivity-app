@@ -15,6 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 const COOKIE_SECRET = process.env.COOKIE_SECRET
+//const isProduction = process.env.NODE_ENV === 'production'
 
 app.set('trust proxy', 1);
 app.use(express.static(__dirname));
