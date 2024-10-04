@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
-const RedisStore = require('connect-redis')(session);
+const RedisStore = require('connect-redis').default;
 const redis = require('redis');
 const {localAuthenticateUser, localOptions, googleAuthenticateUser} = require('./config/passport.js');
 const flash = require('express-flash');
@@ -32,19 +32,21 @@ app.use(express.urlencoded({ extended: false }));
 
 const redisClient = redis.createClient({
     url: process.env.REDIS_URL,
-    legacyMode: true  // Required for newer versions of Redis
+    legacyMode: true,  // Add this if you're using newer versions of Redis
 });
-redisClient.connect().catch(console.error);
+
+redisClient.connect().catch(console.error);  // Connect the Redis client
+
 
 app.use(session({
     store: new RedisStore({ client: redisClient }),
-    secret: COOKIE_SECRET,  // You should store this in an environment variable
+    secret: process.env.COOKIE_SECRET,  // Use your environment variable for secret
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false,  // Set to true if using HTTPS
+        secure: false,  // Set this to true if you are using HTTPS
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24  // 1 day
+        maxAge: 1000 * 60 * 60 * 24,  // Session expiration, here it's set for 1 day
     }
 }));
 app.use(passport.initialize());
