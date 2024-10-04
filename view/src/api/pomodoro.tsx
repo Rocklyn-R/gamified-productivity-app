@@ -1,8 +1,10 @@
+import { BASE_URL } from "./coins";
+
 export const createPomodoro = async (
     id: string,
 ) => {
     try {
-        const response = await fetch('http://localhost:4000/pomodoro', {
+        const response = await fetch(`${BASE_URL}/pomodoro`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -22,7 +24,7 @@ export const createPomodoro = async (
 
 export const getPomodoro = async () => {
     try {
-        const response = await fetch('http://localhost:4000/pomodoro', {
+        const response = await fetch(`${BASE_URL}/pomodoro`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -49,7 +51,7 @@ export const updatePomodoroSettings = async (
 ) => {
 
     try {
-        const response = await fetch('http://localhost:4000/pomodoro/update-settings', {
+        const response = await fetch(`${BASE_URL}/pomodoro/update-settings`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -83,7 +85,7 @@ export const skipTimerUpdate = async (
     num_sessions_to_long_break: number
 ) => {
     try {
-        const response = await fetch('http://localhost:4000/pomodoro/skip', {
+        const response = await fetch(`${BASE_URL}/pomodoro/skip`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -114,7 +116,7 @@ export const updatePomodoroCurrentTime = async (
     pomodoros: number
 ) => {
     try {
-        const response = await fetch('http://localhost:4000/pomodoro/update-pomodoro', {
+        const response = await fetch(`${BASE_URL}/pomodoro/update-pomodoro`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -138,7 +140,7 @@ export const updatePomodoroCurrentTime = async (
 
 export const pomodoroSale = async (quantity: number) => {
     try {
-        const response = await fetch('http://localhost:4000/pomodoro/sell', {
+        const response = await fetch(`${BASE_URL}/pomodoro/sell`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -156,7 +158,7 @@ export const pomodoroSale = async (quantity: number) => {
 
 export const pomodoroUpdateSecondsLeft = async (seconds_left: number) => {
     try {
-        const response = await fetch('http://localhost:4000/pomodoro/update-seconds', {
+        const response = await fetch(`${BASE_URL}/pomodoro/update-seconds`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -174,7 +176,7 @@ export const pomodoroUpdateSecondsLeft = async (seconds_left: number) => {
 
 export const pausePlayPomodoroTimer = async (is_paused_boolean: boolean) => {
     try {
-        const response = await fetch('http://localhost:4000/pomodoro/pause-or-play', {
+        const response = await fetch(`${BASE_URL}/pomodoro/pause-or-play`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -192,7 +194,7 @@ export const pausePlayPomodoroTimer = async (is_paused_boolean: boolean) => {
 
 export const addTomatoPomodoro = async (num_pomodoros: number) => {
     try {
-        const response = await fetch('http://localhost:4000/pomodoro/add-tomato', {
+        const response = await fetch(`${BASE_URL}/pomodoro/add-tomato`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

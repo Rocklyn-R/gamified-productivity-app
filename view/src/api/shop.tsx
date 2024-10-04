@@ -1,6 +1,8 @@
+import { BASE_URL } from "./coins";
+
 export const getShopItems = async () => {
     try {
-        const response = await fetch('http://localhost:4000/shop-rewards', {
+        const response = await fetch(`${BASE_URL}/shop-rewards`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,7 +28,7 @@ export const createShopItem = async (
     icon: string
 ) => {
     try {
-        const response = await fetch('http://localhost:4000/shop-rewards/create-item', {
+        const response = await fetch(`${BASE_URL}/shop-rewards/create-item`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +55,7 @@ export const updateShopItem = async (
     icon: string
 ) => {
     try {
-        const response = await fetch('http://localhost:4000/shop-rewards/edit-item', {
+        const response = await fetch(`${BASE_URL}/shop-rewards/edit-item`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -74,7 +76,7 @@ export const updateShopItem = async (
 
 export const deleteShopItem = async (id: string) => {
     try {
-        const response = await fetch('http://localhost:4000/shop-rewards/delete-item', {
+        const response = await fetch(`${BASE_URL}/shop-rewards/delete-item`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,7 +101,7 @@ export const purchaseShopItem = async (
     quantity: number
     ) => {
     try {
-        const response = await fetch('http://localhost:4000/shop-rewards/buy-item', {
+        const response = await fetch(`${BASE_URL}/shop-rewards/buy-item`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

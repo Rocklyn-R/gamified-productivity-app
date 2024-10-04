@@ -1,6 +1,9 @@
+import { BASE_URL } from "./coins";
+
+
 export const logInUser = async (email: string, password: string) => {
     try {
-        const response = await fetch('http://localhost:4000/login', {
+        const response = await fetch(`${BASE_URL}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -24,7 +27,7 @@ export const logInUser = async (email: string, password: string) => {
 
 export const checkAuthentication = async () => {
     try {
-        const response = await fetch('http://localhost:4000/auth', {
+        const response = await fetch(`${BASE_URL}/auth`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,7 +48,7 @@ export const checkAuthentication = async () => {
 
 export const googleSignIn = async () => {
     try {
-        const response = await fetch('http://localhost:4000/login/auth/google');
+        const response = await fetch(`${BASE_URL}/login/auth/google`);
         console.log(response);
         if (response.ok) {
             return true;

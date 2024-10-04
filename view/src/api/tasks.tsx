@@ -1,8 +1,8 @@
-
+import { BASE_URL } from "./coins";
 
 export const getTasks = async () => {
     try {
-        const response = await fetch('http://localhost:4000/tasks', {
+        const response = await fetch(`${BASE_URL}/tasks`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ export const createNewTask = async (
     overdue: boolean
 ) => {
     try {
-        const response = await fetch('http://localhost:4000/tasks/create-task', {
+        const response = await fetch(`${BASE_URL}/tasks/create-task`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export const createNewTask = async (
 
 export const changeToOverDue = async (id: string) => {
     try {
-        const response = await fetch('http://localhost:4000/tasks/task-overdue', {
+        const response = await fetch(`${BASE_URL}/tasks/task-overdue`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export const changeToOverDue = async (id: string) => {
 
 export const changeCompletionStatus = async (completion_status: string, id: string, path: string) => {
     try {
-        const response = await fetch(`http://localhost:4000/tasks/${path}`, {
+        const response = await fetch(`${BASE_URL}/tasks/${path}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export const changeCompletionStatus = async (completion_status: string, id: stri
 
 export const getHistoryTasks = async () => {
     try {
-        const response = await fetch('http://localhost:4000/tasks/history', {
+        const response = await fetch(`${BASE_URL}/tasks/history`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -119,7 +119,7 @@ export const updateTask = async (
     coin_penalty: number
 ) => {
     try {
-        const response = await fetch('http://localhost:4000/tasks/edit-task', {
+        const response = await fetch(`${BASE_URL}/tasks/edit-task`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -139,7 +139,7 @@ export const updateTask = async (
 
 export const deleteTask = async (id: string) => {
     try {
-        const response = await fetch('http://localhost:4000/tasks/delete-task', {
+        const response = await fetch(`${BASE_URL}/tasks/delete-task`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

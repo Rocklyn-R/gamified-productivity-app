@@ -1,6 +1,9 @@
+import { BASE_URL } from "./coins";
+
+
 export const getInventoryItems = async () => {
     try {
-        const response = await fetch('http://localhost:4000/inventory', {
+        const response = await fetch(`${BASE_URL}/inventory`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -20,7 +23,7 @@ export const getInventoryItems = async () => {
 
 export const spendInventoryItem = async (id: string, quantity: number) => {
     try {
-        const response = await fetch('http://localhost:4000/inventory/use-item', {
+        const response = await fetch(`${BASE_URL}/inventory/use-item`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -40,7 +43,7 @@ export const spendInventoryItem = async (id: string, quantity: number) => {
 
 export const addToRewardHistory = async (id: string, shop_item_id: string, date_used: string) => {
     try {
-        const response = await fetch('http://localhost:4000/inventory/add-to-history', {
+        const response = await fetch(`${BASE_URL}/inventory/add-to-history`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,7 +63,7 @@ export const addToRewardHistory = async (id: string, shop_item_id: string, date_
 
 export const getRewardHistory = async () => {
     try {
-        const response = await fetch('http://localhost:4000/inventory/reward-history', {
+        const response = await fetch(`${BASE_URL}/inventory/reward-history`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -83,7 +86,7 @@ export const getRewardHistory = async () => {
 
 export const deleteFromRewardHistory = async (id: string) => {
     try {
-        const response = await fetch('http://localhost:4000/inventory/reward-history/delete-item', {
+        const response = await fetch(`${BASE_URL}/inventory/reward-history/delete-item`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

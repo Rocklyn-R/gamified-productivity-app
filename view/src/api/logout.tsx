@@ -1,6 +1,8 @@
+import { BASE_URL } from "./coins";
+
 export const logoutUser = async () => {
     try {
-        const response = await fetch('http://localhost:4000/logout', {
+        const response = await fetch(`${BASE_URL}/logout`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

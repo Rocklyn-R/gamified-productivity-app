@@ -1,6 +1,8 @@
+import {BASE_URL} from "./coins";
+
 export const getUserDetails = async () => {
     try {
-        const response = await fetch('http://localhost:4000/profile', {
+        const response = await fetch(`${BASE_URL}/profile`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -16,7 +18,7 @@ export const getUserDetails = async () => {
 
 export const updateUserName = async (firstName: string, lastName: string) => {
     try {
-        const response = await fetch('http://localhost:4000/profile/updateUsername', {
+        const response = await fetch(`${BASE_URL}/profile/updateUsername`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +39,7 @@ export const updateUserName = async (firstName: string, lastName: string) => {
 
 export const updateUserEmail = async (email: string) => {
     try {
-        const response = await fetch('http://localhost:4000/profile/updateEmail', {
+        const response = await fetch(`${BASE_URL}/profile/updateEmail`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,7 +60,7 @@ export const updateUserEmail = async (email: string) => {
 
 export const updateUserPassword = async (oldPassword: string, newPassword: string) => {
     try {
-        const response = await fetch('http://localhost:4000/profile/changePassword', {
+        const response = await fetch(`${BASE_URL}/profile/changePassword`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -85,7 +87,7 @@ export const updateUserPassword = async (oldPassword: string, newPassword: strin
 
 export const createNewPassword = async (password: string) => {
     try {
-        const response = await fetch('http://localhost:4000/profile/create-new-password', {
+        const response = await fetch(`${BASE_URL}/profile/create-new-password`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -106,7 +108,7 @@ export const createNewPassword = async (password: string) => {
 
 export const unlinkUserFromGoogle = async () => {
     try {
-        const response = await fetch('http://localhost:4000/profile/unlink-from-google', {
+        const response = await fetch(`${BASE_URL}/profile/unlink-from-google`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -125,7 +127,7 @@ export const unlinkUserFromGoogle = async () => {
 
 export const deleteUserAccount = async (password: string) => {
     try {
-        const response = await fetch('http://localhost:4000/profile/delete-account', {
+        const response = await fetch(`${BASE_URL}/profile/delete-account`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

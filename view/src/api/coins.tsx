@@ -1,6 +1,10 @@
+export const BASE_URL = process.env.NODE_ENV === 'production'
+    ? 'https://task-master-backend-m9mq.onrender.com'
+    : 'http://localhost:4000';
+
 export const getCoins = async () => {
     try {
-        const response = await fetch('http://localhost:4000/coins', {
+        const response = await fetch(`${BASE_URL}/coins`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -16,7 +20,7 @@ export const getCoins = async () => {
 
 export const subtractCoins = async (coins: number) => {
     try {
-        const response = await fetch('http://localhost:4000/coins/subtract-coins', {
+        const response = await fetch(`${BASE_URL}/coins/subtract-coins`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,7 +38,7 @@ export const subtractCoins = async (coins: number) => {
 
 export const addCoins = async (coins: number) => {
     try {
-        const response = await fetch('http://localhost:4000/coins/add-coins', {
+        const response = await fetch(`${BASE_URL}/coins/add-coins`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

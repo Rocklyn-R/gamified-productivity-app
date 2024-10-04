@@ -1,7 +1,9 @@
+import { BASE_URL } from "./coins";
+
 export const createNewUser = async (name: string, lastName: string, email: string, password: string) => {
     // Make a POST request to your server's signup endpoint using fetch
     try {
-        const response = await fetch('http://localhost:4000/signup', {
+        const response = await fetch(`${BASE_URL}/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
