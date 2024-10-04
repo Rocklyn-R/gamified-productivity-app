@@ -30,25 +30,29 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const redisClient = redis.createClient({
-    url: process.env.REDIS_URL,
-    legacyMode: true,  // Add this if you're using newer versions of Redis
-});
+let redisClient;
 
-redisClient.connect().catch(console.error);  // Connect the Redis client
+if (process.env.NODE_ENV === 'production') {
+    redisClient = redis.createClient({
+        url: process.env.REDIS_URL,
+        legacyMode: true,  // Required for newer Redis versions
+    });
 
+    redisClient.connect().catch(console.error);  // Connect the Redis client
+}
 
 app.use(session({
-    store: new RedisStore({ client: redisClient }),
-    secret: process.env.COOKIE_SECRET,  // Use your environment variable for secret
+    store: process.env.NODE_ENV === 'production' ? new RedisStore({ client: redisClient }) : undefined, // Use Redis in production
+    secret: COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false,  // Set this to true if you are using HTTPS
+        secure: process.env.NODE_ENV === 'production',  // Set to true if you're using HTTPS
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24,  // Session expiration, here it's set for 1 day
+        maxAge: 1000 * 60 * 60 * 24,  // Session expiration, set for 1 day
     }
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
