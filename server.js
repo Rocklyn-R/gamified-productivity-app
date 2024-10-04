@@ -10,6 +10,7 @@ const flash = require('express-flash');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const initializePassport = require('./config/passport');
+const path = require('path');
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
   }
@@ -73,19 +74,27 @@ const inventoryRouter = require('./routes/inventory');
 const pomodoroRouter = require('./routes/pomodoro');
 
 
-app.use('/signup', signUpRouter);
-app.use('/tasks', tasksRouter);
-app.use('/login', loginRouter);
-app.use('/logout', logoutRouter);
-app.use('/profile', profileRouter);
-app.use('/coins', coinsRouter);
-app.use('/shop-rewards', shopRouter);
-app.use('/inventory', inventoryRouter);
-app.use('/pomodoro', pomodoroRouter);
+app.use('/api/signup', signUpRouter);
+app.use('/api/tasks', tasksRouter);
+app.use('/api/login', loginRouter);
+app.use('/api/logout', logoutRouter);
+app.use('/api/profile', profileRouter);
+app.use('/api/coins', coinsRouter);
+app.use('/api/shop-rewards', shopRouter);
+app.use('/api/inventory', inventoryRouter);
+app.use('/api/pomodoro', pomodoroRouter);
 
-app.get('/auth', checkAuthenticatedOnLoginSignup, (req, res) => {
+app.get('/api/auth', checkAuthenticatedOnLoginSignup, (req, res) => {
     return res.status(200).json({ message: 'User is authorized'});
   });
+
+// Serve static files from the React app's build folder
+app.use(express.static(path.join(__dirname, 'view', 'build')));
+
+// Catch-all route to serve index.html for any unmatched routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'view', 'build', 'index.html'));
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`)

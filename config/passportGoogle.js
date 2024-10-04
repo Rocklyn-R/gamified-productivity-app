@@ -6,8 +6,8 @@ const GOOGLE_CLIENT_ID = '81958654526-j2qrbn28r9f65ifc9rg8pfcdvfg0551e.apps.goog
 const GOOGLE_CLIENT_SECRET = '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';
 
 const callbackURL = process.env.NODE_ENV === 'production' 
-    ? 'https://task-master-rocklyn.onrender.com/login/google-redirect' 
-    : 'http://localhost:4000/login/google-redirect';
+    ? 'https://task-master-rocklyn.onrender.com/api/login/google-redirect' 
+    : 'http://localhost:4000/api/login/google-redirect';
 
 passport.use(new GoogleStrategy({
     clientID:     GOOGLE_CLIENT_ID,

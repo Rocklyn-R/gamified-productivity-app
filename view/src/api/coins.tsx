@@ -1,6 +1,6 @@
 export const BASE_URL = process.env.NODE_ENV === 'production'
-    ? 'https://task-master-backend-m9mq.onrender.com'
-    : 'http://localhost:4000';
+    ? 'https://task-master-backend-m9mq.onrender.com/api'
+    : 'http://localhost:4000/api';
 
 export const getCoins = async () => {
     try {
