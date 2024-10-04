@@ -3,8 +3,13 @@ const passport = require('passport');
 const { checkAuthenticated, checkAuthenticatedOnLoginSignup } = require('../middleware/authentication');
 
 const loginRouter = express.Router();
-const successLoginUrl = "http://localhost:3000/tasks";
-const errorLoginUrl = "http://localhost:3000/login";
+const successLoginUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://task-master-rocklyn.onrender.com/tasks' 
+    : 'http://localhost:3000/tasks';
+const errorLoginUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://task-master-rocklyn.onrender.com/login' 
+    : 'http://localhost:3000/login';
+
 
 loginRouter.get('/', checkAuthenticatedOnLoginSignup, (req, res) => {
   return res.status(200).json({ message: 'User signed in'});

@@ -18,10 +18,14 @@ const localOptions = {
     passReqToCallback: false // Don't pass request object to verify callback
 };
 
+const callbackURL = process.env.NODE_ENV === 'production' 
+    ? 'https://task-master-rocklyn.onrender.com/login/google-redirect' 
+    : 'http://localhost:4000/login/google-redirect';
+
 const googleOptions = {
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:4000/login/google-redirect",
+    callbackURL: callbackURL,
     passReqToCallback: true
 }
 

@@ -3,17 +3,22 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-const DB_USER = process.env.DB_USER;
-const DATABASE = process.env.DATABASE;
-const PASSWORD = process.env.PASSWORD;
-
-const pool = new Pool({
-    user: DB_USER,
+const poolConfig = process.env.NODE_ENV === 'production'
+  ? {
+    connectionString: process.env.DATABASE_URL, // Use the DATABASE_URL provided by Render
+    ssl: {
+      rejectUnauthorized: false, // Required for connecting securely to Render's PostgreSQL
+    },
+  }
+  : {
+    user: process.env.DB_USER,   // Use local settings
     host: 'localhost',
-    database: DATABASE,
-    password: PASSWORD,
+    database: process.env.DATABASE,
+    password: process.env.DB_PASSWORD,
     port: 5432,
-})
+  };
+
+const pool = new Pool(poolConfig);
 
 const query = (text, params, callback) => {
   return pool.query(text, params, callback);
