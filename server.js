@@ -24,7 +24,7 @@ const COOKIE_SECRET = process.env.COOKIE_SECRET
 app.set('trust proxy', 1);
 app.use(express.static(__dirname));
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://accounts.google.com'],
+    origin: ['http://localhost:3000', 'https://accounts.google.com', 'https://task-master-rocklyn.onrender.com'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']

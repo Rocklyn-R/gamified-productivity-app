@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { createPomodoro } from "../../../api/pomodoro";
 import { v4 as uuidv4 } from "uuid";
 import GoogleButton from 'react-google-button'
+import { BASE_URL } from "../../../api/coins";
 
 export const SignUp = () => {
     const [name, setName] = useState("");
@@ -49,7 +50,7 @@ export const SignUp = () => {
     };
 
     const handleGoogleSignIn = async () => {
-        const googleLoginURL = "http://localhost:4000/login/auth/google";
+        const googleLoginURL = `${BASE_URL}/login/auth/google`;
         //const newWindow = window.open(googleLoginURL, "_blank", "width=500,height=600");
         window.location.href = googleLoginURL;
     }

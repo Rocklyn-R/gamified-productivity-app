@@ -8,8 +8,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { logInUser } from '../../../api/login';
 import { authenticateUser } from '../../../store/UserSlice';
 import { useDispatch } from 'react-redux';
-import GoogleButton from 'react-google-button'
-
+import GoogleButton from 'react-google-button';
+import { BASE_URL } from '../../../api/coins';
 
 
 export const LoginPage = () => {
@@ -53,7 +53,7 @@ export const LoginPage = () => {
     }
 
     const handleGoogleSignIn = async () => {
-        const googleLoginURL = "http://localhost:4000/login/auth/google";
+        const googleLoginURL = `${BASE_URL}/login/auth/google`;
         //const newWindow = window.open(googleLoginURL, "_blank", "width=500,height=600");
         window.location.href = googleLoginURL;
     }
