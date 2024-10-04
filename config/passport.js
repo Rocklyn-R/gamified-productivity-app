@@ -4,7 +4,9 @@ const { findUserByEmail, findUserById } = require('../models/user');
 const bcrypt = require('bcrypt');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const { findByGoogleIdOrCreate } = require('../models/user');
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+  }
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET

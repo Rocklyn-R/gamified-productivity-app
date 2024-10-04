@@ -10,7 +10,9 @@ const flash = require('express-flash');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const initializePassport = require('./config/passport');
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+  }
 const { checkAuthenticatedOnLoginSignup } = require('./middleware/authentication.js');
 
 const app = express();
