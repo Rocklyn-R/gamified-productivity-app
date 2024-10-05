@@ -13,6 +13,7 @@ const initializePassport = require('./config/passport');
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
+const path = require('path');
 const { checkAuthenticatedOnLoginSignup } = require('./middleware/authentication.js');
 
 const app = express();
@@ -110,6 +111,13 @@ app.use('/api/pomodoro', pomodoroRouter);
 app.get('/api/auth', checkAuthenticatedOnLoginSignup, (req, res) => {
     return res.status(200).json({ message: 'User is authorized' });
 });
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'view', 'build')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'view', 'build', 'index.html'));
+    });
+}
 
 
 app.listen(PORT, () => {
