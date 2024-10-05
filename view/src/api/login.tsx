@@ -3,6 +3,7 @@ import { BASE_URL } from "./coins";
 
 export const logInUser = async (email: string, password: string) => {
     try {
+        console.log(BASE_URL);
         const response = await fetch(`${BASE_URL}/login`, {
         method: 'POST',
         headers: {
@@ -27,6 +28,7 @@ export const logInUser = async (email: string, password: string) => {
 
 export const checkAuthentication = async () => {
     try {
+        console.log(BASE_URL);
         const response = await fetch(`${BASE_URL}/auth`, {
             method: 'GET',
             headers: {
