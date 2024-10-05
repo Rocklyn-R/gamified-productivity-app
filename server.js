@@ -41,7 +41,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.options('*', cors()); 
 
-/*let redisClient = redis.createClient({
+let redisClient = redis.createClient({
     url: process.env.REDIS_URL,
     legacyMode: true,
 });
@@ -60,10 +60,10 @@ app.use(session({
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
     },
-}));*/
+}));
 
 
- // Development session setup
+/* // Development session setup
  app.use(session({
      secret: COOKIE_SECRET,
      resave: false,
@@ -75,7 +75,7 @@ app.use(session({
      },
  }));
 
-
+*/
 
 app.use(passport.initialize());
 app.use(passport.session());
