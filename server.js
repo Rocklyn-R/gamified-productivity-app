@@ -1,14 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 const RedisStore = require('connect-redis').default;
 const redis = require('redis');
-const { localAuthenticateUser, localOptions, googleAuthenticateUser } = require('./config/passport.js');
-const flash = require('express-flash');
-const LocalStrategy = require('passport-local').Strategy;
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const initializePassport = require('./config/passport');
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
@@ -130,12 +125,6 @@ app.get('/api/auth', checkAuthenticatedOnLoginSignup, (req, res) => {
     return res.status(200).json({ message: 'User is authorized' });
 });
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'view', 'build')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'view', 'build', 'index.html'));
-    });
-}
 
 
 app.listen(PORT, () => {
