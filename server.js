@@ -19,16 +19,29 @@ const COOKIE_SECRET = process.env.COOKIE_SECRET
 
 app.set('trust proxy', 1);
 app.use(express.static(__dirname));
-app.use(cors({
-    origin: ['http://localhost:3000', 'https://accounts.google.com', 'https://task-master-rocklyn.onrender.com'],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// CORS Configuration
+const corsOptions = {
+    origin: [
+        'http://localhost:3000', // Allow local development
+        'https://accounts.google.com', // Google OAuth
+        'https://task-master-rocklyn.onrender.com' // Your production frontend
+    ],
+    credentials: true, // Allow cookies to be sent with requests
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
+    allowedHeaders: ['Content-Type', 'Authorization'] // Allow these headers
+};
+
+// Apply CORS middleware before your routes
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors()); // This will respond to preflight requests for all routes
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.options('*', cors()); 
 
-let redisClient = redis.createClient({
+/*let redisClient = redis.createClient({
     url: process.env.REDIS_URL,
     legacyMode: true,
 });
@@ -47,10 +60,10 @@ app.use(session({
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
     },
-}));
+}));*/
 
 
-/* // Development session setup
+ // Development session setup
  app.use(session({
      secret: COOKIE_SECRET,
      resave: false,
@@ -60,7 +73,7 @@ app.use(session({
          maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
          secure: false, // Set to false in development
      },
- }));*/
+ }));
 
 
 
