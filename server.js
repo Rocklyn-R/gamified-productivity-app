@@ -3,18 +3,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
-
-const RedisStore = require('connect-redis').default;
-const redis = require('redis');
 const {localAuthenticateUser, localOptions, googleAuthenticateUser} = require('./config/passport.js');
 const flash = require('express-flash');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const initializePassport = require('./config/passport');
-const path = require('path');
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-  }
+require('dotenv').config();
 const { checkAuthenticatedOnLoginSignup } = require('./middleware/authentication.js');
 
 const app = express();
@@ -34,27 +28,10 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-let redisClient;
-
-if (process.env.NODE_ENV === 'production') {
-    redisClient = redis.createClient({
-        url: process.env.REDIS_URL,
-        legacyMode: true,  // Required for newer Redis versions
-    });
-
-    redisClient.connect().catch(console.error);  // Connect the Redis client
-}
-
 app.use(session({
-    store: process.env.NODE_ENV === 'production' ? new RedisStore({ client: redisClient }) : undefined, // Use Redis in production
     secret: COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',  // Set to true if you're using HTTPS
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24,  // Session expiration, set for 1 day
-    }
 }));
 
 app.use(passport.initialize());
