@@ -28,64 +28,41 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-let redisClient;
+let redisClient = redis.createClient({
+    url: process.env.REDIS_URL,
+    legacyMode: true,
+});
+
+// Connect to Redis
+redisClient.connect();
+
+// Set up session middleware
+app.use(session({
+    store: new RedisStore({ client: redisClient }),
+    secret: COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: true, // Set to true if you're using HTTPS
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
+    },
+}));
 
 
-// Redis Client and Session Setup
-if (process.env.NODE_ENV === 'production') {
-    redisClient = redis.createClient({
-        url: process.env.REDIS_URL,
-        legacyMode: true,
-    });
+/* // Development session setup
+ app.use(session({
+     secret: COOKIE_SECRET,
+     resave: false,
+     saveUninitialized: false,
+     cookie: {
+         httpOnly: true,
+         maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
+         secure: false, // Set to false in development
+     },
+ }));*/
 
-    redisClient.connect()
-        .then(() => {
-            console.log('Connected to Redis');
 
-            // Set up session middleware after connecting to Redis
-            app.use(session({
-                store: new RedisStore({ client: redisClient }),
-                secret: COOKIE_SECRET,
-                resave: false,
-                saveUninitialized: false,
-                cookie: {
-                    secure: true, // Set to true if you're using HTTPS
-                    httpOnly: true,
-                    maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
-                },
-            }));
-
-    
-        })
-        .catch(err => {
-            console.error('Redis connection error:', err);
-
-            // Fallback: start server without Redis sessions
-            app.use(session({
-                secret: COOKIE_SECRET,
-                resave: false,
-                saveUninitialized: false,
-                cookie: {
-                    httpOnly: true,
-                    maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
-                },
-            }));
-
-        });
-} else {
-    // Development session setup
-    app.use(session({
-        secret: COOKIE_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
-            secure: false, // Set to false in development
-        },
-    }));
-
-}
 
 app.use(passport.initialize());
 app.use(passport.session());
