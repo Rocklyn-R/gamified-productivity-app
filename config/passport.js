@@ -30,21 +30,25 @@ const googleOptions = {
 }
 
 const localAuthenticateUser = async (username, password, done) => {
+    console.log('Authenticating user:', username); // Log the username being attempted
     try {
         const user = await findUserByEmail(username);
         if (!user || !user.password) {
+            console.log('User not found or no password'); // Log reason for failure
             return done(null, false, { message: 'Incorrect email or password' });
         }
         const matchedPassword = await bcrypt.compare(password, user.password);
         if (!matchedPassword) {
+            console.log('Password does not match'); // Log reason for failure
             return done(null, false, { message: 'Incorrect email or password' });
         }
+        console.log('User authenticated successfully:', user); // Log successful authentication
         return done(null, user);
-    }
-    catch (error) {
+    } catch (error) {
+        console.error('Error during authentication:', error); // Log any errors
         return done(error);
     }
-}
+};
 
 const googleAuthenticateUser = async (request, accessToken, refreshToken, profile, done) => {
     try {

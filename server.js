@@ -55,10 +55,7 @@ if (process.env.NODE_ENV === 'production') {
                 },
             }));
 
-            // Initialize Passport AFTER session middleware
-            app.use(passport.initialize());
-            app.use(passport.session());
-            initializePassport(passport); // Initialize passport here
+    
         })
         .catch(err => {
             console.error('Redis connection error:', err);
@@ -74,10 +71,6 @@ if (process.env.NODE_ENV === 'production') {
                 },
             }));
 
-            // Initialize Passport without Redis
-            app.use(passport.initialize());
-            app.use(passport.session());
-            initializePassport(passport);
         });
 } else {
     // Development session setup
@@ -92,13 +85,11 @@ if (process.env.NODE_ENV === 'production') {
         },
     }));
 
-    // Initialize Passport
-    app.use(passport.initialize());
-    app.use(passport.session());
-    initializePassport(passport);
 }
 
-
+app.use(passport.initialize());
+app.use(passport.session());
+initializePassport(passport); // Initialize passport here
 
 const signUpRouter = require('./routes/signup');
 const tasksRouter = require('./routes/tasks');
