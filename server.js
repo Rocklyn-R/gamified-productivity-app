@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
+
 const RedisStore = require('connect-redis').default;
 const redis = require('redis');
 const {localAuthenticateUser, localOptions, googleAuthenticateUser} = require('./config/passport.js');
@@ -88,13 +89,6 @@ app.get('/api/auth', checkAuthenticatedOnLoginSignup, (req, res) => {
     return res.status(200).json({ message: 'User is authorized'});
   });
 
-// Serve static files from the React app's build folder
-app.use(express.static(path.join(__dirname, 'view', 'build')));
-
-// Catch-all route to serve index.html for any unmatched routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'view', 'build', 'index.html'));
-});
 
 app.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`)
