@@ -35,7 +35,8 @@ app.use(express.urlencoded({ extended: false }));
 
 let redisClient;
 
-// Setup Redis client
+
+// Redis Client and Session Setup
 if (process.env.NODE_ENV === 'production') {
     redisClient = redis.createClient({
         url: process.env.REDIS_URL,
@@ -58,14 +59,33 @@ if (process.env.NODE_ENV === 'production') {
                     maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
                 },
             }));
+
+            // Initialize Passport AFTER session middleware
+            app.use(passport.initialize());
+            app.use(passport.session());
+            initializePassport(passport); // Initialize passport here
         })
         .catch(err => {
             console.error('Redis connection error:', err);
-            // Optionally, you could still allow the server to start without Redis
-            // but sessions will not work correctly
+
+            // Fallback: start server without Redis sessions
+            app.use(session({
+                secret: COOKIE_SECRET,
+                resave: false,
+                saveUninitialized: false,
+                cookie: {
+                    httpOnly: true,
+                    maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
+                },
+            }));
+
+            // Initialize Passport without Redis
+            app.use(passport.initialize());
+            app.use(passport.session());
+            initializePassport(passport);
         });
 } else {
-    // Set up session middleware for development
+    // Development session setup
     app.use(session({
         secret: COOKIE_SECRET,
         resave: false,
@@ -73,18 +93,16 @@ if (process.env.NODE_ENV === 'production') {
         cookie: {
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
+            secure: false, // Set to false in development
         },
     }));
+
+    // Initialize Passport
+    app.use(passport.initialize());
+    app.use(passport.session());
+    initializePassport(passport);
 }
 
-
-
-
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
-
-initializePassport(passport);
 
 
 const signUpRouter = require('./routes/signup');
