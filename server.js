@@ -63,18 +63,20 @@ if (process.env.NODE_ENV === 'production') {
             // Optionally, you could still allow the server to start without Redis
             // but sessions will not work correctly
         });
+} else {
+    // Set up session middleware for development
+    app.use(session({
+        secret: COOKIE_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
+        },
+    }));
 }
 
-// Set up session middleware for development
-app.use(session({
-    secret: COOKIE_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
-    },
-}));
+
 
 
 app.use(passport.initialize());
