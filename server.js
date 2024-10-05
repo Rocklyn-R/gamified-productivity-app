@@ -3,14 +3,16 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
-const {localAuthenticateUser, localOptions, googleAuthenticateUser} = require('./config/passport.js');
+const RedisStore = require('connect-redis').default;
+const redis = require('redis');
+const { localAuthenticateUser, localOptions, googleAuthenticateUser } = require('./config/passport.js');
 const flash = require('express-flash');
 const LocalStrategy = require('passport-local').Strategy;
-const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const initializePassport = require('./config/passport');
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
-  }
+}
 const { checkAuthenticatedOnLoginSignup } = require('./middleware/authentication.js');
 
 const app = express();
@@ -30,11 +32,50 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+let redisClient;
+
+// Setup Redis client
+if (process.env.NODE_ENV === 'production') {
+    redisClient = redis.createClient({
+        url: process.env.REDIS_URL,
+        legacyMode: true,
+    });
+
+    redisClient.connect()
+        .then(() => {
+            console.log('Connected to Redis');
+
+            // Set up session middleware after connecting to Redis
+            app.use(session({
+                store: new RedisStore({ client: redisClient }),
+                secret: COOKIE_SECRET,
+                resave: false,
+                saveUninitialized: false,
+                cookie: {
+                    secure: true, // Set to true if you're using HTTPS
+                    httpOnly: true,
+                    maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
+                },
+            }));
+        })
+        .catch(err => {
+            console.error('Redis connection error:', err);
+            // Optionally, you could still allow the server to start without Redis
+            // but sessions will not work correctly
+        });
+}
+
+// Set up session middleware for development
 app.use(session({
     secret: COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
+    },
 }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -65,8 +106,8 @@ app.use('/api/inventory', inventoryRouter);
 app.use('/api/pomodoro', pomodoroRouter);
 
 app.get('/api/auth', checkAuthenticatedOnLoginSignup, (req, res) => {
-    return res.status(200).json({ message: 'User is authorized'});
-  });
+    return res.status(200).json({ message: 'User is authorized' });
+});
 
 
 app.listen(PORT, () => {
