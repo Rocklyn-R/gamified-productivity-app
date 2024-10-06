@@ -20,11 +20,13 @@ const COOKIE_SECRET = process.env.COOKIE_SECRET
 app.set('trust proxy', 1);
 app.use(express.static(__dirname));
 // CORS Configuration
+
 const corsOptions = {
     origin: [
         'http://localhost:3000', // Allow local development
         'https://accounts.google.com', // Google OAuth
-        'https://task-master-rocklyn.onrender.com' // Your production frontend
+        'https://task-master-rocklyn.onrender.com',
+        'https://task-master-backend-m9mq.onrender.com/api/auth' // Your production frontend
     ],
     credentials: true, // Allow cookies to be sent with requests
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
