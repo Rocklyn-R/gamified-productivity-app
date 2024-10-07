@@ -61,6 +61,12 @@ app.use(session({
     },
 }));
 
+app.use((req, res, next) => {
+    req.session.user = { id: 50, first_name: 'Nikola', last_name: 'Nikolic', email: 'nikolic@gmail.com' }; // Example session data
+    console.log('Session Data:', req.session);
+    next();
+});
+
 
 /* // Development session setup
  app.use(session({
