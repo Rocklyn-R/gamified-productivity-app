@@ -37,14 +37,16 @@ app.use((req, res, next) => {
 
     const origin = req.headers.origin;
 
+    // Check if the origin of the request is in the allowedOrigins list
     if (allowedOrigins.includes(origin)) {
-        res.header('Access-Control-Allow-Origin', origin); // Allow requests from these domains
+        res.header('Access-Control-Allow-Origin', origin); // Set the specific origin for the request
+        res.header('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies, auth headers)
     }
 
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS'); // Allow all relevant methods
     res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');  // Allow these headers
 
-    // If it's a preflight request, respond with 200
+    // If it's a preflight request (OPTIONS), respond with status 200
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
     }
