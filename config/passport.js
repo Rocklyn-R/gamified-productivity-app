@@ -60,15 +60,19 @@ const googleAuthenticateUser = async (request, accessToken, refreshToken, profil
 }
 
 passport.serializeUser((user, done) => {
-    console.log('Serializing user:', user);
-    done(null, user.id);
+    const userId = user.id;
+    console.log('Serializing user ID:', userId); // Log the user ID being serialized
+    done(null, userId);
 });
+
 passport.deserializeUser(async (id, done) => {
     try {
         const user = await findUserById(id);
         console.log('Deserialized user:', user);
         if (user) {
-            done(null, user); // Pass the retrieved user object to the callback 
+            // Optionally, remove the password field from the user object
+            const { password, ...safeUser } = user;
+            done(null, safeUser); // Pass the user without the password
         } else {
             done(null, false)
         }
