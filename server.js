@@ -27,7 +27,9 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization']
 };
 
+app.options('*', cors());
 // Apply CORS middleware before your routes
+// CORS Middleware
 app.use((req, res, next) => {
     const allowedOrigins = [
         'http://localhost:3000',
@@ -36,21 +38,29 @@ app.use((req, res, next) => {
     ];
 
     const origin = req.headers.origin;
-
+    
     // Check if the origin of the request is in the allowedOrigins list
     if (allowedOrigins.includes(origin)) {
+        console.log('CORS: Allowing origin:', origin);
         res.header('Access-Control-Allow-Origin', origin); // Set the specific origin for the request
         res.header('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies, auth headers)
+    } else {
+        console.log('CORS: Origin not allowed:', origin);
     }
 
+    // Set common headers for all requests
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS'); // Allow all relevant methods
     res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');  // Allow these headers
 
-    // If it's a preflight request (OPTIONS), respond with status 200
+    // Explicit handling for preflight (OPTIONS) requests
     if (req.method === 'OPTIONS') {
+        console.log('CORS: Handling preflight request');
+        // Preflight response for OPTIONS
+        res.header('Access-Control-Max-Age', '600'); // Cache the preflight request for 10 minutes
         return res.status(200).end();
     }
 
+    // Proceed to the next middleware or route
     next();
 });
 
