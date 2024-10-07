@@ -38,11 +38,6 @@ app.use(express.static(__dirname));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-let redisClient = redis.createClient({
-    url: process.env.REDIS_URL,
-    legacyMode: true,
-});
-
 
 
 // Set up session middleware
