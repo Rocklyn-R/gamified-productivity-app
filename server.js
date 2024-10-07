@@ -15,10 +15,6 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 const COOKIE_SECRET = process.env.COOKIE_SECRET
-
-
-app.set('trust proxy', 1);
-app.use(express.static(__dirname));
 // CORS Configuration
 const corsOptions = {
     origin: [
@@ -35,7 +31,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Handle preflight requests with the same options
-app.options(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+app.set('trust proxy', 1);
+app.use(express.static(__dirname));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
