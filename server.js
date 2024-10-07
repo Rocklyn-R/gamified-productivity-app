@@ -1,9 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
-const session = require('express-session');
-const RedisStore = require('connect-redis').default;
-const redis = require('redis');
+//const session = require('express-session');
+const cookieSession = require('cookie-session');
 const initializePassport = require('./config/passport');
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
@@ -44,21 +43,16 @@ let redisClient = redis.createClient({
     legacyMode: true,
 });
 
-// Connect to Redis
-redisClient.connect();
+
 
 // Set up session middleware
-app.use(session({
-    store: new RedisStore({ client: redisClient }),
-    secret: COOKIE_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: true, // Set to true if you're using HTTPS
-        httpOnly: true,
-        sameSite: 'None',
-        maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
-    },
+app.use(cookieSession({
+    name: 'session',
+    secret: process.env.COOKIE_SECRET, // Replace with your actual secret
+    maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
+    secure: true, // Set to true if you're using HTTPS
+    httpOnly: true,
+    sameSite: 'None',
 }));
 
 
