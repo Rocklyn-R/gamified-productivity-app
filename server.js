@@ -28,10 +28,29 @@ const corsOptions = {
 };
 
 // Apply CORS middleware before your routes
-app.use(cors(corsOptions));
+app.use((req, res, next) => {
+    const allowedOrigins = [
+        'http://localhost:3000',
+        'https://accounts.google.com',
+        'https://task-master-rocklyn.onrender.com'
+    ];
 
-// Handle preflight requests with the same options
-app.options('*', cors(corsOptions));
+    const origin = req.headers.origin;
+
+    if (allowedOrigins.includes(origin)) {
+        res.header('Access-Control-Allow-Origin', origin); // Allow requests from these domains
+    }
+
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS'); // Allow all relevant methods
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');  // Allow these headers
+
+    // If it's a preflight request, respond with 200
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    next();
+});
 
 app.set('trust proxy', 1);
 app.use(express.static(__dirname));
