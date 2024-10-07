@@ -77,6 +77,11 @@ app.use(session({
 
 */
 
+app.use((req, res, next) => {
+    console.log('Initial session:', req.session);
+    next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 initializePassport(passport); // Initialize passport here
