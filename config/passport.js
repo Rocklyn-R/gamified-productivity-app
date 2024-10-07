@@ -59,10 +59,14 @@ const googleAuthenticateUser = async (request, accessToken, refreshToken, profil
     }
 }
 
-passport.serializeUser((user, done) => done(null, user.id));
+passport.serializeUser((user, done) => {
+    console.log('Serializing user:', user);
+    done(null, user.id);
+});
 passport.deserializeUser(async (id, done) => {
     try {
         const user = await findUserById(id);
+        console.log('Deserialized user:', user);
         if (user) {
             done(null, user); // Pass the retrieved user object to the callback 
         } else {
@@ -70,6 +74,7 @@ passport.deserializeUser(async (id, done) => {
         }
 
     } catch (error) {
+        console.error('Error during deserialization:', error); 
         done(error); // Pass any errors to the callback
     }
 });
