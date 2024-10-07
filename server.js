@@ -15,20 +15,22 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 const COOKIE_SECRET = process.env.COOKIE_SECRET
-// CORS Configuration
 const corsOptions = {
-    origin: true,
-    preflightContinue: true,
-    credentials: true,
+    origin: [
+        'http://localhost:3000',
+        'https://accounts.google.com',  // Keeping the Google origin
+        'https://task-master-rocklyn.onrender.com',
+    ],
+    credentials: true, // Allow credentials (cookies, Authorization headers)
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 };
 
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 // Apply CORS middleware before your routes
 app.use(cors(corsOptions));
 
-// Handle preflight requests with the same options
-app.options(cors(corsOptions));
 
 app.set('trust proxy', 1);
 app.use(express.static(__dirname));
