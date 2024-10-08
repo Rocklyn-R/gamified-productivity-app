@@ -18,6 +18,7 @@ const addToRewardHistory = async (req, res) => {
 }
 
 const getRewardHistory = async (req, res) => {
+    console.log(req.session);
     const { id } = req.user;
     try {
         const result = await rewardHistoryGet(id);

@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
-//const session = require('express-session');
-const cookieSession = require('cookie-session');
+const session = require('express-session');
+const RedisStore = require('connect-redis').default;
+const redis = require('redis');
 const initializePassport = require('./config/passport');
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
@@ -38,21 +39,35 @@ app.use(express.static(__dirname));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+let redisClient = redis.createClient({
+    url: 'rediss://red-crvr0288fa8c73dt0130:vmUly4cLgRMEXygPmxV5zdPeqqYeRQoc@virginia-redis.render.com:6379', // Fallback to local Redis
+});
 
+// Connect to Redis
+redisClient.connect().catch(err => console.error('Redis connection error:', err));
+redisClient.on('error', (err) => {
+    console.error('Redis Client Error', err);
+});
 
 // Set up session middleware
-app.use(cookieSession({
-    name: 'session',
-    secret: process.env.COOKIE_SECRET, // Replace with your actual secret
-    maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
-    secure: true, // Set to true if you're using HTTPS
-    httpOnly: true,
-    sameSite: 'None',
+app.use(session({
+    store: new RedisStore({ 
+        client: redisClient,
+        ttl: 86400 // Set session TTL in seconds
+    }),
+    secret: COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false, // Set to true if you're using HTTPS
+        httpOnly: true,
+        sameSite: 'None',
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
 }));
 
-
-
-/* // Development session setup
+/*
+ // Development session setup
  app.use(session({
      secret: COOKIE_SECRET,
      resave: false,
@@ -62,18 +77,17 @@ app.use(cookieSession({
          maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
          secure: false, // Set to false in development
      },
- }));
+ }));*/
 
-*/
 
-app.use((req, res, next) => {
-    console.log('Initial session:', req.session);
-    next();
-});
+
+
+
 
 app.use(passport.initialize());
 app.use(passport.session());
 initializePassport(passport); // Initialize passport here
+
 
 const signUpRouter = require('./routes/signup');
 const tasksRouter = require('./routes/tasks');
@@ -84,6 +98,7 @@ const coinsRouter = require('./routes/coins');
 const shopRouter = require('./routes/shop');
 const inventoryRouter = require('./routes/inventory');
 const pomodoroRouter = require('./routes/pomodoro');
+
 
 
 app.use('/api/signup', signUpRouter);
@@ -99,6 +114,7 @@ app.use('/api/pomodoro', pomodoroRouter);
 app.get('/api/auth', checkAuthenticatedOnLoginSignup, (req, res) => {
     return res.status(200).json({ message: 'User is authorized' });
 });
+
 
 
 

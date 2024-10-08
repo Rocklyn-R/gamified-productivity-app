@@ -18,6 +18,14 @@ loginRouter.get('/', checkAuthenticatedOnLoginSignup, (req, res) => {
 loginRouter.post('/', passport.authenticate('local', {
   failureRedirect: '/failure',
 }), (req, res) => {
+  console.log('User after authentication:', req.user); // Check if req.user is populated
+  console.log(req.session);
+  console.log(req.user);
+  if (req.isAuthenticated()) {
+    console.log("IS AUTHENTICATED"); // This should print
+  } else {
+    console.log("User is NOT authenticated"); // This will print if req.user is null
+  }
   return res.status(200).send();
 });
 
