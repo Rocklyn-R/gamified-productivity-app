@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const path = require('path');
 const { checkAuthenticatedOnLoginSignup } = require('./middleware/authentication.js');
+const MemoryStore = require('memorystore')(session)
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -77,6 +78,9 @@ app.use(session({
          maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
          secure: false, // Set to false in development
      },
+     store: new MemoryStore({
+        checkPeriod: 86400000 // prune expired entries every 24h
+      }),
  }));
 
 

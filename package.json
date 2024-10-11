@@ -18,6 +18,7 @@
     "express": "^4.19.2",
     "express-flash": "^0.0.2",
     "express-session": "^1.18.0",
+    "memorystore": "^1.6.7",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth2": "^0.2.0",
