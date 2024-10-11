@@ -38,7 +38,7 @@ app.use(express.static(__dirname));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+/*
 let redisClient = redis.createClient({
     url: 'rediss://red-crvr0288fa8c73dt0130:vmUly4cLgRMEXygPmxV5zdPeqqYeRQoc@virginia-redis.render.com:6379', // Fallback to local Redis
 });
@@ -64,9 +64,9 @@ app.use(session({
         sameSite: 'None',
         maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
-}));
+}));*/
 
-/*
+
  // Development session setup
  app.use(session({
      secret: COOKIE_SECRET,
@@ -77,7 +77,7 @@ app.use(session({
          maxAge: 1000 * 60 * 60 * 24, // Example: 1 day
          secure: false, // Set to false in development
      },
- }));*/
+ }));
 
 
 
