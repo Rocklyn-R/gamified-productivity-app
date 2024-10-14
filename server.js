@@ -2,8 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
-const RedisStore = require('connect-redis').default;
-const redis = require('redis');
+const RedisStore = require('connect-redis').default; // Correct import for v7.x
+const { createClient } = require('redis');
 const initializePassport = require('./config/passport');
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
@@ -15,7 +15,7 @@ const MemoryStore = require('memorystore')(session)
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-const COOKIE_SECRET = process.env.COOKIE_SECRET
+
 const corsOptions = {
     origin: [
         'http://localhost:3000',
@@ -39,35 +39,31 @@ app.use(express.static(__dirname));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-/*
-let redisClient = redis.createClient({
-    url: 'rediss://red-crvr0288fa8c73dt0130:vmUly4cLgRMEXygPmxV5zdPeqqYeRQoc@virginia-redis.render.com:6379', // Fallback to local Redis
+
+// Create a Redis client
+const redisClient = createClient({
+    url: 'rediss://red-crvr0288fa8c73dt0130:vmUly4cLgRMEXygPmxV5zdPeqqYeRQoc@virginia-redis.render.com:6379' // Use the URL format
 });
 
 // Connect to Redis
-redisClient.connect().catch(err => console.error('Redis connection error:', err));
-redisClient.on('error', (err) => {
-    console.error('Redis Client Error', err);
+redisClient.connect().catch(err => {
+    console.error('Could not connect to Redis:', err);
 });
+
 
 // Set up session middleware
 app.use(session({
-    store: new RedisStore({ 
-        client: redisClient,
-        ttl: 86400 // Set session TTL in seconds
-    }),
-    secret: COOKIE_SECRET,
-    resave: false,
-    saveUninitialized: false,
+    store: new RedisStore({ client: redisClient }),
+    secret: process.env.COOKIE_SECRET,
+    resave: false, // Set to false to prevent unnecessary saves
+    saveUninitialized: false, // Set to false to prevent saving sessions that are not initialized
     cookie: {
-        secure: false, // Set to true if you're using HTTPS
-        httpOnly: true,
-        sameSite: 'None',
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
-    },
-}));*/
+      maxAge: 1000 * 60 * 60 * 24 // 1 day
+    }
+  }));
+  
 
-
+/*
  // Development session setup
  app.use(session({
      secret: COOKIE_SECRET,
@@ -81,7 +77,7 @@ app.use(session({
      store: new MemoryStore({
         checkPeriod: 86400000 // prune expired entries every 24h
       }),
- }));
+ }));*/
 
 
 
