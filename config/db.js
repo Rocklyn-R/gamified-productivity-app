@@ -5,12 +5,18 @@ if (process.env.NODE_ENV !== 'production') {
 
 const poolConfig = process.env.NODE_ENV === 'production'
   ? {
-    connectionString: process.env.DATABASE_URL, // Use the DATABASE_URL provided by Render
+    connectionString: process.env.INTERNAL_DATABASE_URL, // Use the DATABASE_URL provided by Render
+    ssl: {
+      rejectUnauthorized: false, // Required for connecting securely to Render's PostgreSQL
+    },
+  } : {
+    connectionString: process.env.EXTERNAL_DATABASE_URL, // Use the DATABASE_URL provided by Render
     ssl: {
       rejectUnauthorized: false, // Required for connecting securely to Render's PostgreSQL
     },
   }
-  : {
+  
+const poolLocalConfig = {
     user: process.env.DB_USER,   // Use local settings
     host: 'localhost',
     database: process.env.DATABASE,
@@ -19,6 +25,7 @@ const poolConfig = process.env.NODE_ENV === 'production'
   };
 
 const pool = new Pool(poolConfig);
+console.log(poolConfig);
 
 const query = (text, params, callback) => {
   return pool.query(text, params, callback);
