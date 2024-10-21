@@ -16,26 +16,18 @@ loginRouter.get('/', checkAuthenticatedOnLoginSignup, (req, res) => {
 });
 
 
-
 loginRouter.post('/', (req, res, next) => {
-  console.log('Login request received'); // Log entry
-  passport.authenticate('local', async (err, user, info) => {
-    if (err) {
-      return next(err); // Handle any errors
-    }
-    if (!user) {
-      return res.redirect('/api/login/failure'); // Handle failure
-    }
-    req.logIn(user, (err) => {
-      if (err) {
-        console.error('Error during login:', err); // Log error
-        return next(err);
-      }
-      console.log(req.session); // Log successful authentication
-      // Now you can redirect to success route
-      return res.redirect('/api/login/success'); // Redirect on success
-    });
-  })(req, res, next);
+    console.log('Before passport authenticate');
+    passport.authenticate('local', (err, user, info) => {
+        if (err) return next(err);
+        if (!user) return res.redirect('/api/login/failure');
+        req.logIn(user, (err) => {
+            if (err) return next(err);
+            console.log('User logged in:', req.user);
+            console.log('Session after login:', req.session);
+            return res.redirect('/api/login/success');
+        });
+    })(req, res, next);
 });
 
 loginRouter.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
