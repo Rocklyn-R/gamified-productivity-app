@@ -42,8 +42,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Create a Redis client
 const redisClient = createClient({
-    url: 'rediss://red-crvr0288fa8c73dt0130:vmUly4cLgRMEXygPmxV5zdPeqqYeRQoc@virginia-redis.render.com:6379' // Use the URL format
-});
+    url: 'redis://red-crvr0288fa8c73dt0130:6379'
+})
 
 // Connect to Redis
 redisClient.connect().catch(err => {
