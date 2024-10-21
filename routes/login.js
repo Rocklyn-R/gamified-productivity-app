@@ -31,6 +31,7 @@ loginRouter.post('/', (req, res, next) => {
         console.error('Error during login:', err); // Log error
         return next(err);
       }
+      console.log(req.session); // Log successful authentication
       // Now you can redirect to success route
       return res.redirect('/api/login/success'); // Redirect on success
     });
