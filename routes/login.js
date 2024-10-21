@@ -15,12 +15,25 @@ loginRouter.get('/', checkAuthenticatedOnLoginSignup, (req, res) => {
   return res.status(200).json({ message: 'User signed in'});
 });
 
+
+
 loginRouter.post('/', (req, res, next) => {
   console.log('Login request received'); // Log entry
   next();
 }, passport.authenticate('local', {
-  failureRedirect: '/failure',
-}), (req, res) => {
+  failureRedirect: '/api/login/failure',    // Redirect to failure route on failure
+  successRedirect: '/api/login/success',    // Redirect to success route on successful authentication
+}));
+
+loginRouter.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+
+loginRouter.get('/google-redirect', passport.authenticate('google', {
+  failureMessage: "Cannot login to Google, please try again later!",
+  failureRedirect: errorLoginUrl,
+  successRedirect: successLoginUrl
+}))
+
+loginRouter.get('/success', (req, res) => {
   console.log('After passport.authenticate');
   if (req.isAuthenticated()) {
       console.log("User authenticated:", req.user); // Log authenticated user
@@ -30,14 +43,6 @@ loginRouter.post('/', (req, res, next) => {
       return res.status(401).send({ message: "User not authenticated" });
   }
 });
-
-loginRouter.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
-
-loginRouter.get('/google-redirect', passport.authenticate('google', {
-  failureMessage: "Cannot login to Google, please try again later!",
-  failureRedirect: errorLoginUrl,
-  successRedirect: successLoginUrl
-}))
 
 loginRouter.get('/failure', (req, res) => {
   res.status(401).json({ message: "Incorrect email or password" })
