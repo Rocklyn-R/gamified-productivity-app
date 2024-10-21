@@ -42,13 +42,12 @@ app.use(express.urlencoded({ extended: false }));
 
 
 const redisUrl = process.env.NODE_ENV === 'development'
-    ? process.env.EXTERNAL_REDIS_URL // Use external Redis URL in development
-    : process.env.INTERNAL_REDIS_URL; // Use the internal Redis URL in production
+    ? 'rediss://red-crvr0288fa8c73dt0130:vmUly4cLgRMEXygPmxV5zdPeqqYeRQoc@virginia-redis.render.com:6379' // Use external Redis URL in development
+    : 'redis://red-crvr0288fa8c73dt0130:6379'; // Use the internal Redis URL in production
 
 // Create a Redis client
 const redisClient = createClient({
-    url: redisUrl,
-    legacyMode: true
+    url: redisUrl
 })
 
 // Connect to Redis
