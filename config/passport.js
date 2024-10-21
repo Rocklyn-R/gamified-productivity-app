@@ -42,7 +42,8 @@ const localAuthenticateUser = async (username, password, done) => {
             console.log('Password does not match'); // Log reason for failure
             return done(null, false, { message: 'Incorrect email or password' });
         }
-        console.log('User authenticated successfully:', user); // Log successful authentication
+        console.log('User authenticated successfully:', user);
+        console.log(req.session); // Log successful authentication
         return done(null, user);
     } catch (error) {
         console.error('Error during authentication:', error); // Log any errors
