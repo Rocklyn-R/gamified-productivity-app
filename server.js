@@ -40,15 +40,25 @@ app.use(express.static(__dirname));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
+const redisUrl = process.env.NODE_ENV === 'development'
+    ? process.env.EXTERNAL_REDIS_URL // Use external Redis URL in development
+    : process.env.INTERNAL_REDIS_URL; // Use the internal Redis URL in production
+
 // Create a Redis client
 const redisClient = createClient({
-    url: 'redis://red-crvr0288fa8c73dt0130:6379'
+    url: redisUrl,
+    legacyMode: true
 })
 
 // Connect to Redis
 redisClient.connect().catch(err => {
     console.error('Could not connect to Redis:', err);
 });
+
+redisClient.on('error', (err) => {
+    console.error('Redis error:', err);
+}); 
 
 
 // Set up session middleware
