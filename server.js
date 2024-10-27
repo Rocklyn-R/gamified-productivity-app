@@ -75,7 +75,8 @@ app.use(session({
       maxAge: 1000 * 60 * 60 * 24
     }
   }));
-  
+
+app.set('trust proxy', true);
 
 /*
  // Development session setup
