@@ -41,7 +41,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-const redisUrl = 'redis://redis-18945.c329.us-east4-1.gce.redns.redis-cloud.com:18945'; // Use external Redis URL in developmentn
+const redisUrl = process.env.NODE_ENV === 'development' ? 'rediss://red-csb5ltogph6c73aaak60:0SR0RXoGw6haTyYewERfjKB0p1LfTPPJ@virginia-redis.render.com:6379' : 'redis://red-csb5ltogph6c73aaak60:6379'; // Use external Redis URL in developmentn
 
 // Create a Redis client
 const redisClient = createClient({
@@ -57,7 +57,7 @@ redisClient.connect().catch(err => {
 
 redisClient.on('error', (err) => {
     console.error('Redis error:', err);
-}); 
+});
 
 
 // Set up session middleware
