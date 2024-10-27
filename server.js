@@ -21,7 +21,8 @@ const corsOptions = {
         '*',
         'http://localhost:3000',
         'https://accounts.google.com',  // Keeping the Google origin
-        'https://task-master-rocklyn.onrender.com'
+        'https://task-master-rocklyn.onrender.com',
+        'https://task-master-backend-m9mq.onrender.com'
     ],
     credentials: true, // Allow credentials (cookies, Authorization headers)
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
