@@ -45,9 +45,7 @@ const redisUrl = process.env.NODE_ENV === 'development' ? 'rediss://red-csb5ltog
 
 // Create a Redis client
 const redisClient = createClient({
-    url: redisUrl,
-    username: 'red-csb5ltogph6c73aaak60',
-    password: '0SR0RXoGw6haTyYewERfjKB0p1LfTPPJ'
+    url: redisUrl
 })
 
 // Connect to Redis
