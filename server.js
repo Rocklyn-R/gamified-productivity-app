@@ -48,6 +48,7 @@ const redisClient = createClient({
     url: redisUrl
 })
 
+
 // Connect to Redis
 redisClient.connect().catch(err => {
     console.error('Could not connect to Redis:', err);
@@ -56,7 +57,12 @@ redisClient.connect().catch(err => {
 redisClient.on('error', (err) => {
     console.error('Redis error:', err);
 });
-const cli = 'REDISCLI_AUTH=0SR0RXoGw6haTyYewERfjKB0p1LfTPPJ redis-cli --user red-csb5ltogph6c73aaak60 -h virginia-redis.render.com -p 6379 --tls'
+(async () => {
+  
+await redisClient.set('123Antica', 'Vatamo te');
+const value = await redisClient.get('123Antica');
+console.log("found value: ", value);  
+})();
 
 // Set up session middleware
 app.use(session({
