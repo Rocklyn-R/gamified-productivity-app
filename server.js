@@ -18,19 +18,22 @@ const PORT = process.env.PORT || 4000;
 
 const corsOptions = {
     origin: [
+        '*',
         'http://localhost:3000',
         'https://accounts.google.com',  // Keeping the Google origin
-        'https://task-master-rocklyn.onrender.com',
+        'https://task-master-rocklyn.onrender.com'
     ],
     credentials: true, // Allow credentials (cookies, Authorization headers)
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept' ]
 };
 
 // Handle preflight requests
 app.options('*', cors(corsOptions));
 // Apply CORS middleware before your routes
 app.use(cors(corsOptions));
+
+
 
 
 app.set('trust proxy', 1);
