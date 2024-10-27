@@ -46,8 +46,8 @@ const redisUrl = process.env.NODE_ENV === 'development' ? 'rediss://red-csb5ltog
 // Create a Redis client
 const redisClient = createClient({
     url: redisUrl,
-    username: 'default',
-    password: 'CRgVXpuhVn19uCsJEfpYulj9CwSz9yG9'
+    username: 'red-csb5ltogph6c73aaak60',
+    password: '0SR0RXoGw6haTyYewERfjKB0p1LfTPPJ'
 })
 
 // Connect to Redis
@@ -58,7 +58,7 @@ redisClient.connect().catch(err => {
 redisClient.on('error', (err) => {
     console.error('Redis error:', err);
 });
-
+const cli = 'REDISCLI_AUTH=0SR0RXoGw6haTyYewERfjKB0p1LfTPPJ redis-cli --user red-csb5ltogph6c73aaak60 -h virginia-redis.render.com -p 6379 --tls'
 
 // Set up session middleware
 app.use(session({
