@@ -68,10 +68,12 @@ console.log("found value: ", value);
 app.use(session({
     store: new RedisStore({ client: redisClient }),
     secret: process.env.COOKIE_SECRET,
+    proxy: true,
     resave: false, // Set to false to prevent unnecessary saves
     saveUninitialized: false, // Set to false to prevent saving sessions that are not initialized
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 // 1 day
+      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: 'none' // 1 day
     }
   }));
   
