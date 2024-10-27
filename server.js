@@ -72,8 +72,7 @@ app.use(session({
     resave: false, // Set to false to prevent unnecessary saves
     saveUninitialized: false, // Set to false to prevent saving sessions that are not initialized
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
-      sameSite: 'none' // 1 day
+      maxAge: 1000 * 60 * 60 * 24
     }
   }));
   
