@@ -57,6 +57,7 @@ redisClient.connect().catch(err => {
 redisClient.on('error', (err) => {
     console.error('Redis error:', err);
 });
+
 (async () => {
   
 await redisClient.set('123Antica', 'Vatamo te');
@@ -76,7 +77,6 @@ app.use(session({
     }
   }));
 
-app.set('trust proxy', true);
 
 /*
  // Development session setup

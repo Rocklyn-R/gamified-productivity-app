@@ -15,7 +15,7 @@ loginRouter.get('/', checkAuthenticatedOnLoginSignup, (req, res) => {
   return res.status(200).json({ message: 'User signed in'});
 });
 
-
+/*
 loginRouter.post('/', (req, res, next) => {
     console.log('Before passport authenticate');
     passport.authenticate('local', (err, user, info) => {
@@ -28,6 +28,21 @@ loginRouter.post('/', (req, res, next) => {
             return res.redirect('/api/login/success');
         });
     })(req, res, next);
+});*/
+
+loginRouter.post('/', passport.authenticate('local', {
+  failureRedirect: '/failure',
+}), (req, res) => {
+  console.log('User after authentication:', req.user); // Check if req.user is populated
+  console.log(req.session);
+  console.log(req.user);
+  if (req.isAuthenticated()) {
+    console.log("IS AUTHENTICATED"); // This should print
+  } else {
+    console.log("User is NOT authenticated"); 
+    return res.status(401).send({ message: "User not authenticated" });
+  }
+  return res.status(200).send();
 });
 
 loginRouter.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
