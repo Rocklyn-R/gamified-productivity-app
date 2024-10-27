@@ -32,6 +32,7 @@ loginRouter.post('/', (req, res, next) => {
 
 loginRouter.post('/', passport.authenticate('local', {
   failureRedirect: '/failure',
+  keepSessionInfo: true,
 }), (req, res) => {
   console.log('User after authentication:', req.user); // Check if req.user is populated
   console.log(req.session);
