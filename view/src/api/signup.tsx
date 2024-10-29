@@ -1,6 +1,6 @@
 import { BASE_URL } from "./coins";
 
-export const createNewUser = async (name: string, lastName: string, email: string, password: string) => {
+export const createNewUser = async (name: string, lastName: string, username: string, password: string) => {
     // Make a POST request to your server's signup endpoint using fetch
     try {
         console.log(BASE_URL);
@@ -12,7 +12,7 @@ export const createNewUser = async (name: string, lastName: string, email: strin
             body: JSON.stringify({
                 first_name: name,
                 last_name: lastName,
-                email: email.toLowerCase(),
+                username: username.toLowerCase(),
                 password,
             }),
             credentials: 'include'

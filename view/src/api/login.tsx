@@ -1,7 +1,7 @@
 import { BASE_URL } from "./coins";
 
 
-export const logInUser = async (email: string, password: string) => {
+export const logInUser = async (username: string, password: string) => {
     try {
         const response = await fetch(`${BASE_URL}/login`, {
             method: 'POST',
@@ -9,7 +9,7 @@ export const logInUser = async (email: string, password: string) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email,
+                username,
                 password,
             }),
             credentials: 'include'
