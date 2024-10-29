@@ -74,11 +74,13 @@ console.log("found value: ", value);
 app.use(session({
     store: new RedisStore({ client: redisClient }),
     secret: process.env.COOKIE_SECRET,
-    proxy: true,
-    resave: false, // Set to false to prevent unnecessary saves
-    saveUninitialized: false, // Set to false to prevent saving sessions that are not initialized
+    proxy: true, // Required when behind a proxy like Render
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      secure: process.env.NODE_ENV === 'production', // Only send cookies over HTTPS in production
+      sameSite: 'None' // Allows cookies to be sent in cross-site contexts (e.g., if front end is on a different domain)
     }
   }));
 
