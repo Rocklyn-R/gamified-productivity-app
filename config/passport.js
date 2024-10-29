@@ -12,11 +12,11 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 
 
-const localOptions = {
+/*const localOptions = {
     usernameField: 'email', // Assuming email is used as the username
     passwordField: 'password', // Field name for the password
     passReqToCallback: false // Don't pass request object to verify callback
-};
+};*/
 
 const callbackURL = process.env.NODE_ENV === 'production' 
     ? 'https://task-master-rocklyn.onrender.com/api/login/google-redirect' 
@@ -82,7 +82,7 @@ passport.deserializeUser(async (id, done) => {
 });
 
 const initializePassport = (passport) => {
-    passport.use(new LocalStrategy(localOptions, localAuthenticateUser));
+    passport.use(new LocalStrategy(localAuthenticateUser));
     passport.use(new GoogleStrategy(googleOptions, googleAuthenticateUser));
 }
 
