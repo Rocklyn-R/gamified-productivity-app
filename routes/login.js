@@ -47,14 +47,18 @@ loginRouter.post('/', passport.authenticate('local', {
 
 loginRouter.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
-loginRouter.get('/google-redirect', passport.authenticate('google', {
-  failureMessage: "Cannot login to Google, please try again later!",
+loginRouter.get('/google-redirect', (req, res, next) => {
+  console.log("Google Redirect Route Hit!");
+  console.log("Query Params:", req.query); // Log the query parameters to check the URL parameters
+  next();
+}, passport.authenticate('google', {
   failureRedirect: errorLoginUrl,
   successRedirect: successLoginUrl
 }), (req, res) => {
   console.log('Google login successful!');
   res.redirect(successLoginUrl);
 });
+
 
 loginRouter.get('/success', (req, res) => {
   console.log('After passport.authenticate');
