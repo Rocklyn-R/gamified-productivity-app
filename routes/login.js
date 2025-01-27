@@ -59,7 +59,6 @@ loginRouter.get('/google-redirect', (req, res, next) => {
   res.redirect(successLoginUrl);
 });
 
-
 loginRouter.get('/success', (req, res) => {
   console.log('After passport.authenticate');
   if (req.isAuthenticated()) {

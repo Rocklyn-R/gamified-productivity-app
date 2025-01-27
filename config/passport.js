@@ -50,7 +50,7 @@ const localAuthenticateUser = async (username, password, done) => {
     }
 };
 
-const googleAuthenticateUser = async (profile, done) => {
+const googleAuthenticateUser = async (request, accessToken, refreshToken, profile, done) => {
     try {
         console.log("GOOGLE AUTHENTICATING");
         console.log("Profile received from Google:", profile);
