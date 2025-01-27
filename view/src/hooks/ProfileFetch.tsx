@@ -15,6 +15,7 @@ export const useProfileFetch = () => {
             dispatch(setFirstName(user.first_name));
             dispatch(setLastName(user.last_name));
             dispatch(setEmail(user.email));
+            console.log(user);
             if (user.google_id) {
                 dispatch(setGoogleLinked(true));
             }

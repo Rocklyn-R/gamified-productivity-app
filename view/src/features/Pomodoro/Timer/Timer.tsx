@@ -73,13 +73,13 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
         }
     }, [isPaused]);
 
- 
+
     useEffect(() => {
         if (!isPaused) {
             clearInterval(intervalId);
             startTimer();
             console.log("this")
-        }  
+        }
     }, [isPaused, startTimer])
 
 
@@ -111,10 +111,10 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
         }
         await pomodoroUpdateSecondsLeft(newSecondsLeft);
     }
- 
+
     const skipTimer = async () => {
         dispatch(skip());
-      await skipTimerUpdate(
+        await skipTimerUpdate(
             sessionsRemaining,
             mode,
             workMinutes,
@@ -154,15 +154,15 @@ export const Timer: React.FC<TimerProps> = ({ handleShowSellPomodoros }) => {
                 })} />
             <p id="mode-string">{modeString}</p>
             <div className="coin-pomodoro-box">
-               
-                    <p id="pomodoro-coin-p"><FaCoins className='pomodoro-coin-icon' /> {totalCoins}</p>
-            
-            <button className="pomodoro-button no-select" onClick={handleShowSellPomodoros}>
-                <img alt="" src={tomato} className="pomodoro-icon" height="30" width="30" />
-                <p>{pomodoros}</p>
-            </button>
+
+                <p id="pomodoro-coin-p"><FaCoins className='pomodoro-coin-icon' /> {totalCoins}</p>
+
+                <button className="pomodoro-button no-select" onClick={handleShowSellPomodoros}>
+                    <img alt="" src={tomato} className="pomodoro-icon" height="30" width="30" />
+                    <p>{pomodoros}</p>
+                </button>
             </div>
-            
+
             <div className="control-timer-buttons">
                 <button
                     className="play-button no-select"

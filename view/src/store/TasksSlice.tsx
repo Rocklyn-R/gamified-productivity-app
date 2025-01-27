@@ -113,7 +113,11 @@ export const TasksSlice = createSlice({
             if (taskIndex !== -1) {
                 state.historyTasks[taskIndex].overdue = true;
             }
-        }
+        },
+        resetTasksState: () => ({
+            tasks: [] as Task[], // Reset tasks to an empty array
+            historyTasks: [] as Task[], // Reset historyTasks to an empty array
+        } as TasksState), // Ensure it returns the correct type
     }
 })
 
@@ -131,7 +135,8 @@ export const {
     completeOverdueHistoryTask,
     markHistoryTaskAsOverdue,
     setHistoryTasks,
-    uncompleteHistoryTask
+    uncompleteHistoryTask,
+    resetTasksState
 } = TasksSlice.actions;
 
 

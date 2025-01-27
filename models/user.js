@@ -142,6 +142,16 @@ const userDeleteAccount = async (id) => {
     }
 }
 
+const userDataGet = async (id) => {
+    const query = `SELECT * FROM app_user WHERE id = $1`;
+    try {
+        const result = await db.query(query, [id]);
+        return result.rows[0];
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 
 module.exports = {
@@ -153,5 +163,6 @@ module.exports = {
     userUpdatePassword,
     findByGoogleIdOrCreate,
     userUnlinkFromGoogle,
-    userDeleteAccount
+    userDeleteAccount,
+    userDataGet
 }

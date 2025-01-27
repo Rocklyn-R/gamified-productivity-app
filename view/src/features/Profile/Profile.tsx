@@ -2,7 +2,7 @@ import "./Profile.css";
 import Card from "../../components/Card/Card";
 import { useEffect, useState, useRef } from "react";
 import { selectGoogleLinked, selectPasswordExists } from "../../store/UserSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectFirstName, selectLastName, selectEmail } from "../../store/UserSlice";
 import { FaRegEdit } from "react-icons/fa";
 import { NameForm } from "./ProfileForms/NameForm";
@@ -12,9 +12,6 @@ import { useAuthorizationCheck } from "../../hooks/AuthorizationCheck";
 import GoogleButton from 'react-google-button'
 import { CreatePasswordForm } from "./ProfileForms/CreatePasswordForm";
 import { UnlinkMessage } from "./UnlinkMessage/UnlinkMessage";
-import { useProfileFetch } from "../../hooks/ProfileFetch";
-import { getUserDetails } from "../../api/profile";
-import { setFirstName, setLastName, setEmail, setGoogleLinked, setPasswordExists } from "../../store/UserSlice";
 import { DeleteAccount } from "./ProfileForms/DeleteAccount/DeleteAccount";
 
 
@@ -72,7 +69,7 @@ export const Profile = () => {
         };
     }, []);
 
-    
+
 
 
     return (
@@ -163,26 +160,26 @@ export const Profile = () => {
                         >(Unlink Google account)
                         </button>}
                 </div>}
-                {showUnlinkMessage && 
-                 <div className='overlay unlink-message' ref={overlayRef}>
-                    <UnlinkMessage 
+            {showUnlinkMessage &&
+                <div className='overlay unlink-message' ref={overlayRef}>
+                    <UnlinkMessage
                         setShowUnlinkMessage={setShowUnlinkMessage}
                     />
-                 </div>
-                }
-                {passwordExists && (
-                    <div className="delete-account-container">
-                        <button className="delete-account-button" onClick={() => setDeleteAccount(true)}>Delete my account</button>
-                    </div>
-                )}
-                {deleteAccount && (
-                    <div className="overlay" ref={overlayRef}>
-                        <DeleteAccount 
-                            setDeleteAccount={setDeleteAccount}
-                        />
-                    </div>
-                )}
-              
+                </div>
+            }
+            {passwordExists && (
+                <div className="delete-account-container">
+                    <button className="delete-account-button" onClick={() => setDeleteAccount(true)}>Delete my account</button>
+                </div>
+            )}
+            {deleteAccount && (
+                <div className="overlay" ref={overlayRef}>
+                    <DeleteAccount
+                        setDeleteAccount={setDeleteAccount}
+                    />
+                </div>
+            )}
+
         </Card>
     )
 }

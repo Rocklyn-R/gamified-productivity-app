@@ -33,29 +33,29 @@ function App() {
 
 
 
- 
-   const handleBeforeUnload = async () => {
-      localStorage.removeItem('pomodoroTimerState');
-      if (!isPaused) {
-        const currentTime = Math.floor(Date.now() / 1000);
-        const timerState = {
-          secondsLeftSaved: secondsLeft,
-          timeOfUnload: currentTime,
-          pomodoros: pomodoros,
-          sessionsRemaining: sessionsRemaining,
-          mode: mode,
-          totalSessions: sessionsToLongBreak,
-          workMinutes: workMinutes,
-          breakMinutes: breakMinutes,
-          longBreakMinutes: longBreakMinutes
-        };
-        localStorage.setItem('pomodoroTimerState', JSON.stringify(timerState));
-      }
+
+  const handleBeforeUnload = async () => {
+    localStorage.removeItem('pomodoroTimerState');
+    if (!isPaused) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      const timerState = {
+        secondsLeftSaved: secondsLeft,
+        timeOfUnload: currentTime,
+        pomodoros: pomodoros,
+        sessionsRemaining: sessionsRemaining,
+        mode: mode,
+        totalSessions: sessionsToLongBreak,
+        workMinutes: workMinutes,
+        breakMinutes: breakMinutes,
+        longBreakMinutes: longBreakMinutes
+      };
+      localStorage.setItem('pomodoroTimerState', JSON.stringify(timerState));
     }
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  }
+  window.addEventListener('beforeunload', handleBeforeUnload);
 
 
- 
+
 
   if (isLoading) {
     return <div></div>

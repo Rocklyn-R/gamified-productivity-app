@@ -143,7 +143,7 @@ export const Tasks = () => {
                 {tasks.length === 0 && !isLoading && <p className='add-tasks-message'>Add new tasks!</p>}
                 <div className='todo-list'>
                     {tasks.filter(task => !task.overdue).map((task, index) => {
-                        return <TaskItem task={task} index={index} handleViewTaskClick={handleViewTaskClick} />
+                        return <TaskItem task={task} key={index} index={index} handleViewTaskClick={handleViewTaskClick} />
                     })}
                 </div>
 

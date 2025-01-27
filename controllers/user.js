@@ -5,7 +5,8 @@ const {
     userUpdateEmail, 
     userUpdatePassword,
     userUnlinkFromGoogle,
-    userDeleteAccount
+    userDeleteAccount,
+    userDataGet
 } = require('../models/user');
 const bcrypt = require('bcrypt');
 
@@ -28,24 +29,31 @@ const createUserController = async (req, res, next) => {
     }
 };
 
-const getUserData = (req, res) => {
-    const user = req.user;
-    if (!user) {
-        return res.status(401).json({ message: 'User not authenticated' });
+const getUserData = async (req, res) => {
+    const id = req.user.id;
+    try {
+        const userData = await userDataGet(id);
+        if (userData) {
+            let userObject = {
+                ...userData,
+                password: userData.password === null ? false : true,
+                google_id: userData.google_id === null ? false : true
+            }
+            res.status(200).json(userObject);
+        }
+    } catch (error) {
+        console.log('Error creating user:', error);
     }
-    res.status(200).json(user);
 }
 
 const editUserName = async (req, res) => {
     const { firstName, lastName } = req.body;
     const id = req.user.id;
     try {
-        //console.log("Running");
         const userUpdate = await userUpdateName(id, firstName, lastName);
         if (userUpdate) {
             res.status(200).json({ message: 'User name successfully updated' });
         } else {
-            //console.log("This ain't working");
             res.status(404).json({ message: 'User not found or update unsuccessful' })
         }
     } catch (error) {
@@ -124,14 +132,11 @@ const unlinkUserFromGoogle = async (req, res) => {
 const deleteUserAccount = async (req, res) => {
     const { id } = req.user;
     const { password } = req.body;
-    console.log(password);
     try {
         const user = await findUserById(id);
         const storedPassword = user.password;
-        console.log(storedPassword);
         const matchedPassword = await bcrypt.compare(password, storedPassword);
         if (matchedPassword) {
-            console.log("THIS THIS")
             const accountDeletion = await userDeleteAccount(id);
             if (accountDeletion) {
                 req.logout(function(err) {

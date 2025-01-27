@@ -52,6 +52,7 @@ const localAuthenticateUser = async (username, password, done) => {
 
 const googleAuthenticateUser = async (request, accessToken, refreshToken, profile, done) => {
     try {
+        console.log("GOOGLE AUTHENTICATING");
         const user = await findByGoogleIdOrCreate(profile);
         return done(null, user);
     } catch (error) {

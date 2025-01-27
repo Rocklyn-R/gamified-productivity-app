@@ -19,7 +19,7 @@ export const RewardsSlice = createSlice({
     reducers: {
         setCoins: (state, action: PayloadAction<number>) => {
             state.totalCoins = action.payload;
-        }, 
+        },
         addToCoins: (state, action: PayloadAction<number>) => {
             state.totalCoins = state.totalCoins + action.payload;
         },
@@ -59,7 +59,7 @@ export const RewardsSlice = createSlice({
             state.shop = state.shop.filter(item => item.id !== action.payload.id);
         },
 
-        buyItem: (state, action: PayloadAction<{reward: Reward, quantity: number}>) => {
+        buyItem: (state, action: PayloadAction<{ reward: Reward, quantity: number }>) => {
             const { reward, quantity } = action.payload;
             const existingItemIndex = state.inventory.findIndex(item => item.id === reward.id);
             if (existingItemIndex !== -1) {
@@ -78,7 +78,7 @@ export const RewardsSlice = createSlice({
             state.usedRewards = action.payload;
         },
 
-        spendReward: (state, action: PayloadAction<{item: InventoryItem, quantity: number, newId: string}>) => {
+        spendReward: (state, action: PayloadAction<{ item: InventoryItem, quantity: number, newId: string }>) => {
             const { item, quantity, newId } = action.payload;
             const existingItemIndex = state.inventory.findIndex(inventoryItem => inventoryItem.id === item.id);
             console.log(existingItemIndex);
@@ -92,20 +92,27 @@ export const RewardsSlice = createSlice({
             }
 
             for (let i = 0; i < quantity; i++) {
-                 state.usedRewards.unshift({
-                name: item.name,
-                price: item.price,
-                description: item.description,
-                id: newId,
-                icon: item.icon,
-                date_used: formattedDate
-            });
+                state.usedRewards.unshift({
+                    name: item.name,
+                    price: item.price,
+                    description: item.description,
+                    id: newId,
+                    icon: item.icon,
+                    date_used: formattedDate
+                });
             }
         },
         deleteUsedReward: (state, action: PayloadAction<UsedRewards>) => {
             const { id } = action.payload;
             state.usedRewards = state.usedRewards.filter(item => item.id !== id);
-        }
+        },
+        resetRewardsState: () => ({
+            totalCoins: 0,
+            shop: [],
+            inventory: [],
+            usedRewards: []
+        } as RewardsState),
+
     }
 })
 
@@ -121,7 +128,8 @@ export const {
     setInventory,
     setUsedRewards,
     spendReward,
-    deleteUsedReward
+    deleteUsedReward,
+    resetRewardsState
 } = RewardsSlice.actions;
 
 export const selectTotalCoins = (state: RootState) => state.rewards.totalCoins;

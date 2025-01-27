@@ -35,7 +35,15 @@ export const UserSlice = createSlice({
         },
         setPasswordExists: (state, action: PayloadAction<boolean>) => {
             state.password = action.payload;
-        }
+        },
+        resetUserState: () => ({
+            isAuthenticated: false,
+            firstName: '',
+            lastName: '',
+            email: '',
+            google_linked: false,
+            password: true
+        } as UserState),
     }
 })
 
@@ -46,7 +54,8 @@ export const {
     setLastName,
     setEmail, 
     setGoogleLinked,
-    setPasswordExists
+    setPasswordExists,
+    resetUserState
 } = UserSlice.actions;
 
 export const selectIsAuthenticated = (state: RootState) => state.user.isAuthenticated;

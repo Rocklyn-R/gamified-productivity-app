@@ -80,7 +80,7 @@ app.use(session({
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       secure: process.env.NODE_ENV === 'production', // Only send cookies over HTTPS in production
-      sameSite: 'None' // Allows cookies to be sent in cross-site contexts (e.g., if front end is on a different domain)
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax' // Allows cookies to be sent in cross-site contexts (e.g., if front end is on a different domain)
     }
   }));
 

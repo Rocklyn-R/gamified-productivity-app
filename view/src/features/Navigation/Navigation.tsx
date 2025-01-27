@@ -7,10 +7,12 @@ import gift from "../../images/gift.png";
 import shop from "../../images/shop.png";
 import account from "../../images/account.png";
 import { logoutUser } from '../../api/logout';
-import { unauthenticateUser } from '../../store/UserSlice';
+import { resetUserState, unauthenticateUser } from '../../store/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { pomodoroUpdateSecondsLeft, pausePlayPomodoroTimer } from '../../api/pomodoro';
-import { pause, selectSecondsLeft,  } from '../../store/PomodoroSlice';
+import { pause, resetPomodoroState, selectSecondsLeft,  } from '../../store/PomodoroSlice';
+import { resetTasksState } from '../../store/TasksSlice';
+import { resetRewardsState } from '../../store/RewardsSlice';
 
 
 
@@ -27,6 +29,10 @@ export const Navigation = () => {
         await pomodoroUpdateSecondsLeft(secondsLeft);
         await logoutUser();
         dispatch(unauthenticateUser());
+        dispatch(resetTasksState());
+        dispatch(resetRewardsState());
+        dispatch(resetPomodoroState());
+        dispatch(resetUserState());
         navigate('/');
     }
 

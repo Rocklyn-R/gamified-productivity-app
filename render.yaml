@@ -6,7 +6,7 @@ services:
     buildCommand: npm install
     startCommand: npm start
     envVars:
-      DATABASE_URL: postgresql://user:1lkA38wVKxnzLqibgIJXXwBhZH1ny3OY@dpg-crvadc1u0jms73anq6u0-a/task_master_1cen
+      DATABASE_URL: postgresql://user:TTbNBgwE5mhAybK0Y9IUD4gyoEJK2aMx@dpg-cubn4mggph6c73a7u2f0-a/task_master_1ykq
     plan: free
 
   - type: static

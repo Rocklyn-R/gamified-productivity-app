@@ -25,7 +25,7 @@ const poolLocalConfig = {
   };
 
 const pool = new Pool(poolConfig);
-console.log(poolConfig);
+
 
 const query = (text, params, callback) => {
   return pool.query(text, params, callback);

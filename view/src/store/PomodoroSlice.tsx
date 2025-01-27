@@ -138,7 +138,21 @@ export const PomodoroSlice = createSlice({
         },
         addPomodoro: (state, action: PayloadAction<number>) => {
             state.pomodoros = action.payload;
-        }
+        },
+        resetPomodoroState: () => ({
+            seconds_left: 1500,
+            is_paused: true,
+            work_mins: 25,
+            break_mins: 5,
+            long_break_mins: 15,
+            num_sessions_to_long_break: 4,
+            sessions_remaining: 4,
+            timer_mode: "work",
+            pomodoros: 0,
+            pomodoro_price: 10,
+            isLoading: true,
+            seconds_offset: 0
+        } as PomodoroState),
     }
 })
 
@@ -160,6 +174,7 @@ export const {
     setSecondsOffset,
     addPomodoro,
     setPomodoroFromLocalStorage,
+    resetPomodoroState
 } = PomodoroSlice.actions
 
 export const selectWorkMinutes = (state: RootState) => state.pomodoro.work_mins;
