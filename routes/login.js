@@ -51,7 +51,10 @@ loginRouter.get('/google-redirect', passport.authenticate('google', {
   failureMessage: "Cannot login to Google, please try again later!",
   failureRedirect: errorLoginUrl,
   successRedirect: successLoginUrl
-}))
+}), (req, res) => {
+  console.log('Google login successful!');
+  res.redirect(successLoginUrl);
+});
 
 loginRouter.get('/success', (req, res) => {
   console.log('After passport.authenticate');
