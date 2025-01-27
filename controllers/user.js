@@ -11,7 +11,9 @@ const {
 const bcrypt = require('bcrypt');
 
 const createUserController = async (req, res, next) => {
+
     const { first_name, last_name, email, password } = req.body;
+    console.log(first_name, last_name, email, password);
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt)

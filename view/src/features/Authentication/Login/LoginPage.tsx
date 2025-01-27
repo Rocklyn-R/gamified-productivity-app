@@ -10,6 +10,7 @@ import { authenticateUser } from '../../../store/UserSlice';
 import { useDispatch } from 'react-redux';
 import GoogleButton from 'react-google-button';
 import { BASE_URL } from '../../../api/coins';
+import { Loading } from '../../../components/Loading/Loading';
 
 
 export const LoginPage = () => {
@@ -19,7 +20,7 @@ export const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const [pending, setPending] = useState(false);
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -29,12 +30,13 @@ export const LoginPage = () => {
 
     const handleSubmitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        setPending(true);
         try {
             // Make a POST request to your server's signup endpoint using fetch
             const response = await logInUser(username, password);
             console.log(response);
             if (response === 'Incorrect email or password') {
+                setPending(false);
                 setErrorMessage('Incorrect email or password. Try again.');
                 setUsername('');
                 setPassword('');
@@ -42,6 +44,7 @@ export const LoginPage = () => {
             } else {
                 setErrorMessage('');
                 dispatch(authenticateUser());
+                setPending(false);
                 navigate('/tasks');
             }
 
@@ -49,6 +52,7 @@ export const LoginPage = () => {
 
         } catch (error: any) {
             console.error('Error signing up:', error.message);
+            setPending(false);
             // Handle error (e.g., display error message to user)
         }
     }
@@ -108,7 +112,7 @@ export const LoginPage = () => {
                     }}
                 />
 
-                <button type="submit" className='command-button'>Log in</button>
+              {pending ? <Loading /> : <button type="submit" className='command-button'>Log in</button>}  
             </form>
             {errorMessage && <p>{errorMessage}</p>}
             <h4>or</h4>

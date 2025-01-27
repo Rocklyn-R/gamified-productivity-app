@@ -12,7 +12,7 @@ export const createNewUser = async (name: string, lastName: string, username: st
             body: JSON.stringify({
                 first_name: name,
                 last_name: lastName,
-                username: username.toLowerCase(),
+                email: username.toLowerCase(),
                 password,
             }),
             credentials: 'include'

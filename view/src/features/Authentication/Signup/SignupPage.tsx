@@ -13,6 +13,7 @@ import { createPomodoro } from "../../../api/pomodoro";
 import { v4 as uuidv4 } from "uuid";
 import GoogleButton from 'react-google-button'
 import { BASE_URL } from "../../../api/coins";
+import { Loading } from "../../../components/Loading/Loading";
 
 export const SignUp = () => {
     const [name, setName] = useState("");
@@ -23,6 +24,7 @@ export const SignUp = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [pending, setPending] = useState(false);
 
 
     const handleTogglePasswordVisibility = () => {
@@ -31,20 +33,25 @@ export const SignUp = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setPending(true);
         try {
             const response = await createNewUser(name, lastName, email, password);
             if (response === 'User with this email already exists') {
-                setErrorMessage("User with this email already exists. Try a different email")
+                setErrorMessage("User with this email already exists. Try a different email");
+                setPending(false);
             } else if (response === 'Success') {
                 dispatch(authenticateUser());
                 const pomodoroId = uuidv4();
                 await createPomodoro(pomodoroId);
                 setErrorMessage("");
+                setPending(false)
                 navigate('/tasks');
             } else {
                 setErrorMessage('Failed to sign up');
+                setPending(false);
             }
         } catch (error: any) {
+            setPending(false)
             setErrorMessage("Failed to sign up")
         }
     };
@@ -139,8 +146,8 @@ export const SignUp = () => {
                         autoComplete: 'off', // More specific to potentially improve browser compliance
                     }}
                 />
-
-                <button type="submit" className='command-button'>Sign Up</button>
+                {pending ? <Loading /> : <button type="submit" className='command-button'>Sign Up</button>}
+                
             </form>
             {errorMessage && <p>{errorMessage}</p>}
             <h4>or</h4>
