@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import "./Navigation.css";
 import { Link, useNavigate } from 'react-router-dom';
 import tomato from "../../images/tomato.png"
@@ -20,6 +20,7 @@ export const Navigation = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const secondsLeft = useSelector(selectSecondsLeft)
 
     const handleLogout = async () => {
@@ -40,6 +41,22 @@ export const Navigation = () => {
         setIsDropdownOpen(false);
         navigate('/profile');
     }
+
+     // Close dropdown if clicked outside
+     useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        
+        document.addEventListener('mousedown', handleClickOutside); // Listen for clicks outside
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <header className="navbar">
@@ -62,7 +79,7 @@ export const Navigation = () => {
                     <span className="nav-text">Inventory</span>
                 </Link></li>
                     {/* Profile Dropdown */}
-                    <div className="profile-dropdown">
+                    <div className="profile-dropdown" ref={dropdownRef}>
                         <li>
                         <button 
                         className='profile-dropdown-button'
