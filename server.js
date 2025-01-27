@@ -120,10 +120,6 @@ const coinsRouter = require('./routes/coins');
 const shopRouter = require('./routes/shop');
 const inventoryRouter = require('./routes/inventory');
 const pomodoroRouter = require('./routes/pomodoro');
-app.get('*', (req, res) => {
-    console.log('Caught request:', req.method, req.url);
-    res.send('Catch-all route');
-  });
 
 
 app.use('/api/signup', signUpRouter);
@@ -141,6 +137,10 @@ app.get('/api/auth', checkAuthenticatedOnLoginSignup, (req, res) => {
 });
 
 
+app.get('*', (req, res) => {
+    console.log('Caught request:', req.method, req.url);
+    res.send('Catch-all route');
+  });
 
 
 app.listen(PORT, () => {
