@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 
 
 const findByGoogleIdOrCreate = async (profile) => {
+    console.log("Finding or creating user with profile:", profile);
     const google_id = profile.id;
     const email = profile.emails[0].value;
     const first_name = profile.name.givenName;
@@ -36,6 +37,7 @@ const findByGoogleIdOrCreate = async (profile) => {
             return findUserByGoogleIdResult.rows[0];
         }
     } catch (error) {
+        console.log("Error in findByGoogleIdOrCreate:", error)
         throw error;
     }
 }
