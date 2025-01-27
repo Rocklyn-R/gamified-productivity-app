@@ -84,6 +84,7 @@ app.use(session({
     }
   }));
 
+  console.log(process.env.NODE_ENV);
 
 /*
  // Development session setup
