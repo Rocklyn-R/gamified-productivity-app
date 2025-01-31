@@ -1,14 +1,23 @@
-const { 
-    createUser, 
-    findUserById, 
-    userUpdateName, 
-    userUpdateEmail, 
+const {
+    createUser,
+    findUserById,
+    userUpdateName,
+    userUpdateEmail,
     userUpdatePassword,
     userUnlinkFromGoogle,
     userDeleteAccount,
-    userDataGet
+    userDataGet,
+    findUserByEmail,
+    tokenAdd,
+    tokenCheck,
+    passwordReset
 } = require('../models/user');
 const bcrypt = require('bcrypt');
+const nodemailer = require("nodemailer");
+const crypto = require('crypto');
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 
 const createUserController = async (req, res, next) => {
 
@@ -120,14 +129,14 @@ const createNewPassword = async (req, res) => {
 }
 
 const unlinkUserFromGoogle = async (req, res) => {
-   const { id } = req.user;
+    const { id } = req.user;
     try {
         const result = await userUnlinkFromGoogle(id);
         if (result) {
             res.status(200).json({ mesage: "Google account successfully unlinked" })
-        } 
+        }
     } catch (error) {
-        res.status(404).json({ message: "An error occurred unlinking Google"})
+        res.status(404).json({ message: "An error occurred unlinking Google" })
     }
 }
 
@@ -141,7 +150,7 @@ const deleteUserAccount = async (req, res) => {
         if (matchedPassword) {
             const accountDeletion = await userDeleteAccount(id);
             if (accountDeletion) {
-                req.logout(function(err) {
+                req.logout(function (err) {
                     if (err) {
                         console.error("Error logging out:", err);
                         // Handle error
@@ -162,6 +171,96 @@ const deleteUserAccount = async (req, res) => {
     }
 }
 
+const checkForUserEmail = async (req, res) => {
+    const { email } = req.query;
+    try {
+        const result = await findUserByEmail(email);
+        if (result) {
+            res.status(200).json({ message: "User found" })
+        } else {
+            res.status(200).json({ message: "User not found" })
+        }
+    } catch (error) {
+        res.status(404).json({ message: "An error occurred." })
+    }
+}
+
+function generateResetToken() {
+    return crypto.randomBytes(20).toString('hex'); // 20 bytes => 40 characters
+}
+
+const sendResetEmail = async (req, res) => {
+    const { email } = req.body;
+    try {
+        // Check if the user exists
+        const userResult = await findUserByEmail(email);
+
+        if (!userResult) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const userId = userResult.id;
+        const token = generateResetToken();
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+        const addToken = await tokenAdd(userId, token, expiresAt);
+
+        // Generate a password reset link
+        const resetLink = `http://localhost:3000/reset-password/${token}`;
+
+        // Configure email transporter (using Gmail as an example)
+        const transporter = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
+        if (addToken) {
+            // Send the email
+            await transporter.sendMail({
+                from: '"Rocklyn Apps" <rocklyn.apps@gmail.com>',
+                to: email,
+                subject: "Password Reset Request - Task Master Pro",
+                html: `<p>Click <a href="${resetLink}">here</a> to reset your Task Master Pro password. This link will expire in 1 hour.</p>`,
+            });
+
+            return res.json({ message: "Reset email sent successfully" });
+        }
+
+    } catch (error) {
+        console.error("Error sending reset email:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+const checkToken = async (req, res) => {
+    const { token } = req.query;
+    try {
+        const result = await tokenCheck(token);
+        if (result) {
+            res.status(200).json({ valid: result.valid, message: result.message, user_id: result.user_id })
+        } 
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+
+}
+
+const resetPassword = async (req, res) => {
+    const { password, user_id } = req.body;
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const result = await passwordReset(hashedPassword, user_id);
+        if (result) {
+            res.status(200).json({ valid: result.valid, message: result.message, user_id: result.user_id })
+        } 
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
 
 module.exports = {
     createUserController,
@@ -171,5 +270,9 @@ module.exports = {
     changeUserPassword,
     createNewPassword,
     unlinkUserFromGoogle,
-    deleteUserAccount
+    deleteUserAccount,
+    checkForUserEmail,
+    sendResetEmail,
+    checkToken,
+    resetPassword
 };

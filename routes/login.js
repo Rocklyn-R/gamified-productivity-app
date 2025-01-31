@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const { checkForUserEmail, sendResetEmail, resetPassword, checkToken } = require('../controllers/user');
 const { checkAuthenticated, checkAuthenticatedOnLoginSignup } = require('../middleware/authentication');
 
 const loginRouter = express.Router();
@@ -77,5 +78,13 @@ loginRouter.get('/failure', (req, res) => {
 loginRouter.get('/auth/failure', (req, res) => {
   res.send("Something went wrong")
 })
+
+loginRouter.get('/reset-password/email-check', checkForUserEmail);
+
+loginRouter.post('/send-reset-email', sendResetEmail)
+
+loginRouter.post('/reset-password', resetPassword);
+
+loginRouter.get('/reset-password/check-token', checkToken);
 
 module.exports = loginRouter;

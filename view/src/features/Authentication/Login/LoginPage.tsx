@@ -113,6 +113,7 @@ export const LoginPage = () => {
                 />
 
               {pending ? <Loading /> : <button type="submit" className='command-button'>Log in</button>}  
+              <Link to="/reset-password" className='forgot-password-link'>Forgot password</Link>
             </form>
             {errorMessage && <p>{errorMessage}</p>}
             <h4>or</h4>

@@ -15,6 +15,8 @@ import { selectIsAuthenticated } from './store/UserSlice';
 import { useSelector } from 'react-redux';
 import { useAuthorizationCheck } from './hooks/AuthorizationCheck';
 import { selectBreakMinutes, selectIsPaused, selectLongBreakMinutes, selectMode, selectNumOfSessionsToLongBreak, selectPomodoros, selectSecondsLeft, selectSessionsRemaining, selectWorkMinutes } from './store/PomodoroSlice';
+import { ForgotPassword } from './features/Authentication/ForgotPassword/ForgotPassword';
+import { ResetPassword } from './features/Authentication/ResetPassword/ResetPassword';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -78,6 +80,14 @@ function App() {
             <Route
               path="/signup"
               element={isAuthenticated ? <Navigate to="/tasks" /> : <SignUp />}
+            />
+            <Route 
+              path="/reset-password"
+              element={isAuthenticated ? <Navigate to="/tasks" /> : <ForgotPassword />}
+            />
+            <Route 
+              path='/reset-password/:token'
+              element={<ResetPassword/>}
             />
             <Route
               path="/profile"
