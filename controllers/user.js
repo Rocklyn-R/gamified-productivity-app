@@ -205,7 +205,7 @@ const sendResetEmail = async (req, res) => {
         const addToken = await tokenAdd(userId, token, expiresAt);
 
         // Generate a password reset link
-        const resetLink = `http://localhost:3000/reset-password/${token}`;
+        const resetLink = `https://task-master-rocklyn.onrender.com/reset-password/${token}`;
 
         // Configure email transporter (using Gmail as an example)
         const transporter = nodemailer.createTransport({
