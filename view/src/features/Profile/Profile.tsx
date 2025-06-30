@@ -13,6 +13,7 @@ import GoogleButton from 'react-google-button'
 import { CreatePasswordForm } from "./ProfileForms/CreatePasswordForm";
 import { UnlinkMessage } from "./UnlinkMessage/UnlinkMessage";
 import { DeleteAccount } from "./ProfileForms/DeleteAccount/DeleteAccount";
+import { DemoDisabled } from "./DemoDisabled/DemoDisabled";
 
 
 export const Profile = () => {
@@ -33,8 +34,13 @@ export const Profile = () => {
     const [showUnlinkMessage, setShowUnlinkMessage] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);
     const [deleteAccount, setDeleteAccount] = useState(false);
+    const [showDemoDisabled, setShowDemoDisabled] = useState(false);
 
     const handleEditName = () => {
+        if (email === "demo@example.com") {
+            setShowDemoDisabled(true);
+            return;
+        }
         setEditName(true);
     }
 
@@ -75,7 +81,9 @@ export const Profile = () => {
     return (
         <Card className="account-details-container">
             <h1 className="main-app-header">Account Details</h1>
-
+            {showDemoDisabled && (
+                <DemoDisabled onClose={() => setShowDemoDisabled(false)} />
+            )}
             {editName ? (
                 <div className="account-details-form-container">
                     <NameForm
@@ -106,7 +114,13 @@ export const Profile = () => {
                 ) : (
                     <div className="user-email-container">
                         <p>Email: {email}</p>
-                        <button onClick={() => setEditEmail(true)}><FaRegEdit /></button>
+                        <button onClick={() => {
+                            if (email === "demo@example.com") {
+                                setShowDemoDisabled(true);
+                                return;
+                            }
+                            setEditEmail(true);
+                        }}><FaRegEdit /></button>
                     </div>
                 ))}
             {passwordExists && (
@@ -121,7 +135,13 @@ export const Profile = () => {
                 ) : (
                     <div className="user-password-container">
                         <p>Password: ******** </p>
-                        <button onClick={() => setEditPassword(true)}><FaRegEdit /></button>
+                        <button onClick={() => {
+                            if (email === "demo@example.com") {
+                                setShowDemoDisabled(true);
+                                return;
+                            }
+                            setEditPassword(true);
+                        }}><FaRegEdit /></button>
                     </div>
                 )
             )
@@ -169,7 +189,13 @@ export const Profile = () => {
             }
             {passwordExists && (
                 <div className="delete-account-container">
-                    <button className="delete-account-button" onClick={() => setDeleteAccount(true)}>Delete my account</button>
+                    <button className="delete-account-button" onClick={() => {
+                    if (email === "demo@example.com") {
+                        setShowDemoDisabled(true);
+                        return;
+                    }
+                        setDeleteAccount(true)
+                        }}>Delete my account</button>
                 </div>
             )}
             {deleteAccount && (

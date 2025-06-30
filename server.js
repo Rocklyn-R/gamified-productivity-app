@@ -50,7 +50,8 @@ const redisUrl = process.env.NODE_ENV === 'development' ? 'rediss://red-csb5ltog
 
 // Create a Redis client
 const redisClient = createClient({
-    url: redisUrl
+    url: redisUrl,
+    prefix: 'app2:sess:'
 })
 
 
